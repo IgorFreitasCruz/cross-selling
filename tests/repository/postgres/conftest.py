@@ -1,3 +1,7 @@
+"""Configuratin module for integration testing for Postgres"""
+# pylint: disable=w0621
+# pylint: disable=c0103
+# pylint: disable=c0209
 import pytest
 import sqlmodel
 
@@ -66,17 +70,16 @@ def pg_test_data():
 @pytest.fixture(scope="function")
 def pg_session(pg_session_empty, pg_test_data):
     for c in pg_test_data:
-        new_rom = Client(
+        new_client = Client(
             code=c["code"],
             razao_social=c["razao_social"],
             cnpj=c["cnpj"],
             email=c["email"],
             ativo=c["ativo"],
         )
-        pg_session_empty.add(new_rom)
+        pg_session_empty.add(new_client)
         pg_session_empty.commit()
 
     yield pg_session_empty
 
     pg_session_empty.query(Client).delete()
-    
