@@ -12,6 +12,7 @@ class Client:
     razao_social: str
     cnpj: str
     email: str
+    ativo: bool
 
     @classmethod
     def from_dict(cls, d: Dict):

@@ -12,12 +12,14 @@ def test_client_model_init():
         razao_social="My company",
         cnpj="00.000.000/0000-00",
         email="mycompany@email.com",
+        ativo=True,
     )
 
     assert client.code == code
     assert client.razao_social == "My company"
     assert client.cnpj == "00.000.000/0000-00"
     assert client.email == "mycompany@email.com"
+    assert client.ativo is True
 
 
 def test_client_model_from_dict():
@@ -28,6 +30,7 @@ def test_client_model_from_dict():
         "razao_social": "My company",
         "cnpj": "00.000.000/0000-00",
         "email": "mycompany@email.com",
+        "ativo": True,
     }
 
     client = Client.from_dict(init_dict)
@@ -36,6 +39,7 @@ def test_client_model_from_dict():
     assert client.razao_social == "My company"
     assert client.cnpj == "00.000.000/0000-00"
     assert client.email == "mycompany@email.com"
+    assert client.ativo is True
 
 
 def test_client_model_to_dict():
@@ -45,6 +49,7 @@ def test_client_model_to_dict():
         "razao_social": "My company",
         "cnpj": "00.000.000/0000-00",
         "email": "mycompany@email.com",
+        "ativo": True,
     }
 
     client = Client.from_dict(init_dict)
@@ -59,6 +64,7 @@ def test_client_model_comparison():
         "razao_social": "My company",
         "cnpj": "00.000.000/0000-00",
         "email": "mycompany@email.com",
+        "ativo": True,
     }
 
     client1 = Client.from_dict(init_dict)

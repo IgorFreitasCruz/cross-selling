@@ -15,24 +15,28 @@ def clients_dicts():
             "razao_social": "My company 1",
             "cnpj": "00.000.000/0000-01",
             "email": "mycompany_1@email.com",
+            "ativo": True,
         },
         {
             "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
             "razao_social": "My company 2",
             "cnpj": "00.000.000/0000-02",
             "email": "mycompany_2@email.com",
+            "ativo": True,
         },
         {
             "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
             "razao_social": "My company 3",
             "cnpj": "00.000.000/0000-03",
             "email": "mycompany_3@email.com",
+            "ativo": True,
         },
         {
             "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
             "razao_social": "My company 4",
             "cnpj": "00.000.000/0000-04",
             "email": "mycompany_4@email.com",
+            "ativo": True,
         },
     ]
 

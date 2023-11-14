@@ -15,6 +15,7 @@ def test_serialize_domain_client():
         razao_social="My company",
         cnpj="00.000.000/0000-00",
         email="mycompany@email.com",
+        ativo= True,
     )
 
     excepted_json = f"""
@@ -22,7 +23,8 @@ def test_serialize_domain_client():
             "code": "{code}",
             "razao_social": "My company",
             "cnpj": "00.000.000/0000-00",
-            "email": "mycompany@email.com"
+            "email": "mycompany@email.com",
+            "ativo": true
         }}
         """
 

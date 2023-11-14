@@ -18,6 +18,7 @@ class ClientJsonEncoder(json.JSONEncoder):
                 "razao_social": o.razao_social,
                 "cnpj": o.cnpj,
                 "email": o.email,
+                "ativo": o.ativo,
             }
             return to_serialize
         except AttributeError:
