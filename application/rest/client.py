@@ -1,13 +1,22 @@
 """Module for the application routes"""
 import json
 
-from flask import Blueprint, Response
+from flask import Blueprint, Response, request
 
 from src.repository.memrepo import MemRepo
+from src.requests.client_list import build_client_list_request
+from src.responses import ResponseTypes
 from src.serializers.client import ClientJsonEncoder
 from src.use_cases.client_list import client_list_use_case
 
 blueprint = Blueprint("client", __name__)
+
+STATUS_CODE = {
+    ResponseTypes.SUCCESS: 200,
+    ResponseTypes.RESOURCE_ERROR: 404,
+    ResponseTypes.PARAMETERS_ERROR: 400,
+    ResponseTypes.SYSTEM_ERROR: 500,
+}
 
 clients = [
     {
@@ -44,11 +53,21 @@ def repo_list():
     Returns:
         Response: Object containg the list of clients
     """
+    qrystr_params = {
+        "filters": {},
+    }
+
+    for arg, values in request.args.items():
+        if arg.startswith("filter_"):
+            qrystr_params["filters"][arg.replace("filter_", "")] = values
+
+    request_obj = build_client_list_request(filters=qrystr_params["filters"])
+
     repo = MemRepo(clients)
-    result = client_list_use_case(repo)
+    response = client_list_use_case(repo, request_obj)
 
     return Response(
-        json.dumps(result, cls=ClientJsonEncoder),
+        json.dumps(response.value, cls=ClientJsonEncoder),
         mimetype="application/json",
-        status=200,
+        status=STATUS_CODE[response.type],
     )
