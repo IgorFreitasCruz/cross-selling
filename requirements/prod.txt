@@ -1,2 +1,4 @@
 fastapi==0.104.1
 flask==3.0.0
+sqlmodel==0.0.11
+psycopg2==2.9.9
