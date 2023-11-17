@@ -101,3 +101,32 @@ def test_repository_create(clients_dicts):
     repo.create(new_client)
 
     assert len(clients_dicts) == 5
+
+
+def test_repository_get_client_by_code(clients_dicts):
+    repo = MemRepo(clients_dicts)
+    client = repo.get_client_by_code("fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a")
+
+    assert client["code"] == "fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a"
+
+
+def test_repository_update_client(clients_dicts):
+    repo = MemRepo(clients_dicts)
+
+    new_client_data  = {
+        "code": "eed76e77-55c1-41ce-985d-ca49bf6c0585",
+        "razao_social": "My company 4",
+        "cnpj": "00.000.000/0000-04",
+        "email": "mycompany_4@email.com",
+        "ativo": True,
+    }
+
+    repo.update_client(new_client_data)
+
+    updated_client = {}
+    for client in clients_dicts:
+        if client["code"] == "eed76e77-55c1-41ce-985d-ca49bf6c0585":
+            updated_client = client
+
+    assert len(clients_dicts) == 4
+    assert updated_client["ativo"] is True
