@@ -66,7 +66,7 @@ def test_repository_list_with_code_equal_filter(clients_dicts):
 def test_repository_list_with_ativo_equal_true_filter(clients_dicts):
     repo = MemRepo(clients_dicts)
 
-    clients = repo.list({"ativo__eq": True})
+    clients = repo.list({"ativo__eq": "true"})
 
     assert len(clients) == 2
     assert set([c.code for c in clients]) == {
@@ -85,3 +85,19 @@ def test_repository_list_with_ativo_equal_false_filter(clients_dicts):
         "913694c6-435a-4366-ba0d-da5334a611b2",
         "eed76e77-55c1-41ce-985d-ca49bf6c0585",
     }
+
+
+def test_repository_create(clients_dicts):
+    repo = MemRepo(clients_dicts)
+    import uuid
+
+    new_client = {
+        "razao_social": "My company 5",
+        "cnpj": "00.000.000/0000-05",
+        "email": "mycompany_4@email.com",
+        "ativo": True,
+    }
+
+    repo.create(new_client)
+
+    assert len(clients_dicts) == 5

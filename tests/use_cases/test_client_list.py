@@ -64,7 +64,7 @@ def test_client_list_without_parameters(domain_clients):
     assert response.value == domain_clients
 
 
-def test_room_list_with_filters(domain_clients):
+def test_client_list_with_filters(domain_clients):
     repo = mock.Mock()
     repo.list.return_value = domain_clients
 
@@ -103,5 +103,5 @@ def test_client_list_handles_bad_request():
     assert bool(response) is False
     assert response.value == {
         "type": ResponseTypes.PARAMETERS_ERROR,
-        "message": "filters: Is not iterable"
+        "message": "filters: Is not iterable",
     }
