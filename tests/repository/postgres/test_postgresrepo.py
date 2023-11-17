@@ -3,6 +3,7 @@
 import pytest
 
 from src.repository import postgresrepo
+from src.repository.postgres_objects import Client
 
 # The module attribute pytestmark labels every test in the module with the tag integration
 pytestmark = pytest.mark.integration
@@ -42,3 +43,50 @@ def test_repository_list_with_ativo_true_filter(
     assert [c.to_dict() for c in repo_clients] == [
         c for c in pg_test_data if c["ativo"] is True
     ]
+
+
+def test_repository_create_client(app_configuration, pg_session, pg_test_data):
+    repo = postgresrepo.PostgresRepo(app_configuration)
+
+    client_obj = Client(
+        code="fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a",
+        razao_social="My company 5",
+        cnpj="00.000.000/0000-05",
+        email="mycompany_4@email.com",
+        ativo=True,
+    )
+
+    repo.create_client(client_obj)
+
+    repo_clients = repo.list()
+
+    assert len(repo_clients) == 5
+
+
+def test_repository_update_client(app_configuration, pg_session, pg_test_data):
+    repo = postgresrepo.PostgresRepo(app_configuration)
+
+    client_data = Client(
+        code="cb6cd5f1-8316-46a4-9916-3db38bce065d",
+        razao_social="My company 5",
+        cnpj="00.000.000/0000-05",
+        email="mycompany_4@email.com",
+        ativo=True,
+    )
+
+    repo.create_client(client_data)
+
+    new_client_data = {
+        "code": "cb6cd5f1-8316-46a4-9916-3db38bce065d",
+        "razao_social": "My company 5",
+        "cnpj": "00.000.000/0000-05",
+        "email": "mycompany_4@email.com",
+        "ativo": False,
+    }
+    repo.update_client(new_client_data)
+
+    updated_client = repo.list(
+        filters={"code__eq": "cb6cd5f1-8316-46a4-9916-3db38bce065d"}
+    )
+
+    assert updated_client[0].ativo is False
