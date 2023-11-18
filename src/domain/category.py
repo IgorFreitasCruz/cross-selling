@@ -1,18 +1,17 @@
-"""Module for the client entity"""
+"""Module for the Category entity"""
 import dataclasses
-import uuid
-from typing import Dict
+from typing import Dict, List
 
 
 @dataclasses.dataclass
-class Client:
-    """Client entity"""
+class Category:
+    """Category entity"""
 
-    code: uuid.UUID
-    razao_social: str
-    cnpj: str
-    email: str
-    ativo: bool
+    descricao: str
+    dt_inclusao: str
+    client_id: List[int]
+    dt_alteracao: str = None
+    ativo: bool = True
 
     @classmethod
     def from_dict(cls, d: Dict):

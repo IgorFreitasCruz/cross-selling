@@ -1,11 +1,11 @@
 """Test module for the client entity"""
+# pylint: disable=c0116
 import uuid
 
 from src.domain.client import Client
 
 
 def test_client_model_init():
-    """Test client model initialization"""
     code = uuid.uuid4()
     client = Client(
         code,
@@ -23,7 +23,6 @@ def test_client_model_init():
 
 
 def test_client_model_from_dict():
-    """Test client model initialization from a dictionary"""
     code = uuid.uuid4()
     init_dict = {
         "code": code,
@@ -43,7 +42,6 @@ def test_client_model_from_dict():
 
 
 def test_client_model_to_dict():
-    """Test client model conversion into a dictionary"""
     init_dict = {
         "code": uuid.uuid4(),
         "razao_social": "My company",
@@ -58,7 +56,6 @@ def test_client_model_to_dict():
 
 
 def test_client_model_comparison():
-    """Test client model comparison"""
     init_dict = {
         "code": uuid.uuid4(),
         "razao_social": "My company",
