@@ -8,7 +8,6 @@ from src.domain.client import Client
 
 
 def test_serialize_domain_client():
-    """Test client model serialization"""
     code = uuid.uuid4()
     client = Client(
         code,

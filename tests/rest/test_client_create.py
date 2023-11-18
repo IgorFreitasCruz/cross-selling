@@ -1,10 +1,7 @@
 import json
 from unittest import mock
 
-import pytest
-
-from src.domain.client import Client
-from src.responses import ResponseFailure, ResponseSuccess, ResponseTypes
+from src.responses import ResponseSuccess
 
 client_dict = {
     "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",

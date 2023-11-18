@@ -1,3 +1,4 @@
+"""Test module for create client"""
 from unittest import mock
 
 import pytest

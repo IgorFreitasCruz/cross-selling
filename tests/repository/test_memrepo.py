@@ -1,5 +1,6 @@
 """Test module for client list use case"""
 # pylint: disable=w0621
+# pylint: disable=c0116
 import pytest
 
 from src.domain.client import Client
@@ -8,7 +9,6 @@ from src.repository.memrepo import MemRepo
 
 @pytest.fixture
 def clients_dicts():
-    """Clients Mock"""
     return [
         {
             "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
@@ -89,7 +89,6 @@ def test_repository_list_with_ativo_equal_false_filter(clients_dicts):
 
 def test_repository_create(clients_dicts):
     repo = MemRepo(clients_dicts)
-    import uuid
 
     new_client = {
         "razao_social": "My company 5",

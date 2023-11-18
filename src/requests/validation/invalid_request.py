@@ -15,7 +15,7 @@ class InvalidRequest:
             message (str): Descript of the error that ocurred
 
         Returns:
-            None: This funcion has no return
+            None: This function has no return
         """
         self.errors.append({"parameter": parameter, "message": message})
 

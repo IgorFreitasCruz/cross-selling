@@ -1,4 +1,4 @@
-"""Module for structured requests objects"""
+"""Module for structured client requests objects"""
 from collections.abc import Mapping
 
 from src.domain.client import Client

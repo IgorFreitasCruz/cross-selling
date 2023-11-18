@@ -1,6 +1,5 @@
 """Module for the application routes"""
 import json
-import os
 
 from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
@@ -11,7 +10,7 @@ from src.repository.memrepo import MemRepo
 from src.requests.client_create import build_create_client_request
 from src.requests.client_list import build_client_list_request
 from src.requests.client_update import build_update_client_request
-from src.responses import ResponseTypes
+from src.responses import STATUS_CODE
 from src.serializers.client import ClientJsonEncoder
 from src.use_cases.client_create import client_create_use_case
 from src.use_cases.client_list import client_list_use_case
@@ -21,12 +20,6 @@ from .schema.client import ClientSchema
 
 blueprint = Blueprint("client", __name__)
 
-STATUS_CODE = {
-    ResponseTypes.SUCCESS: 200,
-    ResponseTypes.RESOURCE_ERROR: 404,
-    ResponseTypes.PARAMETERS_ERROR: 400,
-    ResponseTypes.SYSTEM_ERROR: 500,
-}
 
 clients = [
     {

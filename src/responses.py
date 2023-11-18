@@ -10,6 +10,14 @@ class ResponseTypes:
     SUCCESS = "Success"
 
 
+STATUS_CODE = {
+    ResponseTypes.SUCCESS: 200,
+    ResponseTypes.RESOURCE_ERROR: 404,
+    ResponseTypes.PARAMETERS_ERROR: 400,
+    ResponseTypes.SYSTEM_ERROR: 500,
+}
+
+
 class ResponseFailure:
     """Class for managing response failures"""
 

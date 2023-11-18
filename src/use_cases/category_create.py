@@ -1,4 +1,3 @@
-"""Module for the client update use case"""
 from src.responses import (
     ResponseFailure,
     ResponseSuccess,
@@ -7,19 +6,11 @@ from src.responses import (
 )
 
 
-def client_update_use_case(repo, request):
-    """Client create use case
-
-    Args:
-        repo (Object): Client respository
-
-    Returns:
-        Client: Dictionary of a new client
-    """
+def category_create_use_case(repo, request):
     if not request:
         return build_response_from_invalid_request(request)
     try:
-        client = repo.update_client(client=request.data)
+        client = repo.create_category(category=request.data)
         return ResponseSuccess(client)
     except Exception as exc:
         return ResponseFailure(ResponseTypes.SYSTEM_ERROR, exc)
