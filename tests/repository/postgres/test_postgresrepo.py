@@ -46,18 +46,20 @@ def test_repository_list_with_ativo_true_filter(
     ]
 
 
-def test_repository_create_client(app_configuration, pg_session, pg_test_data):
+def test_repository_create_client_from_dictionary(
+    app_configuration, pg_session, pg_test_data
+):
     repo = postgresrepo.PostgresRepo(app_configuration)
 
-    client_obj = Client(
-        code="fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a",
-        razao_social="My company 5",
-        cnpj="00.000.000/0000-05",
-        email="mycompany_4@email.com",
-        ativo=True,
-    )
+    client_dict = {
+        "code": "fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a",
+        "razao_social": "My company 5",
+        "cnpj": "00.000.000/0000-05",
+        "email": "mycompany_4@email.com",
+        "ativo": True,
+    }
 
-    repo.create_client(client_obj)
+    repo.create_client(client_dict)
 
     repo_clients = repo.list()
 
@@ -67,13 +69,13 @@ def test_repository_create_client(app_configuration, pg_session, pg_test_data):
 def test_repository_update_client(app_configuration, pg_session, pg_test_data):
     repo = postgresrepo.PostgresRepo(app_configuration)
 
-    client_data = Client(
-        code="cb6cd5f1-8316-46a4-9916-3db38bce065d",
-        razao_social="My company 5",
-        cnpj="00.000.000/0000-05",
-        email="mycompany_4@email.com",
-        ativo=True,
-    )
+    client_data = {
+        "code": "cb6cd5f1-8316-46a4-9916-3db38bce065d",
+        "razao_social": "My company 5",
+        "cnpj": "00.000.000/0000-05",
+        "email": "mycompany_4@email.com",
+        "ativo": True,
+    }
 
     repo.create_client(client_data)
 

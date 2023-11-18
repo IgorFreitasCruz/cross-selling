@@ -19,7 +19,7 @@ def client_create_use_case(repo, request):
     if not request:
         return build_response_from_invalid_request(request)
     try:
-        clients = repo.create(client=request.client)
+        clients = repo.create_client(client=request.client)
         return ResponseSuccess(clients)
     except Exception as exc:
         return ResponseFailure(ResponseTypes.SYSTEM_ERROR, exc)

@@ -7,7 +7,7 @@ from typing import Dict
 from sqlmodel import Session, SQLModel, create_engine, select
 
 from src.domain import client
-from src.repository.postgres_objects import Client
+from src.repository.postgres_objects import Client as PgClient
 
 
 class PostgresRepo:
@@ -42,30 +42,38 @@ class PostgresRepo:
         DBSession = Session(bind=self.engine)
         session = DBSession
 
-        query = session.query(Client)
+        query = session.query(PgClient)
 
         if filters is None:
             return self._create_client_objects(query.all())
 
         if "code__eq" in filters:
-            query = query.filter(Client.code == filters["code__eq"])
+            query = query.filter(PgClient.code == filters["code__eq"])
 
         if "ativo__eq" in filters:
-            query = query.filter(Client.ativo == filters["ativo__eq"])
+            query = query.filter(PgClient.ativo == filters["ativo__eq"])
 
         return self._create_client_objects(query.all())
 
-    def create_client(self, client: Client):
+    def create_client(self, new_client: Dict):
         DBSession = Session(bind=self.engine)
         session = DBSession
 
-        session.add(client)
+        pg_client_obj = PgClient(
+            code=new_client["code"],
+            razao_social=new_client["razao_social"],
+            cnpj=new_client["cnpj"],
+            email=new_client["email"],
+            ativo=new_client["ativo"],
+        )
+
+        session.add(pg_client_obj)
         session.commit()
 
     def update_client(self, data: Dict):
         DBSession = Session(bind=self.engine)
         session = DBSession
-        statement = select(Client).where(Client.code == data["code"])
+        statement = select(PgClient).where(PgClient.code == data["code"])
         client_obj = session.exec(statement).one()
 
         for field, value in data.items():
