@@ -98,7 +98,7 @@ def test_repository_create(clients_dicts):
         "ativo": True,
     }
 
-    repo.create(new_client)
+    repo.create_client(new_client)
 
     assert len(clients_dicts) == 5
 

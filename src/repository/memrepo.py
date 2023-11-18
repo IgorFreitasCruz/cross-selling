@@ -42,7 +42,7 @@ class MemRepo:
 
         return [c for c in self.data if c["code"] == code][0]
 
-    def create(self, client: Client) -> None:
+    def create_client(self, client: Client) -> None:
         """Creates a client
 
         Args:

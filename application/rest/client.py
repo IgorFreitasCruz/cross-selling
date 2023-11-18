@@ -5,8 +5,8 @@ import os
 from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
-# from src.repository.memrepo import MemRepo
-from src.repository.postgresrepo import PostgresRepo
+from src.repository.memrepo import MemRepo
+# from src.repository.postgresrepo import PostgresRepo
 from src.requests.client_create import build_create_client_request
 from src.requests.client_list import build_client_list_request
 from src.responses import ResponseTypes
@@ -25,44 +25,44 @@ STATUS_CODE = {
     ResponseTypes.SYSTEM_ERROR: 500,
 }
 
-# clients = [
-#     {
-#         "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-#         "razao_social": "My company 1",
-#         "cnpj": "00.000.000/0000-01",
-#         "email": "mycompany_1@email.com",
-#         "ativo": True,
-#     },
-#     {
-#         "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-#         "razao_social": "My company 2",
-#         "cnpj": "00.000.000/0000-02",
-#         "email": "mycompany_2@email.com",
-#         "ativo": True,
-#     },
-#     {
-#         "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-#         "razao_social": "My company 3",
-#         "cnpj": "00.000.000/0000-03",
-#         "email": "mycompany_3@email.com",
-#         "ativo": False,
-#     },
-#     {
-#         "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-#         "razao_social": "My company 4",
-#         "cnpj": "00.000.000/0000-04",
-#         "email": "mycompany_4@email.com",
-#         "ativo": False,
-#     },
-# ]
+clients = [
+    {
+        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "razao_social": "My company 1",
+        "cnpj": "00.000.000/0000-01",
+        "email": "mycompany_1@email.com",
+        "ativo": True,
+    },
+    {
+        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "razao_social": "My company 2",
+        "cnpj": "00.000.000/0000-02",
+        "email": "mycompany_2@email.com",
+        "ativo": True,
+    },
+    {
+        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "razao_social": "My company 3",
+        "cnpj": "00.000.000/0000-03",
+        "email": "mycompany_3@email.com",
+        "ativo": False,
+    },
+    {
+        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "razao_social": "My company 4",
+        "cnpj": "00.000.000/0000-04",
+        "email": "mycompany_4@email.com",
+        "ativo": False,
+    },
+]
 
-postgres_configuration = {
-    "POSTGRES_USER": os.environ["POSTGRES_USER"],
-    "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
-    "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
-    "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
-    "APPLICATION_DB": os.environ["APPLICATION_DB"],
-}
+# postgres_configuration = {
+#     "POSTGRES_USER": os.environ["POSTGRES_USER"],
+#     "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
+#     "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
+#     "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
+#     "APPLICATION_DB": os.environ["APPLICATION_DB"],
+# }
 
 
 @blueprint.route("/clients", methods=["GET"])
@@ -82,7 +82,8 @@ def repo_list():
 
     request_obj = build_client_list_request(filters=qrystr_params["filters"])
 
-    repo = PostgresRepo(postgres_configuration)
+    # repo = PostgresRepo(postgres_configuration)
+    repo = MemRepo(clients)
     response = client_list_use_case(repo, request_obj)
 
     return Response(
@@ -104,7 +105,33 @@ def repo_create():
 
         request_obj = build_create_client_request(client.dict())
 
-        repo = PostgresRepo(postgres_configuration)
+        # repo = PostgresRepo(postgres_configuration)
+        repo = MemRepo(clients)
+        response = client_create_use_case(repo, request_obj)
+
+        return Response(
+            json.dumps(response.value, cls=ClientJsonEncoder),
+            mimetype="application/json",
+            status=STATUS_CODE[response.type],
+        )
+    except ValidationError as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@blueprint.route("/clients", methods=["PUT"])
+def repo_update():
+    """Create client endpoint
+
+    Returns:
+        Response: Ok if client created
+    """
+    try:
+        client = ClientSchema.parse_raw(request.data)  # Pydantic
+
+        request_obj = build_create_client_request(client.dict())
+
+        # repo = PostgresRepo(postgres_configuration)
+        repo = MemRepo(clients)
         response = client_create_use_case(repo, request_obj)
 
         return Response(
