@@ -30,7 +30,7 @@ def test_create_client_success():
 @pytest.mark.skip("olhar depois")
 def test_create_client_handles_generic_error():
     repo = mock.Mock()
-    repo.create.side_effect = Exception("Just an error message")
+    repo.create_client.side_effect = Exception("Just an error message")
 
     new_client = {
         "razao_social": "New Company",

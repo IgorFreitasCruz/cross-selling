@@ -65,3 +65,5 @@ class MemRepo:
         for client in self.data:
             if client["code"] == new_client_data["code"]:
                 client.update(new_client_data)
+
+                return client

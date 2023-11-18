@@ -6,13 +6,16 @@ from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
 from src.repository.memrepo import MemRepo
+
 # from src.repository.postgresrepo import PostgresRepo
 from src.requests.client_create import build_create_client_request
 from src.requests.client_list import build_client_list_request
+from src.requests.client_update import build_update_client_request
 from src.responses import ResponseTypes
 from src.serializers.client import ClientJsonEncoder
 from src.use_cases.client_create import client_create_use_case
 from src.use_cases.client_list import client_list_use_case
+from src.use_cases.client_update import client_update_use_case
 
 from .schema.client import ClientSchema
 
@@ -34,21 +37,21 @@ clients = [
         "ativo": True,
     },
     {
-        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "code": "c16c5d6e-ef36-40ee-9bf0-b290e4f93898",
         "razao_social": "My company 2",
         "cnpj": "00.000.000/0000-02",
         "email": "mycompany_2@email.com",
         "ativo": True,
     },
     {
-        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "code": "a72e599c-aa5e-41b1-a1f1-ea42f7253002",
         "razao_social": "My company 3",
         "cnpj": "00.000.000/0000-03",
         "email": "mycompany_3@email.com",
         "ativo": False,
     },
     {
-        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "code": "0c93db92-3fb2-4370-b9d9-5c78aa7ac3c0",
         "razao_social": "My company 4",
         "cnpj": "00.000.000/0000-04",
         "email": "mycompany_4@email.com",
@@ -128,11 +131,11 @@ def repo_update():
     try:
         client = ClientSchema.parse_raw(request.data)  # Pydantic
 
-        request_obj = build_create_client_request(client.dict())
+        request_obj = build_update_client_request(client.dict())
 
         # repo = PostgresRepo(postgres_configuration)
         repo = MemRepo(clients)
-        response = client_create_use_case(repo, request_obj)
+        response = client_update_use_case(repo, request_obj)
 
         return Response(
             json.dumps(response.value, cls=ClientJsonEncoder),
