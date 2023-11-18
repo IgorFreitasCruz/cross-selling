@@ -1,5 +1,9 @@
-"""Configuratin module for integration testing for Postgres"""
+"""Configuratin module for integration testing for Postgres
+The fixtures contains code that is specific to Postgres, so it is better to 
+keep the code separated in a more specific file conftest.py
+"""
 # pylint: disable=w0621
+# pylint: disable=c0116
 # pylint: disable=c0103
 # pylint: disable=c0209
 import pytest
@@ -69,6 +73,10 @@ def pg_test_data():
 
 @pytest.fixture(scope="function")
 def pg_session(pg_session_empty, pg_test_data):
+    """Fills the database with Postgress objects created with the test data for
+    every test that is run. These are not entities, but Postgress objects we
+    create to map them.
+    """
     for c in pg_test_data:
         new_client = Client(
             code=c["code"],

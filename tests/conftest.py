@@ -1,5 +1,7 @@
 """Test module automatically loaded by pytest"""
 # pylint: disable=w0621
+from typing import Dict
+
 import pytest
 
 from application.app import create_app
@@ -47,5 +49,15 @@ def pytest_runtest_setup(item):
 
 
 @pytest.fixture(scope="session")
-def app_configuration():
+def app_configuration() -> Dict:
+    """Loads database configuration to connect during tests.
+    Options: "testing", "production"
+
+    The name of the configuration is hardcoded for simplicity's sake. Another
+    solution might be to create an environment variable with the application
+    configuration in the management script and read it from there.
+
+    Returns:
+        Dict: Key, value configuration params
+    """
     return read_json_configuration("testing")

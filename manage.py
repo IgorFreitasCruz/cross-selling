@@ -1,9 +1,10 @@
 #! /usr/bin/env python
-
-import os
+# pylint: disable=c0116
 import json
+import os
 import subprocess
 import time
+from typing import Dict
 
 import click
 import psycopg2
@@ -27,9 +28,9 @@ def docker_compose_file(config):
     return os.path.join(DOCKER_PATH, f"{config}.yml")
 
 
-def read_json_configuration(config):
+def read_json_configuration(config: str) -> Dict:
     # Read configuration from the relative JSON file
-    with open(app_config_file(config)) as f:
+    with open(app_config_file(config), encoding="utf-8") as f:
         config_data = json.load(f)
 
     # Convert the config into a usable Python dictionary

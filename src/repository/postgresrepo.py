@@ -1,6 +1,7 @@
 """Module for Postgres repository"""
 # pylint: disable=c0103
 # pylint: disable=c0209
+# pylint: disable=c0116
 from typing import Dict
 
 from sqlmodel import Session, SQLModel, create_engine, select
@@ -65,9 +66,9 @@ class PostgresRepo:
         DBSession = Session(bind=self.engine)
         session = DBSession
         statement = select(Client).where(Client.code == data["code"])
-        client = session.exec(statement).one()
+        client_obj = session.exec(statement).one()
 
         for field, value in data.items():
-            setattr(client, field, value)
+            setattr(client_obj, field, value)
 
         session.commit()

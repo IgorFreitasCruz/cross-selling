@@ -1,5 +1,6 @@
 """Test module for postgres database"""
 # pylint: disable=c0116
+# pylint: disable=w0613
 import pytest
 
 from src.repository import postgresrepo
