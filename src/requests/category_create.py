@@ -14,7 +14,8 @@ def build_create_category_request(category):
     """
     invalid_req = InvalidRequest()
 
-    # TODO write some usefull validation
+    if not isinstance(category["client_id"], int):
+        invalid_req.add_error("value", "client id must be an integer")
 
     if invalid_req.has_errors():
         return invalid_req

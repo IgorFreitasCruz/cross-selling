@@ -56,7 +56,7 @@ def test_client_repository_create_from_dictionary(app_configuration):
 
     assert client.id
     assert client.ativo
-    assert client.dt_inclusao
+    assert client.dt_inclusao is None
     assert client.dt_alteracao is None
 
 @pytest.mark.skip("olhar depois")

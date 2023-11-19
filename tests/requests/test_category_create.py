@@ -7,7 +7,7 @@ def test_build_category_create_request():
         "dt_inclusao": "18/11/2023, 14:44:12",
         "dt_alteracao": None,
         "ativo": True,
-        "client_id": [1],
+        "client_id": 1,
     }
     request = build_create_category_request(category)
 
@@ -20,7 +20,7 @@ def test_build_category_create_request_without_client_id():
         "dt_inclusao": "18/11/2023, 14:44:12",
         "dt_alteracao": None,
         "ativo": True,
-        "client_id": [],
+        "client_id": "",
     }
     request = build_create_category_request(category)
 

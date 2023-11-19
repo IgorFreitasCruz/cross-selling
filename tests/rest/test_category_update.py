@@ -9,7 +9,7 @@ category_dict = {
     "dt_inclusao": "18/11/2023, 14:44:12",
     "dt_alteracao": None,
     "ativo": True,
-    "client_id": [1],
+    "client_id": 1,
 }
 
 

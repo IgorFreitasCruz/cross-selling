@@ -53,13 +53,13 @@ clients = [
     },
 ]
 
-postgres_configuration = {
-    "POSTGRES_USER": os.environ["POSTGRES_USER"],
-    "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
-    "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
-    "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
-    "APPLICATION_DB": os.environ["APPLICATION_DB"],
-}
+# postgres_configuration = {
+#     "POSTGRES_USER": os.environ["POSTGRES_USER"],
+#     "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
+#     "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
+#     "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
+#     "APPLICATION_DB": os.environ["APPLICATION_DB"],
+# }
 
 
 @blueprint.route("/clients", methods=["POST"])
@@ -71,8 +71,8 @@ def repo_create():
 
     request_obj = build_create_client_request(client.dict())
 
-    repo = PostgresRepoClient(postgres_configuration)
-    # repo = MemRepo(clients)
+    # repo = PostgresRepoClient(postgres_configuration)
+    repo = MemRepo(clients)
     response = client_create_use_case(repo, request_obj)
 
     return Response(
@@ -94,8 +94,8 @@ def repo_list():
 
     request_obj = build_client_list_request(filters=qrystr_params["filters"])
 
-    repo = PostgresRepoClient(postgres_configuration)
-    # repo = MemRepo(clients)
+    # repo = PostgresRepoClient(postgres_configuration)
+    repo = MemRepo(clients)
     response = client_list_use_case(repo, request_obj)
 
     return Response(
@@ -114,8 +114,8 @@ def repo_update():
 
     request_obj = build_update_client_request(client.dict())
 
-    repo = PostgresRepoClient(postgres_configuration)
-    # repo = MemRepo(clients)
+    # repo = PostgresRepoClient(postgres_configuration)
+    repo = MemRepo(clients)
     response = client_update_use_case(repo, request_obj)
 
     return Response(
