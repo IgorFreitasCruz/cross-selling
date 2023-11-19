@@ -42,32 +42,24 @@ def pg_session_empty(app_configuration):
 def pg_client_test_data():
     return [
         {
-            "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
             "razao_social": "My company 1",
             "cnpj": "00.000.000/0000-01",
             "email": "mycompany_1@email.com",
-            "ativo": True,
         },
         {
-            "code": "fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a",
             "razao_social": "My company 2",
             "cnpj": "00.000.000/0000-02",
             "email": "mycompany_2@email.com",
-            "ativo": True,
         },
         {
-            "code": "913694c6-435a-4366-ba0d-da5334a611b2",
             "razao_social": "My company 3",
             "cnpj": "00.000.000/0000-03",
             "email": "mycompany_3@email.com",
-            "ativo": False,
         },
         {
-            "code": "eed76e77-55c1-41ce-985d-ca49bf6c0585",
             "razao_social": "My company 4",
             "cnpj": "00.000.000/0000-04",
             "email": "mycompany_4@email.com",
-            "ativo": False,
         },
     ]
 

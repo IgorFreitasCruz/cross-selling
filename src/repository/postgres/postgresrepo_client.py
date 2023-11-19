@@ -46,25 +46,26 @@ class PostgresRepoClient(BasePostgresRepo):
         session = self._create_session()
 
         pg_client_obj = PgClient(
-            code=new_client["code"],
             razao_social=new_client["razao_social"],
             cnpj=new_client["cnpj"],
             email=new_client["email"],
-            ativo=new_client["ativo"],
         )
 
         session.add(pg_client_obj)
         session.commit()
+        session.refresh(pg_client_obj)
 
-        return pg_client_obj.id
+        return pg_client_obj
 
     def update_client(self, data: Dict):
         session = self._create_session()
 
-        statement = select(PgClient).where(PgClient.code == data["code"])
+        statement = select(PgClient).where(PgClient.id == data["id"])
         client_obj = session.exec(statement).one()
 
         for field, value in data.items():
             setattr(client_obj, field, value)
 
         session.commit()
+        
+        return client_obj
