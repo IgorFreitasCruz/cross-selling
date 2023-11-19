@@ -9,7 +9,8 @@ keep the code separated in a more specific file conftest.py
 import pytest
 import sqlmodel
 
-from src.repository.postgres_objects import Client
+from src.repository.postgres.postgres_objects import Client as PgClient
+from src.repository.postgres.postgres_objects import Category as PgCategory
 
 
 @pytest.fixture(scope="session")
@@ -38,7 +39,7 @@ def pg_session_empty(app_configuration):
 
 
 @pytest.fixture(scope="session")
-def pg_test_data():
+def pg_client_test_data():
     return [
         {
             "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
@@ -71,23 +72,64 @@ def pg_test_data():
     ]
 
 
+@pytest.fixture(scope="session")
+def pg_category_test_data():
+    return [
+        {
+            "descricao": "categoria A",
+            "dt_inclusao": "18/11/2023, 14:44:12",
+            "dt_alteracao": None,
+            "ativo": True,
+            "client_id": [1],
+        },
+        {
+            "descricao": "categoria B",
+            "dt_inclusao": "18/11/2023, 14:44:12",
+            "dt_alteracao": None,
+            "ativo": True,
+            "client_id": [1],
+        },
+        {
+            "descricao": "categoria C",
+            "dt_inclusao": "18/11/2023, 14:44:12",
+            "dt_alteracao": None,
+            "ativo": False,
+            "client_id": [2],
+        },
+        {
+            "descricao": "categoria D",
+            "dt_inclusao": "18/11/2023, 14:44:12",
+            "dt_alteracao": None,
+            "ativo": False,
+            "client_id": [2],
+        },
+    ]
+
+
 @pytest.fixture(scope="function")
-def pg_session(pg_session_empty, pg_test_data):
+def pg_session(pg_session_empty, pg_client_test_data, pg_category_test_data):
     """Fills the database with Postgress objects created with the test data for
     every test that is run. These are not entities, but Postgress objects we
     create to map them.
     """
-    for c in pg_test_data:
-        new_client = Client(
-            code=c["code"],
-            razao_social=c["razao_social"],
-            cnpj=c["cnpj"],
-            email=c["email"],
-            ativo=c["ativo"],
-        )
+    for idx, client in enumerate(pg_client_test_data):
+        new_client = PgClient(**client)
+
+        # Creates new client
         pg_session_empty.add(new_client)
+        pg_session_empty.commit()
+
+        # Assuming the same length of client and category arrays
+        category_data = pg_category_test_data[idx]
+        # Assuming category_data_list has the same length as pg_test_data
+        category_data.update({"client_id": new_client.id})
+        new_category = PgCategory(**category_data)
+
+        pg_session_empty.add(new_category)
         pg_session_empty.commit()
 
     yield pg_session_empty
 
-    pg_session_empty.query(Client).delete()
+    # Clean up after test
+    pg_session_empty.query(PgCategory).delete()
+    pg_session_empty.query(PgClient).delete()

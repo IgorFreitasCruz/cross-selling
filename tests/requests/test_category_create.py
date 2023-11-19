@@ -14,7 +14,7 @@ def test_build_category_create_request():
     assert bool(request) is True
 
 
-def test_build_category_create_request_without_cliend_id():
+def test_build_category_create_request_without_client_id():
     category = {
         "descricao": "description text",
         "dt_inclusao": "18/11/2023, 14:44:12",

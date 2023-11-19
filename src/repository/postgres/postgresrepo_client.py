@@ -4,27 +4,15 @@
 # pylint: disable=c0116
 from typing import Dict
 
-from sqlmodel import Session, SQLModel, create_engine, select
+from sqlmodel import select
 
 from src.domain import client
-from src.repository.postgres_objects import Client as PgClient
+from src.repository.postgres.base_postgresrepo import BasePostgresRepo
+from src.repository.postgres.postgres_objects import Client as PgClient
 
 
-class PostgresRepo:
+class PostgresRepo(BasePostgresRepo):
     """Postgres repository"""
-
-    def __init__(self, configuration):
-        connection_string = "postgresql+psycopg2://{}:{}@{}:{}/{}".format(
-            configuration["POSTGRES_USER"],
-            configuration["POSTGRES_PASSWORD"],
-            configuration["POSTGRES_HOSTNAME"],
-            configuration["POSTGRES_PORT"],
-            configuration["APPLICATION_DB"],
-        )
-
-        self.engine = create_engine(connection_string)
-        SQLModel.metadata.create_all(self.engine)
-        SQLModel.metadata.bind = self.engine
 
     def _create_client_objects(self, results):
         return [
@@ -39,8 +27,7 @@ class PostgresRepo:
         ]
 
     def list(self, filters=None):
-        DBSession = Session(bind=self.engine)
-        session = DBSession
+        session = self._create_session()
 
         query = session.query(PgClient)
 
@@ -55,9 +42,8 @@ class PostgresRepo:
 
         return self._create_client_objects(query.all())
 
-    def create_client(self, new_client: Dict):
-        DBSession = Session(bind=self.engine)
-        session = DBSession
+    def create_client(self, new_client: Dict) -> PgClient.id:
+        session = self._create_session()
 
         pg_client_obj = PgClient(
             code=new_client["code"],
@@ -70,9 +56,11 @@ class PostgresRepo:
         session.add(pg_client_obj)
         session.commit()
 
+        return pg_client_obj.id
+
     def update_client(self, data: Dict):
-        DBSession = Session(bind=self.engine)
-        session = DBSession
+        session = self._create_session()
+
         statement = select(PgClient).where(PgClient.code == data["code"])
         client_obj = session.exec(statement).one()
 
