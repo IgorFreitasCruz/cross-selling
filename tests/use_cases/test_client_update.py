@@ -87,7 +87,7 @@ def test_updaet_client_handles_email_validation_error():
     }
 
     request = build_update_client_request(invalid_client_data)
-    
+
     response = client_update_use_case(repo, request)
 
     assert bool(response) is False

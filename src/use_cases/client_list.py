@@ -8,13 +8,17 @@ from src.responses import (
 
 
 def client_list_use_case(repo, request):
-    """Client list use case
+    """Use case logic
 
     Args:
-        repo (Object): Client respository
+        repo (Object): Repository object
+        request (Object): Validated request
 
     Returns:
-        List: List of clients
+        ResponseSuccess: If no errors
+
+    Exceptions:
+        ResponseFailure: If errors
     """
     if not request:
         return build_response_from_invalid_request(request)

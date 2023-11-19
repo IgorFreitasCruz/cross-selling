@@ -8,6 +8,18 @@ from src.responses import (
 
 
 def category_list_use_case(repo, request):
+    """Use case logic
+
+    Args:
+        repo (Object): Repository object
+        request (Object): Validated request
+
+    Returns:
+        ResponseSuccess: If no errors
+
+    Exceptions:
+        ResponseFailure: If errors
+    """
     if not request:
         return build_response_from_invalid_request(request)
     try:

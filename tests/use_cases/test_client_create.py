@@ -25,8 +25,9 @@ def test_create_client_success():
     response = client_create_use_case(repo, request)
 
     assert bool(response) is True
-    repo.create_client.assert_called_with(client=new_client)
+    repo.create_client.assert_called_with(new_client)
     assert response.value == new_client
+
 
 @pytest.mark.skip("olhar depois")
 def test_create_client_handles_generic_error():

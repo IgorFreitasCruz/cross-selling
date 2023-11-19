@@ -61,6 +61,26 @@ clients = [
 # }
 
 
+@blueprint.route("/clients", methods=["POST"])
+def repo_create():
+    try:
+        client = ClientSchema.parse_raw(request.data)  # Pydantic
+    except ValidationError as e:
+        return jsonify({"error": str(e)}), 400
+
+    request_obj = build_create_client_request(client.dict())
+
+    # repo = PostgresRepo(postgres_configuration)
+    repo = MemRepo(clients)
+    response = client_create_use_case(repo, request_obj)
+
+    return Response(
+        json.dumps(response.value, cls=ClientJsonEncoder),
+        mimetype="application/json",
+        status=STATUS_CODE[response.type],
+    )
+
+
 @blueprint.route("/clients", methods=["GET"])
 def repo_list():
     qrystr_params = {
@@ -84,51 +104,21 @@ def repo_list():
     )
 
 
-@blueprint.route("/clients", methods=["POST"])
-def repo_create():
-    """Create client endpoint
-
-    Returns:
-        Response: Ok if client created
-    """
-    try:
-        client = ClientSchema.parse_raw(request.data)  # Pydantic
-
-        request_obj = build_create_client_request(client.dict())
-
-        # repo = PostgresRepo(postgres_configuration)
-        repo = MemRepo(clients)
-        response = client_create_use_case(repo, request_obj)
-
-        return Response(
-            json.dumps(response.value, cls=ClientJsonEncoder),
-            mimetype="application/json",
-            status=STATUS_CODE[response.type],
-        )
-    except ValidationError as e:
-        return jsonify({"error": str(e)}), 400
-
-
 @blueprint.route("/clients", methods=["PUT"])
 def repo_update():
-    """Create client endpoint
-
-    Returns:
-        Response: Ok if client created
-    """
     try:
-        client = ClientSchema.parse_raw(request.data)  # Pydantic
-
-        request_obj = build_update_client_request(client.dict())
-
-        # repo = PostgresRepo(postgres_configuration)
-        repo = MemRepo(clients)
-        response = client_update_use_case(repo, request_obj)
-
-        return Response(
-            json.dumps(response.value, cls=ClientJsonEncoder),
-            mimetype="application/json",
-            status=STATUS_CODE[response.type],
-        )
+        client = ClientSchema.parse_raw(request.data)
     except ValidationError as e:
         return jsonify({"error": str(e)}), 400
+
+    request_obj = build_update_client_request(client.dict())
+
+    # repo = PostgresRepo(postgres_configuration)
+    repo = MemRepo(clients)
+    response = client_update_use_case(repo, request_obj)
+
+    return Response(
+        json.dumps(response.value, cls=ClientJsonEncoder),
+        mimetype="application/json",
+        status=STATUS_CODE[response.type],
+    )

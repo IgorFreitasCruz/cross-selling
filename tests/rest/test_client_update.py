@@ -1,3 +1,4 @@
+# pylint: disable=c0116
 import json
 from unittest import mock
 
@@ -17,7 +18,6 @@ client_dict = {
 
 @mock.patch("application.rest.client.client_update_use_case")
 def test_update(mock_use_case, client):
-    """Test get for client"""
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     http_response = client.put("/clients", json=client_dict)
@@ -32,7 +32,6 @@ def test_update(mock_use_case, client):
 
 @mock.patch("application.rest.client.client_update_use_case")
 def test_post_without_body(mock_use_case, client):
-    """Test get for client"""
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     http_response = client.post("/clients", json={})

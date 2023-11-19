@@ -8,18 +8,22 @@ from src.responses import (
 
 
 def client_create_use_case(repo, request):
-    """Client create use case
+    """Use case logic
 
     Args:
-        repo (Object): Client respository
+        repo (Object): Repository object
+        request (Object): Validated request
 
     Returns:
-        Client: Dictionary of a new client
+        ResponseSuccess: If no errors
+
+    Exceptions:
+        ResponseFailure: If errors
     """
     if not request:
         return build_response_from_invalid_request(request)
     try:
-        clients = repo.create_client(client=request.client)
+        clients = repo.create_client(request.client)
         return ResponseSuccess(clients)
     except Exception as exc:
         return ResponseFailure(ResponseTypes.SYSTEM_ERROR, exc)

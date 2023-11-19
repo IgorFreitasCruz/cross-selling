@@ -39,7 +39,7 @@ class MemRepoCategory:
 
         return category
 
-    def update_client(self, new_category_data: Dict) -> Dict:
+    def update_category(self, new_category_data: Dict) -> Dict:
         """Updates client information
 
         Args:

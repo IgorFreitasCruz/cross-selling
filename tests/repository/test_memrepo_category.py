@@ -97,7 +97,7 @@ def test_repository_update_client(category_dicts):
         "client_id": [2],
     }
 
-    repo.update_client(new_category_data)
+    repo.update_category(new_category_data)
 
     updated_client = {}
     for client in category_dicts:
