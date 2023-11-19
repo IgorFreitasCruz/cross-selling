@@ -12,7 +12,7 @@ pytestmark = pytest.mark.integration
 def test_repository_list_without_parameters(
     app_configuration, pg_session, pg_client_test_data
 ):
-    repo = postgresrepo_client.PostgresRepo(app_configuration)
+    repo = postgresrepo_client.PostgresRepoClient(app_configuration)
 
     repo_clients = repo.list()
 
@@ -22,7 +22,7 @@ def test_repository_list_without_parameters(
 def test_repository_list_with_code_equal_filter(
     app_configuration, pg_session, pg_client_test_data
 ):
-    repo = postgresrepo_client.PostgresRepo(app_configuration)
+    repo = postgresrepo_client.PostgresRepoClient(app_configuration)
 
     repo_clients = repo.list(
         filters={"code__eq": "f853578c-fc0f-4e65-81b8-566c5dffa35a"}
@@ -35,7 +35,7 @@ def test_repository_list_with_code_equal_filter(
 def test_repository_list_with_ativo_true_filter(
     app_configuration, pg_session, pg_client_test_data
 ):
-    repo = postgresrepo_client.PostgresRepo(app_configuration)
+    repo = postgresrepo_client.PostgresRepoClient(app_configuration)
 
     repo_clients = repo.list(filters={"ativo__eq": True})
 
@@ -48,7 +48,7 @@ def test_repository_list_with_ativo_true_filter(
 def test_repository_create_client_from_dictionary(
     app_configuration, pg_session, pg_client_test_data
 ):
-    repo = postgresrepo_client.PostgresRepo(app_configuration)
+    repo = postgresrepo_client.PostgresRepoClient(app_configuration)
 
     client_dict = {
         "code": "fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a",
@@ -66,7 +66,7 @@ def test_repository_create_client_from_dictionary(
 
 
 def test_repository_update_client(app_configuration, pg_session, pg_client_test_data):
-    repo = postgresrepo_client.PostgresRepo(app_configuration)
+    repo = postgresrepo_client.PostgresRepoClient(app_configuration)
 
     client_data = {
         "code": "cb6cd5f1-8316-46a4-9916-3db38bce065d",

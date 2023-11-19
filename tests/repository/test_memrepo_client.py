@@ -4,7 +4,7 @@
 import pytest
 
 from src.domain.client import Client
-from src.repository.memrepo import MemRepo
+from src.repository.in_memory.memrepo_client import MemRepo
 
 
 @pytest.fixture

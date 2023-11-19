@@ -21,5 +21,5 @@ def test_create_category():
 
     result = category_create_use_case(repo, request)
 
-    repo.create_category.assert_called_with(category=category)
+    repo.create_category.assert_called_with(category)
     assert result.value == category
