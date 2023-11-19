@@ -15,10 +15,19 @@ def test_create_client_success():
         "razao_social": "New Company",
         "cnpj": "11.111.111/1111-11",
         "email": "new_company@email.com",
-        "ativo": True,
     }
 
-    repo.create_client.return_value = new_client
+    new_client_created = {
+        "id": 1,
+        "razao_social": "New Company",
+        "cnpj": "11.111.111/1111-11",
+        "email": "new_company@email.com",
+        "dt_criacao": "01/01/2023 00:00:00",
+        "dt_alteracao": "01/01/2023 00:00:00",
+        "ativo": True
+    }
+
+    repo.create_client.return_value = new_client_created
 
     request = build_create_client_request(new_client)
 
@@ -26,7 +35,7 @@ def test_create_client_success():
 
     assert bool(response) is True
     repo.create_client.assert_called_with(new_client)
-    assert response.value == new_client
+    assert response.value == new_client_created
 
 
 @pytest.mark.skip("olhar depois")
@@ -59,7 +68,6 @@ def test_create_client_handles_cnjp_validation_error():
         "razao_social": "New Company",
         "cnpj": "invalid_cnpj_format",
         "email": "new_company@email.com",
-        "ativo": True,
     }
 
     request = build_create_client_request(invalid_client_data)
@@ -79,7 +87,6 @@ def test_create_client_handles_email_validation_error():
         "razao_social": "New Company",
         "cnpj": "11.111.111/1111-11",
         "email": "invalid_email_format",
-        "ativo": True,
     }
 
     request = build_create_client_request(invalid_client_data)

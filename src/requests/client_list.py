@@ -53,7 +53,7 @@ def build_client_list_request(filters=None):
         Object: Return ClientListInvalidRequest if errors, otherwise, returns
         ClientListValidRequest,
     """
-    accepted_filters = ["code__eq", "ativo__eq"]
+    accepted_filters = ["id__eq", "code__eq", "ativo__eq"]
     invalid_req = ClientListInvalidRequest()
 
     if filters is not None:

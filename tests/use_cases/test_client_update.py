@@ -10,10 +10,13 @@ from src.use_cases.client_update import client_update_use_case
 @pytest.fixture
 def client_to_update():
     return {
+        "id": 1,
         "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
         "razao_social": "My company 1",
         "cnpj": "00.000.000/0000-01",
         "email": "mycompany_1@email.com",
+        "dt_criacao": "01/01/2023 00:00:00",
+        "dt_alteracao": "01/01/2023 00:00:00",
         "ativo": False,
     }
 

@@ -7,10 +7,13 @@ from src.domain.client import Client
 from src.responses import ResponseFailure, ResponseSuccess, ResponseTypes
 
 client_dict = {
+    "id": 1,
     "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
     "razao_social": "My company 1",
     "cnpj": "00.000.000/0000-01",
     "email": "mycompany_1@email.com",
+    "dt_inclusao": "18/11/2023 14:44:12",
+    "dt_alteracao": None,
     "ativo": True,
 }
 

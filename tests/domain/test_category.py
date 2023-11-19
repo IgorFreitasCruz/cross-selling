@@ -7,7 +7,7 @@ from src.domain.category import Category
 
 def test_client_model_init():
     """Test client model initialization"""
-    date_time = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    date_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     client = Category(
         descricao="description text",
         dt_inclusao=date_time,
@@ -26,7 +26,7 @@ def test_client_model_init():
 def test_category_model_from_dict():
     init_dict = {
         "descricao": "description text",
-        "dt_inclusao": "18/11/2023, 14:44:12",
+        "dt_inclusao": "18/11/2023 14:44:12",
         "dt_alteracao": None,
         "ativo": True,
         "client_id": [1],
@@ -35,7 +35,7 @@ def test_category_model_from_dict():
     category = Category.from_dict(init_dict)
 
     assert category.descricao == "description text"
-    assert category.dt_inclusao == "18/11/2023, 14:44:12"
+    assert category.dt_inclusao == "18/11/2023 14:44:12"
     assert category.dt_alteracao is None
     assert category.ativo is True
     assert category.client_id == [1]
@@ -44,7 +44,7 @@ def test_category_model_from_dict():
 def test_category_model_to_dict():
     init_dict = {
         "descricao": "description text",
-        "dt_inclusao": "18/11/2023, 14:44:12",
+        "dt_inclusao": "18/11/2023 14:44:12",
         "dt_alteracao": None,
         "ativo": True,
         "client_id": [1],
@@ -58,7 +58,7 @@ def test_category_model_to_dict():
 def test_category_model_comparison():
     init_dict = {
         "descricao": "description text",
-        "dt_inclusao": "18/11/2023, 14:44:12",
+        "dt_inclusao": "18/11/2023 14:44:12",
         "dt_alteracao": None,
         "ativo": True,
         "client_id": [1],
