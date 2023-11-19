@@ -28,4 +28,4 @@ def build_update_client_request(client: Client):
     if invalid_req.has_errors():
         return invalid_req
 
-    return ValidRequest(client)
+    return ValidRequest(data=client)

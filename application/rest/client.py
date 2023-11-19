@@ -63,11 +63,6 @@ clients = [
 
 @blueprint.route("/clients", methods=["GET"])
 def repo_list():
-    """List clients endpoint
-
-    Returns:
-        Response: Object containg the list of clients
-    """
     qrystr_params = {
         "filters": {},
     }

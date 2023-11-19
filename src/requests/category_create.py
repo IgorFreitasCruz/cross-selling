@@ -27,4 +27,4 @@ def build_create_category_request(category):
     if invalid_req.has_errors():
         return invalid_req
 
-    return ValidRequest(category)
+    return ValidRequest(data=category)
