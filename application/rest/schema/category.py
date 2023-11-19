@@ -10,4 +10,4 @@ class CategorySchema(BaseModel):
     dt_inclusao: str = None
     dt_alteracao: str = None
     ativo: bool = True
-    client_id: List[int]
+    client_id: int

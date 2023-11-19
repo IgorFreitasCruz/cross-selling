@@ -11,8 +11,8 @@ class Client(SQLModel, table=True):
     razao_social: str
     cnpj: str
     email: str
-    dt_inclusao: datetime = Field(default_factory=datetime.utcnow)
-    dt_alteracao: datetime = None
+    dt_inclusao: str = None
+    dt_alteracao: str = None
     ativo: bool = True
 
     categorias: List["Category"] = Relationship(back_populates="client")
@@ -23,8 +23,8 @@ class Category(SQLModel, table=True):
     descricao: str
     dt_inclusao: str
     dt_alteracao: str = None
-    dt_inclusao: datetime = Field(default_factory=datetime.utcnow)
-    dt_alteracao: datetime = None
+    dt_inclusao: str = None
+    dt_alteracao: str = None
     ativo: bool = True
 
     client_id: Optional[int] = Field(default=None, foreign_key="client.id")

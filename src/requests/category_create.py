@@ -14,15 +14,7 @@ def build_create_category_request(category):
     """
     invalid_req = InvalidRequest()
 
-    if not isinstance(category["client_id"], list):
-        invalid_req.add_error(
-            parameter="attribute", message="client_id não é uma lista"
-        )
-
-    if not len(category["client_id"]) > 0:
-        invalid_req.add_error(
-            parameter="attribute", message="client_id não deve estar vazio"
-        )
+    # TODO write some usefull validation
 
     if invalid_req.has_errors():
         return invalid_req

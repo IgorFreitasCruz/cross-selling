@@ -59,24 +59,16 @@ postgres=#
 [\\]: # "# TODO passar esses comandos com variáveis de ambiebnte para o manage.py"
 This command creates a directory called migrations that contains Alembic’s configuration files, together with the migrations that will be created in `migrations/versions`.
 ```bash
-~/cross_selling: POSTGRES_USER=postgres\
-POSTGRES_PASSWORD=postgres\
-POSTGRES_HOSTNAME=localhost\
-APPLICATION_DB=cross_selling_db\
-alembic upgrade head
+~/cross_selling: POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_HOSTNAME=localhost APPLICATION_DB=cross_selling_db alembic revision --autogenerate -m "Initial"
 ```
 
 <br>
 
 - So far we created the migration but we still need to apply it to the database. Make sure you are running the Docker containers as Alembic is going to connect to the database, and run:
-```bash
-~/cross_selling: POSTGRES_USER=postgres\
-POSTGRES_PASSWORD=postgres\
-POSTGRES_HOSTNAME=localhost\
-APPLICATION_DB=cross_selling_db\
-alembic revision --autogenerate -m "Initial"
-```
 At this point we can connect to the database and check the existing tables.
+```bash
+~/cross_selling: POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_HOSTNAME=localhost APPLICATION_DB=cross_selling_db alembic upgrade head
+```
 
 <br>
 

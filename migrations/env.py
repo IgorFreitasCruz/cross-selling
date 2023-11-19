@@ -6,7 +6,7 @@ from sqlalchemy import engine_from_config, pool
 from sqlmodel import SQLModel
 
 # Be sure to import all models you need migrated
-from repository.postgres.postgres_objects import Client
+from src.repository.postgres.postgres_objects import Client
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
