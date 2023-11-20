@@ -60,13 +60,13 @@ class PostgresRepoClient(BasePostgresRepo):
 
         return pg_client_obj
 
-    def update_client(self, data: Dict):
+    def update_client(self, new_client_data: Dict) -> PgClient:
         session = self._create_session()
 
-        statement = select(PgClient).where(PgClient.id == data["id"])
+        statement = select(PgClient).where(PgClient.id == new_client_data["id"])
         client_obj = session.exec(statement).one()
 
-        for field, value in data.items():
+        for field, value in new_client_data.items():
             setattr(client_obj, field, value)
 
         session.commit()

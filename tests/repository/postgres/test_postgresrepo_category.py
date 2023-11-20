@@ -53,13 +53,14 @@ def test_repository_create_category_from_dictionary(app_configuration, pg_sessio
 def test_repository_update_category(app_configuration):
     repo = PostgresRepoCategory(app_configuration)
 
-    new_category_data = {
+    category_data_to_update = {
+        "id": 2,
         "descricao": "Categoria B",
         "dt_inclusao": "01/01/2023, 00:00:00",
         "dt_alteracao": "01/01/2023, 00:00:00",
         "ativo": False,
     }
-    repo.update_category(2, new_category_data)
+    repo.update_category(category_data_to_update)
 
     updated_client = repo.list_category(filters={"id__eq": 2})
 

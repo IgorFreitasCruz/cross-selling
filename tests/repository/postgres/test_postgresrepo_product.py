@@ -6,9 +6,7 @@ from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
 pytestmark = pytest.mark.integration
 
 
-
-
-def test_product_repository_create_from_dictionary(app_configuration):
+def test_product_repository_create_from_dictionary(app_configuration, pg_session):
     repo = PostgresRepoProduct(app_configuration)
 
     product_dict = {
@@ -23,9 +21,19 @@ def test_product_repository_create_from_dictionary(app_configuration):
     assert product.id == 5
 
 
-def test_repository_list_product_without_parameters(app_configuration):
+def test_repository_list_product_without_parameters(app_configuration, pg_session):
     repo = PostgresRepoProduct(app_configuration)
 
     products = repo.list_product()
 
     assert len(products) > 0
+
+
+def test_repository_update_product(app_configuration, pg_session):
+    repo = PostgresRepoProduct(app_configuration)
+
+    product_data_to_update = {"id": 1, "ativo": False}
+
+    product = repo.update_product(product_data_to_update)
+
+    assert product.ativo is False

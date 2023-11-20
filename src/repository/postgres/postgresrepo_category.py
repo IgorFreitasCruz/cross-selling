@@ -54,10 +54,10 @@ class PostgresRepoCategory(BasePostgresRepo):
 
         return pg_category_obj.id
 
-    def update_category(self, category_id: int, new_category_data: Dict) -> PgCategory:
+    def update_category(self, new_category_data: Dict) -> PgCategory:
         session = self._create_session()
 
-        statement = select(PgCategory).where(PgCategory.id == category_id)
+        statement = select(PgCategory).where(PgCategory.id == new_category_data["id"])
         category_obj = session.exec(statement).one()
 
         for field, value in new_category_data.items():

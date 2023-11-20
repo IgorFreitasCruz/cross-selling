@@ -62,11 +62,11 @@ def test_client_repository_create_from_dictionary(app_configuration):
 def test_client_repository_update(app_configuration, pg_session, pg_client_test_data):
     repo = PostgresRepoClient(app_configuration)
 
-    new_client_data = {
+    client_data_to_update = {
         "id": 1,
         "ativo": False,
     }
-    repo.update_client(new_client_data)
+    repo.update_client(client_data_to_update)
 
     updated_client = repo.list_client(filters={"id__eq": 1})
 
