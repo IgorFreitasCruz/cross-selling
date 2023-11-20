@@ -1,36 +1,33 @@
-"""Test module for client serializer"""
+"""Test module for Client serializer"""
 import json
-import uuid
-
-from src.serializers.client import ClientJsonEncoder
 
 from src.domain.client import Client
+from src.serializers.client import ClientJsonEncoder
 
 
 def test_serialize_domain_client():
-    code = uuid.uuid4()
     client = Client(
         id=1,
-        code=code,
+        code="f853578c-fc0f-4e65-81b8-566c5dffa35a",
         razao_social="My company",
         cnpj="00.000.000/0000-00",
         email="mycompany@email.com",
-        dt_alteracao=None,
         dt_inclusao="18/11/2023 14:44:12",
+        dt_alteracao=None,
         ativo=True,
     )
 
-    excepted_json = f"""
-        {{
+    excepted_json = """
+        {
             "id": 1,
-            "code": "{code}",
+            "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
             "razao_social": "My company",
             "cnpj": "00.000.000/0000-00",
             "email": "mycompany@email.com",
-            "dt_alteracao": null,
             "dt_inclusao": "18/11/2023 14:44:12",
+            "dt_alteracao": null,
             "ativo": true
-        }}
+        }
         """
 
     json_client = json.dumps(client, cls=ClientJsonEncoder)

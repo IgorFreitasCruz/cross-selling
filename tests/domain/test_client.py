@@ -1,9 +1,5 @@
-"""Test module for the client entity"""
+"""Test module for the Client entity"""
 # pylint: disable=c0116
-import uuid
-from datetime import datetime
-
-import pytest
 
 from src.domain.client import Client
 
@@ -43,7 +39,7 @@ def test_client_model_init_with_defaults():
     assert client.cnpj == "00.000.000/0000-00"
     assert client.email == "mycompany@email.com"
     assert client.dt_inclusao == "01/01/2023, 00:00:00"
-    assert client.dt_alteracao is "01/01/2023, 00:00:00"
+    assert client.dt_alteracao == "01/01/2023, 00:00:00"
     assert client.ativo is True
 
 

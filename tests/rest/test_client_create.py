@@ -4,17 +4,14 @@ from unittest import mock
 from src.responses import ResponseSuccess
 
 client_dict = {
-    "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
     "razao_social": "My company 1",
     "cnpj": "00.000.000/0000-01",
     "email": "mycompany_1@email.com",
-    "ativo": True,
 }
 
 
 @mock.patch("application.rest.client.client_create_use_case")
 def test_post(mock_use_case, client):
-    """Test get for client"""
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     http_response = client.post("/clients", json=client_dict)
@@ -29,7 +26,6 @@ def test_post(mock_use_case, client):
 
 @mock.patch("application.rest.client.client_create_use_case")
 def test_post_without_body(mock_use_case, client):
-    """Test get for client"""
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     http_response = client.post("/clients", json={})
@@ -41,7 +37,6 @@ def test_post_without_body(mock_use_case, client):
 
 @mock.patch("application.rest.client.client_create_use_case")
 def test_post_with_missing_data(mock_use_case, client):
-    """Test get for client"""
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     client_dict.pop("cnpj")
@@ -56,7 +51,6 @@ def test_post_with_missing_data(mock_use_case, client):
 
 @mock.patch("application.rest.client.client_create_use_case")
 def test_post_with_extra_data(mock_use_case, client):
-    """Test get for client"""
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     client_dict.update({"extra": "field"})

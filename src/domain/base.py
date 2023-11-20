@@ -1,10 +1,18 @@
 """Module for the base class for domain models"""
 # pylint: disable=c0115
-from dataclasses import dataclass, field
+import uuid
+from dataclasses import dataclass
 from typing import Optional
 
-@dataclass()
+
+@dataclass(kw_only=True)
 class BaseDomainModel:
-    ativo: bool = field(default=True, kw_only=True)
-    dt_inclusao: str = field(default=None, kw_only=True)
-    dt_alteracao: str = field(default=None, kw_only=True)
+    """Base class for the domain models.
+    They all inherit the attributes from this class.
+    """
+
+    id: Optional[int] = None
+    code: Optional[uuid.UUID] = None
+    dt_inclusao: str = None
+    dt_alteracao: str = None
+    ativo: bool = True

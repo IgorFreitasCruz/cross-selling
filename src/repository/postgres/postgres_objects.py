@@ -15,17 +15,24 @@ class Client(SQLModel, table=True):
     dt_alteracao: str = None
     ativo: bool = True
 
-    categorias: List["Category"] = Relationship(back_populates="client")
-
 
 class Category(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     descricao: str
-    dt_inclusao: str
-    dt_alteracao: str = None
     dt_inclusao: str = None
     dt_alteracao: str = None
     ativo: bool = True
 
     client_id: Optional[int] = Field(default=None, foreign_key="client.id")
-    client: Optional[Client] = Relationship(back_populates="categorias")
+
+
+class Product(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    nome: str
+    descricao: str
+    sku: str
+    dt_inclusao: str = None
+    dt_alteracao: str = None
+    ativo: bool = True
+
+    categoria_id: Optional[int] = Field(default=None, foreign_key="category.id")

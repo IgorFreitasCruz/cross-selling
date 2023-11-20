@@ -18,5 +18,5 @@ class BasePostgresRepo:
         SQLModel.metadata.create_all(self.engine)
         SQLModel.metadata.bind = self.engine
 
-    def _create_session(self):
-        return Session(bind=self.engine)
+    def _create_session(self, *, expire_on_commit=True):
+        return Session(bind=self.engine, expire_on_commit=expire_on_commit)

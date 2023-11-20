@@ -7,11 +7,13 @@ from src.domain.category import Category
 from src.responses import ResponseFailure, ResponseSuccess, ResponseTypes
 
 category_dict = {
+    "id": None,
+    "code": None,
     "descricao": "description text",
-    "dt_inclusao": "18/11/2023, 14:44:12",
+    "client_id": 1,
+    "dt_inclusao": None,
     "dt_alteracao": None,
     "ativo": True,
-    "client_id": [1],
 }
 
 categories = [Category.from_dict(category_dict)]

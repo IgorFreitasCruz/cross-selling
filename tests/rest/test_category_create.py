@@ -5,16 +5,12 @@ from src.responses import ResponseSuccess
 
 category_dict = {
     "descricao": "description text",
-    "dt_inclusao": "18/11/2023, 14:44:12",
-    "dt_alteracao": None,
-    "ativo": True,
     "client_id": 1,
 }
 
 
 @mock.patch("application.rest.category.category_create_use_case")
 def test_post(mock_use_case, client):
-    """Test post for category"""
     mock_use_case.return_value = ResponseSuccess(category_dict)
 
     http_response = client.post("/categories", json=category_dict)
@@ -29,7 +25,6 @@ def test_post(mock_use_case, client):
 
 @mock.patch("application.rest.category.category_create_use_case")
 def test_post_without_body(mock_use_case, client):
-    """Test get for category"""
     mock_use_case.return_value = ResponseSuccess(category_dict)
 
     http_response = client.post("/categories", json={})
@@ -41,7 +36,6 @@ def test_post_without_body(mock_use_case, client):
 
 @mock.patch("application.rest.category.category_create_use_case")
 def test_post_with_missing_data(mock_use_case, client):
-    """Test get for category"""
     mock_use_case.return_value = ResponseSuccess(category_dict)
 
     category_dict.pop("descricao")
@@ -56,7 +50,6 @@ def test_post_with_missing_data(mock_use_case, client):
 
 @mock.patch("application.rest.category.category_create_use_case")
 def test_post_with_extra_data(mock_use_case, client):
-    """Test get for client"""
     mock_use_case.return_value = ResponseSuccess(category_dict)
 
     category_dict.update({"extra": "field"})

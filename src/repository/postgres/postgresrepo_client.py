@@ -12,7 +12,7 @@ from src.repository.postgres.postgres_objects import Client as PgClient
 
 
 class PostgresRepoClient(BasePostgresRepo):
-    """Postgres repository"""
+    """Postgres Client repository"""
 
     def _create_client_objects(self, results):
         return [
@@ -67,5 +67,5 @@ class PostgresRepoClient(BasePostgresRepo):
             setattr(client_obj, field, value)
 
         session.commit()
-        
+
         return client_obj

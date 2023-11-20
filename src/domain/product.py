@@ -1,16 +1,18 @@
-"""Module for the Category entity"""
+"""Module for the Product entity"""
 import dataclasses
-from typing import Dict, List
+from typing import Dict
 
 from src.domain.base import BaseDomainModel
 
 
 @dataclasses.dataclass
-class Category(BaseDomainModel):
-    """Category entity"""
+class Product(BaseDomainModel):
+    """Product entity"""
 
+    nome: str
     descricao: str
-    client_id: List[int]
+    sku: str
+    categoria_id: int
 
     @classmethod
     def from_dict(cls, d: Dict):

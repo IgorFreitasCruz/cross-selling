@@ -1,8 +1,8 @@
-"""Module for the Client serializer"""
+"""Module for the Product serializer"""
 import json
 
 
-class ClientJsonEncoder(json.JSONEncoder):
+class ProductJsonEncoder(json.JSONEncoder):
     """Serializer class for the client model
 
     Args:
@@ -16,11 +16,12 @@ class ClientJsonEncoder(json.JSONEncoder):
             to_serialize = {
                 "id": o.id,
                 "code": str(o.code),
-                "razao_social": o.razao_social,
-                "cnpj": o.cnpj,
-                "email": o.email,
-                "dt_alteracao": None,
-                "dt_inclusao": "18/11/2023 14:44:12",
+                "nome": o.nome,
+                "descricao": o.descricao,
+                "sku": o.sku,
+                "categoria_id": o.categoria_id,
+                "dt_inclusao": o.dt_inclusao,
+                "dt_alteracao": o.dt_alteracao,
                 "ativo": o.ativo,
             }
             return to_serialize

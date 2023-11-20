@@ -1,4 +1,4 @@
-"""Module for the category serializer"""
+"""Module for the Category serializer"""
 import json
 
 
@@ -14,9 +14,11 @@ class CategoryJsonEncoder(json.JSONEncoder):
     def default(self, o):
         try:
             to_serialize = {
-                "descricao": str(o.descricao),
-                "dt_inclusao": o.dt_inclusao,
+                "id": o.id,
+                "code": o.code,
+                "descricao": o.descricao,
                 "client_id": o.client_id,
+                "dt_inclusao": o.dt_inclusao,
                 "dt_alteracao": o.dt_alteracao,
                 "ativo": o.ativo,
             }

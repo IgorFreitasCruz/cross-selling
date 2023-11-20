@@ -1,9 +1,8 @@
 """Module for the client entity"""
 import dataclasses
-import uuid
-from typing import Dict, Optional
+from typing import Dict
 
-from .base import BaseDomainModel
+from src.domain.base import BaseDomainModel
 
 
 @dataclasses.dataclass
@@ -13,8 +12,6 @@ class Client(BaseDomainModel):
     cnpj: str
     email: str
     razao_social: str
-    id: Optional[int] = None
-    code: Optional[uuid.UUID] = None
 
     @classmethod
     def from_dict(cls, d: Dict):

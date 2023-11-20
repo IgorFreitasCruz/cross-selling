@@ -19,23 +19,24 @@ def test_create_client_success():
 
     new_client_created = {
         "id": 1,
+        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
         "razao_social": "New Company",
         "cnpj": "11.111.111/1111-11",
         "email": "new_company@email.com",
         "dt_criacao": "01/01/2023 00:00:00",
         "dt_alteracao": "01/01/2023 00:00:00",
-        "ativo": True
+        "ativo": True,
     }
 
     repo.create_client.return_value = new_client_created
 
     request = build_create_client_request(new_client)
 
-    response = client_create_use_case(repo, request)
+    result = client_create_use_case(repo, request)
 
-    assert bool(response) is True
+    assert bool(result) is True
     repo.create_client.assert_called_with(new_client)
-    assert response.value == new_client_created
+    assert result.value == new_client_created
 
 
 @pytest.mark.skip("olhar depois")
@@ -47,15 +48,14 @@ def test_create_client_handles_generic_error():
         "razao_social": "New Company",
         "cnpj": "",
         "email": "new_company@email.com",
-        "ativo": True,
     }
 
     request = build_create_client_request(client=new_client)
 
-    response = client_create_use_case(repo, request)
+    result = client_create_use_case(repo, request)
 
-    assert bool(response) is False
-    assert response.value == {
+    assert bool(result) is False
+    assert result.value == {
         "type": ResponseTypes.SYSTEM_ERROR,
         "message": "Exception: Just an error message",
     }
@@ -71,10 +71,11 @@ def test_create_client_handles_cnjp_validation_error():
     }
 
     request = build_create_client_request(invalid_client_data)
-    response = client_create_use_case(repo, request)
 
-    assert bool(response) is False
-    assert response.value == {
+    result = client_create_use_case(repo, request)
+
+    assert bool(result) is False
+    assert result.value == {
         "type": ResponseTypes.PARAMETERS_ERROR,
         "message": "value: Invalid CNPJ",
     }
@@ -90,10 +91,11 @@ def test_create_client_handles_email_validation_error():
     }
 
     request = build_create_client_request(invalid_client_data)
-    response = client_create_use_case(repo, request)
 
-    assert bool(response) is False
-    assert response.value == {
+    result = client_create_use_case(repo, request)
+
+    assert bool(result) is False
+    assert result.value == {
         "type": ResponseTypes.PARAMETERS_ERROR,
         "message": "value: Invalid e-mail",
     }
