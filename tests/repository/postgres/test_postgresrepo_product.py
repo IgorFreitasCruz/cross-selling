@@ -1,3 +1,6 @@
+"""Test module for product postgres repository"""
+# pylint: disable=c0116
+# pylint: disable=w0613
 import pytest
 
 from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
