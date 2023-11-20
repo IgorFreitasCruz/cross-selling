@@ -4,20 +4,23 @@ from unittest import mock
 
 import pytest
 
-from src.domain.client import Client
-from src.responses import ResponseFailure, ResponseSuccess, ResponseTypes
+from src.responses import ResponseSuccess
 
-client_dict = {
-    "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-    "razao_social": "My company 1",
-    "cnpj": "00.000.000/0000-01",
-    "email": "mycompany_1@email.com",
-    "ativo": False,
-}
+
+@pytest.fixture
+def client_dict():
+    return {
+        "id": 1,
+        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "razao_social": "My company 1",
+        "cnpj": "00.000.000/0000-01",
+        "email": "mycompany_1@email.com",
+        "ativo": False,
+    }
 
 
 @mock.patch("application.rest.client.client_update_use_case")
-def test_update(mock_use_case, client):
+def test_update(mock_use_case, client, client_dict):
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     http_response = client.put("/clients", json=client_dict)
@@ -31,7 +34,7 @@ def test_update(mock_use_case, client):
 
 
 @mock.patch("application.rest.client.client_update_use_case")
-def test_post_without_body(mock_use_case, client):
+def test_post_without_body(mock_use_case, client, client_dict):
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     http_response = client.post("/clients", json={})
@@ -42,11 +45,10 @@ def test_post_without_body(mock_use_case, client):
 
 
 @mock.patch("application.rest.client.client_update_use_case")
-def test_post_with_missing_data(mock_use_case, client):
-    """Test get for client"""
+def test_post_with_missing_data(mock_use_case, client, client_dict):
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
-    client_dict.pop("cnpj")
+    client_dict.pop("id")
     client_dict_missing_data = client_dict
 
     http_response = client.post("/clients", json=client_dict_missing_data)
@@ -57,8 +59,7 @@ def test_post_with_missing_data(mock_use_case, client):
 
 
 @mock.patch("application.rest.client.client_update_use_case")
-def test_post_with_extra_data(mock_use_case, client):
-    """Test get for client"""
+def test_post_with_extra_data(mock_use_case, client, client_dict):
     mock_use_case.return_value = ResponseSuccess(client_dict)
 
     client_dict.update({"extra": "field"})

@@ -3,11 +3,10 @@ from src.requests.category_update import build_update_category_request
 
 def test_build_category_update_request():
     category_to_update = {
-        "descricao": "categoria a",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
+        "id": 1,
+        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        "descricao": "Categoria A",
         "ativo": True,
-        "client_id": [1],
     }
     request = build_update_category_request(category_to_update)
 

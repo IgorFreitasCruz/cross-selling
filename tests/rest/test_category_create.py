@@ -4,7 +4,7 @@ from unittest import mock
 from src.responses import ResponseSuccess
 
 category_dict = {
-    "descricao": "description text",
+    "descricao": "Descricao A",
     "client_id": 1,
 }
 

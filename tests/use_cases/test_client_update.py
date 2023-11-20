@@ -31,7 +31,7 @@ def test_update_client_success(client_to_update):
     response = client_update_use_case(repo, request)
 
     assert bool(response) is True
-    repo.update_client.assert_called_with(client=client_to_update)
+    repo.update_client.assert_called_with(client_to_update)
     assert response.value == client_to_update
 
 

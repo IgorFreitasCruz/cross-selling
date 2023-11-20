@@ -1,4 +1,4 @@
-"""Module for the client update use case"""
+"""Module for the product update use case"""
 from src.responses import (
     ResponseFailure,
     ResponseSuccess,
@@ -6,8 +6,7 @@ from src.responses import (
     build_response_from_invalid_request,
 )
 
-
-def client_update_use_case(repo, request):
+def product_update_use_case(repo, request):
     """Use case logic
 
     Args:
@@ -23,7 +22,7 @@ def client_update_use_case(repo, request):
     if not request:
         return build_response_from_invalid_request(request)
     try:
-        client = repo.update_client(request.data)
-        return ResponseSuccess(client)
+        product = repo.update_product(request.data)
+        return ResponseSuccess(product)
     except Exception as exc:
         return ResponseFailure(ResponseTypes.SYSTEM_ERROR, exc)

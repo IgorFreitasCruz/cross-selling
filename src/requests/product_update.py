@@ -1,15 +1,15 @@
 from typing import Dict
 
+from src.domain.product import Product
 from src.requests.validation.invalid_request import InvalidRequest
 from src.requests.validation.valid_request import ValidRequest
-from src.domain.category import Category
 
 
-def build_update_category_request(category: Dict):
+def build_update_product_request(product: Dict):
     """Factory for requests
 
     Args:
-        category (dict): Dictionary containing category data
+        client (dict): Dictionary containing client data
 
     Returns:
         Object: Return InvalidRequest if errors, otherwise, returns
@@ -17,10 +17,10 @@ def build_update_category_request(category: Dict):
     """
     invalid_req = InvalidRequest()
 
-    if "id" not in category and "code" not in category:
+    if "id" not in product and "code" not in product:
         invalid_req.add_error("value", "Must contain id or code to update")
 
     if invalid_req.has_errors():
         return invalid_req
 
-    return ValidRequest(data=category)
+    return ValidRequest(data=product)

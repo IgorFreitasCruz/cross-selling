@@ -6,7 +6,6 @@ from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
 from src.repository.in_memory.memrepo_client import MemRepo
-
 from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 from src.requests.client_create import build_create_client_request
 from src.requests.client_list import build_client_list_request
@@ -17,7 +16,7 @@ from src.use_cases.client_create import client_create_use_case
 from src.use_cases.client_list import client_list_use_case
 from src.use_cases.client_update import client_update_use_case
 
-from .schema.client import ClientSchema
+from .schema.client import ClientSchema, UpdateClientSchema
 
 blueprint = Blueprint("client", __name__)
 
@@ -67,7 +66,7 @@ def client_create():
     try:
         client = ClientSchema.parse_raw(request.data)  # Pydantic
     except ValidationError as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": e.errors()}), 400
 
     request_obj = build_create_client_request(client.dict())
 
@@ -108,9 +107,9 @@ def client_list():
 @blueprint.route("/clients", methods=["PUT"])
 def client_update():
     try:
-        client = ClientSchema.parse_raw(request.data)
+        client = UpdateClientSchema.parse_raw(request.data)
     except ValidationError as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": e.errors()}), 400
 
     request_obj = build_update_client_request(client.dict())
 

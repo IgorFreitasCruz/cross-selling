@@ -3,18 +3,15 @@ from unittest import mock
 
 import pytest
 
-from src.responses import ResponseTypes
-from src.use_cases.category_update import category_update_use_case
 from src.requests.category_update import build_update_category_request
+from src.use_cases.category_update import category_update_use_case
+
 
 @pytest.fixture
 def category_to_update():
     return {
-        "descricao": "categoria D",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": True,
-        "client_id": [2],
+        "id": 1,
+        "ativo": False,
     }
 
 
@@ -27,5 +24,5 @@ def test_update_client_success(category_to_update):
 
     response = category_update_use_case(repo, request)
 
-    repo.update_category.assert_called()
+    repo.update_category.assert_called_with(category_to_update)
     assert response.value == category_to_update

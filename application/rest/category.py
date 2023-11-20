@@ -17,7 +17,7 @@ from src.use_cases.category_create import category_create_use_case
 from src.use_cases.category_list import category_list_use_case
 from src.use_cases.category_update import category_update_use_case
 
-from .schema.category import CategorySchema
+from .schema.category import CategorySchema, UpdateCategorySchema
 
 blueprint = Blueprint("category", __name__)
 
@@ -66,7 +66,7 @@ def category_create():
     try:
         category = CategorySchema.parse_raw(request.data)
     except ValidationError as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": e.errors()}), 400
 
     request_obj = build_create_category_request(category.dict())
 
@@ -107,9 +107,9 @@ def category_list():
 @blueprint.route("/categories", methods=["PUT"])
 def category_update():
     try:
-        category = CategorySchema.parse_raw(request.data)
+        category = UpdateCategorySchema.parse_raw(request.data)
     except ValidationError as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": e.errors()}), 400
 
     request_obj = build_update_category_request(category.dict())
 

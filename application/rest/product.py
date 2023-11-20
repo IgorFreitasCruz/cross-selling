@@ -6,12 +6,14 @@ from pydantic import ValidationError
 from src.repository.in_memory.memrepo_product import MemRepoProduct
 from src.requests.product_create import build_create_product_request
 from src.requests.product_list import build_product_list_request
+from src.requests.product_update import build_update_product_request
 from src.responses import STATUS_CODE
 from src.serializers.product import ProductJsonEncoder
 from src.use_cases.product_create import product_create_use_case
 from src.use_cases.product_list import product_list_use_case
+from src.use_cases.product_update import product_update_use_case
 
-from .schema.product import ProductSchema
+from .schema.product import ProductSchema, UpdateProductSchema
 
 blueprint = Blueprint("products", __name__)
 
@@ -56,7 +58,7 @@ def product_create():
     try:
         product = ProductSchema.parse_raw(request.data)
     except ValidationError as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"error": e.errors()}), 400
 
     request_obj = build_create_product_request(product.dict())
 
@@ -86,6 +88,26 @@ def product_list():
     # repo = PostgresRepoCategory(postgres_configuration)
     repo = MemRepoProduct(products)
     response = product_list_use_case(repo, request_obj)
+
+    return Response(
+        json.dumps(response.value, cls=ProductJsonEncoder),
+        mimetype="application/json",
+        status=STATUS_CODE[response.type],
+    )
+
+
+@blueprint.route("/products", methods=["PUT"])
+def product_upadte():
+    try:
+        product = UpdateProductSchema.parse_raw(request.data)
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+
+    request_obj = build_update_product_request(product.dict())
+
+    # repo = PostgresRepoCategory(postgres_configuration)
+    repo = MemRepoProduct(products)
+    response = product_update_use_case(repo, request_obj)
 
     return Response(
         json.dumps(response.value, cls=ProductJsonEncoder),
