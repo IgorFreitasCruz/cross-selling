@@ -3,6 +3,7 @@ from flask import Flask
 from application.rest import client
 from application.rest import category
 from application.rest import product
+from application.rest import transaction
 
 
 def create_app(config_name):
@@ -22,5 +23,6 @@ def create_app(config_name):
     app.register_blueprint(client.blueprint)
     app.register_blueprint(category.blueprint)
     app.register_blueprint(product.blueprint)
+    app.register_blueprint(transaction.blueprint)
 
     return app

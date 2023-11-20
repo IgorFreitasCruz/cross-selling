@@ -3,30 +3,30 @@ from unittest import mock
 
 import pytest
 
-from src.domain.client import Client
+from src.domain.transaction import Transaction
 from src.responses import ResponseFailure, ResponseSuccess, ResponseTypes
 
-client_dict = {
+transaction_dict = {
     "id": 1,
     "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-    "razao_social": "My company 1",
-    "cnpj": "00.000.000/0000-01",
-    "email": "mycompany_1@email.com",
+    "client_id": 1,
+    "produto_id": 1,
+    "quantidade": 10,
     "dt_inclusao": "01/01/2023 00:00:00",
     "dt_alteracao": "01/01/2023 00:00:00",
     "ativo": True,
 }
 
-clients = [Client.from_dict(client_dict)]
+transactions = [Transaction.from_dict(transaction_dict)]
 
 
-@mock.patch("application.rest.client.client_list_use_case")
+@mock.patch("application.rest.transaction.transaction_list_use_case")
 def test_get(mock_use_case, client):
-    mock_use_case.return_value = ResponseSuccess(clients)
+    mock_use_case.return_value = ResponseSuccess(transactions)
 
-    http_response = client.get("/clients")
+    http_response = client.get("/transaction")
 
-    assert json.loads(http_response.data.decode("utf-8")) == [client_dict]
+    assert json.loads(http_response.data.decode("utf-8")) == [transaction_dict]
 
     mock_use_case.assert_called()
     args, kwargs = mock_use_case.call_args
@@ -36,13 +36,13 @@ def test_get(mock_use_case, client):
     assert http_response.mimetype == "application/json"
 
 
-@mock.patch("application.rest.client.client_list_use_case")
+@mock.patch("application.rest.transaction.transaction_list_use_case")
 def test_get_with_filters(mock_use_case, client):
-    mock_use_case.return_value = ResponseSuccess(clients)
+    mock_use_case.return_value = ResponseSuccess(transactions)
 
-    http_response = client.get("/clients?filter_ativo__eq=true")
+    http_response = client.get("/transaction?filter_ativo__eq=true")
 
-    assert json.loads(http_response.data.decode("utf-8")) == [client_dict]
+    assert json.loads(http_response.data.decode("utf-8")) == [transaction_dict]
 
     mock_use_case.assert_called()
     args, kwargs = mock_use_case.call_args
@@ -61,7 +61,7 @@ def test_get_with_filters(mock_use_case, client):
         (ResponseTypes.SYSTEM_ERROR, 500),
     ],
 )
-@mock.patch("application.rest.client.client_list_use_case")
+@mock.patch("application.rest.transaction.transaction_list_use_case")
 def test_get_response_failures(
     mock_use_case, client, response_type, expected_status_code
 ):
@@ -69,7 +69,7 @@ def test_get_response_failures(
         response_type, message="Just an error message"
     )
 
-    http_response = client.get("/clients?dummy_request_string")
+    http_response = client.get("/transaction?dummy_request_string")
 
     mock_use_case.assert_called()
 

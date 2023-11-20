@@ -15,7 +15,7 @@ class ProductJsonEncoder(json.JSONEncoder):
         try:
             to_serialize = {
                 "id": o.id,
-                "code": str(o.code),
+                "code": o.code,
                 "nome": o.nome,
                 "descricao": o.descricao,
                 "sku": o.sku,

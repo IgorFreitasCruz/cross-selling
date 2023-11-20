@@ -28,6 +28,6 @@ def test_serialize_domain_category():
         }
         """
 
-    json_client = json.dumps(category, cls=CategoryJsonEncoder)
+    json_category = json.dumps(category, cls=CategoryJsonEncoder)
 
-    assert json.loads(json_client) == json.loads(excepted_json)
+    assert json.loads(json_category) == json.loads(excepted_json)

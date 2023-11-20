@@ -1,12 +1,9 @@
 """Test module for the category entity"""
 # pylint: disable=c0116
-from datetime import datetime
-
 from src.domain.category import Category
 
 
 def test_client_model_init():
-    """Test client model initialization"""
     category = Category(
         descricao="description text",
         client_id=1,

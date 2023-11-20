@@ -1,6 +1,5 @@
 """Test module for the Produtc entity"""
 # pylint: disable=c0116
-
 from src.domain.product import Product
 
 

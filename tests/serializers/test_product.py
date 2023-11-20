@@ -13,7 +13,7 @@ def test_serialize_domain_product():
         descricao="My description",
         sku="0123456789",
         categoria_id=1,
-        dt_inclusao="01/01/2023, 00:00:00",
+        dt_inclusao="01/01/2023 00:00:00",
         dt_alteracao=None,
         ativo=True,
     )
@@ -26,12 +26,12 @@ def test_serialize_domain_product():
             "descricao": "My description",
             "sku": "0123456789",
             "categoria_id": 1,
-            "dt_inclusao": "01/01/2023, 00:00:00",
+            "dt_inclusao": "01/01/2023 00:00:00",
             "dt_alteracao": null,
             "ativo": true
         }
         """
 
-    json_client = json.dumps(product, cls=ProductJsonEncoder)
+    json_product = json.dumps(product, cls=ProductJsonEncoder)
 
-    assert json.loads(json_client) == json.loads(excepted_json)
+    assert json.loads(json_product) == json.loads(excepted_json)

@@ -1,9 +1,9 @@
-"""Module for the Client serializer"""
+"""Module for the Transaction serializer"""
 import json
 
 
-class ClientJsonEncoder(json.JSONEncoder):
-    """Serializer class for the client model
+class TransactionJsonEncoder(json.JSONEncoder):
+    """Serializer class for the transaction model
 
     Args:
         json (object): JSONEncoder
@@ -11,17 +11,16 @@ class ClientJsonEncoder(json.JSONEncoder):
     Returns:
         str: serialized object
     """
-
     def default(self, o):
         try:
             to_serialize = {
                 "id": o.id,
                 "code": o.code,
-                "razao_social": o.razao_social,
-                "cnpj": o.cnpj,
-                "email": o.email,
-                "dt_alteracao": o.dt_alteracao,
+                "client_id": o.client_id,
+                "produto_id": o.produto_id,
+                "quantidade": o.quantidade,
                 "dt_inclusao": o.dt_inclusao,
+                "dt_alteracao": o.dt_alteracao,
                 "ativo": o.ativo,
             }
             return to_serialize

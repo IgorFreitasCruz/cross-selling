@@ -1,6 +1,5 @@
 """Test module for the Client entity"""
 # pylint: disable=c0116
-
 from src.domain.client import Client
 
 
