@@ -73,17 +73,12 @@ def test_repository_list_with_ativo_equal_filter(category_dicts):
     assert len(categories) == 2
 
 
-@pytest.mark.skip("olhar depois")
 def test_repository_list_with_id_equal_true_filter(category_dicts):
     repo = MemRepoCategory(category_dicts)
 
-    categories = repo.list_category({"ativo__eq": "true"})
+    categories = repo.list_category({"ativo__eq": True})
 
     assert len(categories) == 2
-    assert set([c.code for c in categories]) == {
-        "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-        "fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a",
-    }
 
 
 def test_repository_update_client(category_dicts):

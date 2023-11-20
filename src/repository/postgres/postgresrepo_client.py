@@ -26,13 +26,16 @@ class PostgresRepoClient(BasePostgresRepo):
             for q in results
         ]
 
-    def list(self, filters=None):
+    def list_client(self, filters=None):
         session = self._create_session()
 
         query = session.query(PgClient)
 
         if filters is None:
             return self._create_client_objects(query.all())
+
+        if "id__eq" in filters:
+            query = query.filter(PgClient.id == filters["id__eq"])
 
         if "code__eq" in filters:
             query = query.filter(PgClient.code == filters["code__eq"])

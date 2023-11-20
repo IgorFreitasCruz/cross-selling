@@ -63,7 +63,7 @@ clients = [
 
 
 @blueprint.route("/clients", methods=["POST"])
-def repo_create():
+def client_create():
     try:
         client = ClientSchema.parse_raw(request.data)  # Pydantic
     except ValidationError as e:
@@ -83,7 +83,7 @@ def repo_create():
 
 
 @blueprint.route("/clients", methods=["GET"])
-def repo_list():
+def client_list():
     qrystr_params = {
         "filters": {},
     }
@@ -106,7 +106,7 @@ def repo_list():
 
 
 @blueprint.route("/clients", methods=["PUT"])
-def repo_update():
+def client_update():
     try:
         client = ClientSchema.parse_raw(request.data)
     except ValidationError as e:

@@ -3,35 +3,31 @@ from unittest import mock
 
 import pytest
 
-from src.domain.client import Client
+from src.domain.product import Product
 from src.responses import ResponseFailure, ResponseSuccess, ResponseTypes
 
-client_dict = {
+product_dict = {
     "id": 1,
     "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-    "razao_social": "My company 1",
-    "cnpj": "00.000.000/0000-01",
-    "email": "mycompany_1@email.com",
+    "nome": "Produto A",
+    "descricao": "Descricao A",
+    "sku": "0123456789",
+    "categoria_id": 1,
     "dt_inclusao": "01/01/2023 00:00:00",
     "dt_alteracao": "01/01/2023 00:00:00",
     "ativo": True,
 }
 
-clients = [Client.from_dict(client_dict)]
-
-import sys
-print('*'*20,__name__,': line',sys._getframe().f_lineno,'*'*20, flush=True)
-print(clients, flush=True)
+products = [Product.from_dict(product_dict)]
 
 
-@mock.patch("application.rest.client.client_list_use_case")
+@mock.patch("application.rest.product.product_list_use_case")
 def test_get(mock_use_case, client):
-    """Test get for client"""
-    mock_use_case.return_value = ResponseSuccess(clients)
+    mock_use_case.return_value = ResponseSuccess(products)
 
-    http_response = client.get("/clients")
+    http_response = client.get("/products")
 
-    assert json.loads(http_response.data.decode("utf-8")) == [client_dict]
+    assert json.loads(http_response.data.decode("utf-8")) == [product_dict]
 
     mock_use_case.assert_called()
     args, kwargs = mock_use_case.call_args
@@ -41,13 +37,13 @@ def test_get(mock_use_case, client):
     assert http_response.mimetype == "application/json"
 
 
-@mock.patch("application.rest.client.client_list_use_case")
+@mock.patch("application.rest.product.product_list_use_case")
 def test_get_with_filters(mock_use_case, client):
-    mock_use_case.return_value = ResponseSuccess(clients)
+    mock_use_case.return_value = ResponseSuccess(products)
 
-    http_response = client.get("/clients?filter_ativo__eq=true")
+    http_response = client.get("/products?filter_ativo__eq=true")
 
-    assert json.loads(http_response.data.decode("utf-8")) == [client_dict]
+    assert json.loads(http_response.data.decode("utf-8")) == [product_dict]
 
     mock_use_case.assert_called()
     args, kwargs = mock_use_case.call_args
@@ -66,7 +62,7 @@ def test_get_with_filters(mock_use_case, client):
         (ResponseTypes.SYSTEM_ERROR, 500),
     ],
 )
-@mock.patch("application.rest.client.client_list_use_case")
+@mock.patch("application.rest.product.product_list_use_case")
 def test_get_response_failures(
     mock_use_case, client, response_type, expected_status_code
 ):
@@ -74,7 +70,7 @@ def test_get_response_failures(
         response_type, message="Just an error message"
     )
 
-    http_response = client.get("/clients?dummy_request_string")
+    http_response = client.get("/products?dummy_request_string")
 
     mock_use_case.assert_called()
 

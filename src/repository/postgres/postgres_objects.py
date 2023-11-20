@@ -18,6 +18,7 @@ class Client(SQLModel, table=True):
 
 class Category(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    code: str = Field(sa_column=Column(String(36)))
     descricao: str
     dt_inclusao: str = None
     dt_alteracao: str = None
@@ -28,6 +29,7 @@ class Category(SQLModel, table=True):
 
 class Product(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    code: str = Field(sa_column=Column(String(36)))
     nome: str
     descricao: str
     sku: str

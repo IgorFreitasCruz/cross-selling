@@ -1,7 +1,6 @@
 from typing import Dict
 
 from src.domain import product
-
 from src.repository.postgres.base_postgresrepo import BasePostgresRepo
 from src.repository.postgres.postgres_objects import Product as PgProduct
 
@@ -35,3 +34,20 @@ class PostgresRepoProduct(BasePostgresRepo):
         session.refresh(pg_product_obj)
 
         return pg_product_obj
+
+    def list_product(self, filters=None):
+        session = self._create_session()
+
+        query = session.query(PgProduct)
+
+        if filters is not None:
+            if "id__eq" in filters:
+                query = query.filter(PgProduct.id == filters["id__eq"])
+
+            if "code__eq" in filters:
+                query = query.filter(PgProduct.code == filters["code__eq"])
+
+            if "ativo__eq" in filters:
+                query = query.filter(PgProduct.ativo == filters["ativo__eq"])
+
+        return self._create_product_objects(query.all())

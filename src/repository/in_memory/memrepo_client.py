@@ -11,7 +11,7 @@ class MemRepo:
     def __init__(self, data: List[Dict]) -> None:
         self.data = data
 
-    def list(self, filters=None) -> List:
+    def list_client(self, filters=None) -> List:
         """List all clients
 
         Returns:

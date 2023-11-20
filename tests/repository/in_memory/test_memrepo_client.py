@@ -58,13 +58,13 @@ def test_client_repository_list_without_parameters(clients_dicts):
 
     clients = [Client.from_dict(c) for c in clients_dicts]
 
-    assert repo.list() == clients
+    assert repo.list_client() == clients
 
 
 def test_client_repository_list_with_code_equal_filter(clients_dicts):
     repo = MemRepo(clients_dicts)
 
-    clients = repo.list({"code__eq": "f853578c-fc0f-4e65-81b8-566c5dffa35a"})
+    clients = repo.list_client({"code__eq": "f853578c-fc0f-4e65-81b8-566c5dffa35a"})
 
     assert len(clients) == 1
     assert clients[0].code == "f853578c-fc0f-4e65-81b8-566c5dffa35a"
@@ -73,7 +73,7 @@ def test_client_repository_list_with_code_equal_filter(clients_dicts):
 def test_client_repository_list_with_ativo_equal_true_filter(clients_dicts):
     repo = MemRepo(clients_dicts)
 
-    clients = repo.list({"ativo__eq": "true"})
+    clients = repo.list_client({"ativo__eq": "true"})
 
     assert len(clients) == 2
     assert set([c.code for c in clients]) == {
@@ -85,7 +85,7 @@ def test_client_repository_list_with_ativo_equal_true_filter(clients_dicts):
 def test_client_repository_list_with_ativo_equal_false_filter(clients_dicts):
     repo = MemRepo(clients_dicts)
 
-    clients = repo.list({"ativo__eq": False})
+    clients = repo.list_client({"ativo__eq": False})
 
     assert len(clients) == 2
     assert set([c.code for c in clients]) == {

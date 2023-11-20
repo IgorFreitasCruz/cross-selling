@@ -1,6 +1,5 @@
 """Test module for category list use cases"""
 # pylint: disable=w0621
-import uuid
 from unittest import mock
 
 import pytest
@@ -13,33 +12,40 @@ from src.use_cases.category_list import category_list_use_case
 
 @pytest.fixture
 def domain_categories():
-    """Clients Mock"""
     category_1 = Category(
+        id=1,
+        code="0000-0000-0000-0000-0000-0000",
         descricao="Categoria A",
-        dt_inclusao="18/11/2023, 14:44:12",
+        dt_inclusao="01/01/2023 00:00:00",
+        dt_alteracao="01/01/2023 00:00:00",
         client_id=1,
-        dt_alteracao=None,
         ativo=True,
     )
     category_2 = Category(
+        id=2,
+        code="0000-0000-0000-0000-0000-0000",
         descricao="Categoria B",
-        dt_inclusao="18/11/2023, 14:44:12",
+        dt_inclusao="01/01/2023 00:00:00",
+        dt_alteracao="01/01/2023 00:00:00",
         client_id=1,
-        dt_alteracao=None,
         ativo=True,
     )
     category_3 = Category(
+        id=3,
+        code="0000-0000-0000-0000-0000-0000",
         descricao="Categoria C",
-        dt_inclusao="18/11/2023, 14:44:12",
+        dt_inclusao="01/01/2023 00:00:00",
+        dt_alteracao="01/01/2023 00:00:00",
         client_id=1,
-        dt_alteracao=None,
         ativo=False,
     )
     category_4 = Category(
+        id=4,
+        code="0000-0000-0000-0000-0000-0000",
         descricao="Categoria D",
-        dt_inclusao="18/11/2023, 14:44:12",
+        dt_inclusao="01/01/2023 00:00:00",
+        dt_alteracao="01/01/2023 00:00:00",
         client_id=1,
-        dt_alteracao=None,
         ativo=False,
     )
 
@@ -47,11 +53,6 @@ def domain_categories():
 
 
 def test_category_list_without_parameters(domain_categories):
-    """Test client list without parameter use case
-
-    Args:
-        domain_clients (Mock): mock of clients
-    """
     repo = mock.Mock()
     repo.list_category.return_value = domain_categories
 

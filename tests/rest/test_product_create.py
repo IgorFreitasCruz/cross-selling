@@ -41,9 +41,9 @@ def test_post_with_missing_data(mock_use_case, client):
     mock_use_case.return_value = ResponseSuccess(product_dict)
 
     product_dict.pop("descricao")
-    category_dict_missing_data = product_dict
+    product_dict_missing_data = product_dict
 
-    http_response = client.post("/products", json=category_dict_missing_data)
+    http_response = client.post("/products", json=product_dict_missing_data)
 
     assert "error" in http_response.text
     assert http_response.status_code == 400
@@ -55,9 +55,9 @@ def test_post_with_extra_data(mock_use_case, client):
     mock_use_case.return_value = ResponseSuccess(product_dict)
 
     product_dict.update({"extra": "field"})
-    category_dict_extra_data = product_dict
+    product_dict_extra_data = product_dict
 
-    http_response = client.post("/products", json=category_dict_extra_data)
+    http_response = client.post("/products", json=product_dict_extra_data)
 
     assert "error" in http_response.text
     assert http_response.status_code == 400

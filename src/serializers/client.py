@@ -11,6 +11,7 @@ class ClientJsonEncoder(json.JSONEncoder):
     Returns:
         str: serialized object
     """
+
     def default(self, o):
         try:
             to_serialize = {
@@ -19,8 +20,8 @@ class ClientJsonEncoder(json.JSONEncoder):
                 "razao_social": o.razao_social,
                 "cnpj": o.cnpj,
                 "email": o.email,
-                "dt_alteracao": None,
-                "dt_inclusao": "18/11/2023 14:44:12",
+                "dt_alteracao": o.dt_alteracao,
+                "dt_inclusao": o.dt_inclusao,
                 "ativo": o.ativo,
             }
             return to_serialize

@@ -1,11 +1,10 @@
-"""Module for structured requests objects"""
 from collections.abc import Mapping
 
 from src.requests.validation.invalid_request import InvalidRequest
 from src.requests.validation.valid_request import ValidRequest
 
 
-def build_client_list_request(filters=None):
+def build_product_list_request(filters=None):
     """Factory for requests
 
     Args:

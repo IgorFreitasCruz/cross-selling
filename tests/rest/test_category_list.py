@@ -7,12 +7,12 @@ from src.domain.category import Category
 from src.responses import ResponseFailure, ResponseSuccess, ResponseTypes
 
 category_dict = {
-    "id": None,
-    "code": None,
+    "id": 1,
+    "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
     "descricao": "description text",
     "client_id": 1,
-    "dt_inclusao": None,
-    "dt_alteracao": None,
+    "dt_inclusao": "01/01/2023 00:00:00",
+    "dt_alteracao": "01/01/2023 00:00:00",
     "ativo": True,
 }
 

@@ -11,6 +11,7 @@ import sqlmodel
 
 from src.repository.postgres.postgres_objects import Client as PgClient
 from src.repository.postgres.postgres_objects import Category as PgCategory
+from src.repository.postgres.postgres_objects import Product as PgProduct
 
 
 @pytest.fixture(scope="session")
@@ -42,6 +43,7 @@ def pg_session_empty(app_configuration):
 def pg_client_test_data():
     return [
         {
+            "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
             "razao_social": "My company 1",
             "cnpj": "00.000.000/0000-01",
             "email": "mycompany_1@email.com",
@@ -67,61 +69,83 @@ def pg_client_test_data():
 @pytest.fixture(scope="session")
 def pg_category_test_data():
     return [
+        {"descricao": "categoria A", "client_id": 1, "ativo": True},
+        {"descricao": "categoria B", "client_id": 1, "ativo": True},
+        {"descricao": "categoria C", "client_id": 2, "ativo": False},
+        {"descricao": "categoria D", "client_id": 2, "ativo": False},
+    ]
+
+
+@pytest.fixture(scope="session")
+def pg_product_test_data():
+    return [
         {
-            "descricao": "categoria A",
-            "dt_inclusao": "18/11/2023, 14:44:12",
-            "dt_alteracao": None,
+            "nome": "Produto A",
+            "descricao": "descricao A",
+            "sku": "0123456789",
+            "categoria_id": 1,
             "ativo": True,
-            "client_id": [1],
         },
         {
-            "descricao": "categoria B",
-            "dt_inclusao": "18/11/2023, 14:44:12",
-            "dt_alteracao": None,
+            "nome": "Produto B",
+            "descricao": "descricao B",
+            "sku": "0123456789",
+            "categoria_id": 1,
             "ativo": True,
-            "client_id": [1],
         },
         {
-            "descricao": "categoria C",
-            "dt_inclusao": "18/11/2023, 14:44:12",
-            "dt_alteracao": None,
+            "nome": "Produto C",
+            "descricao": "descricao C",
+            "sku": "0123456789",
+            "categoria_id": 2,
             "ativo": False,
-            "client_id": [2],
         },
         {
-            "descricao": "categoria D",
-            "dt_inclusao": "18/11/2023, 14:44:12",
-            "dt_alteracao": None,
+            "nome": "Produto D",
+            "descricao": "descricao D",
+            "sku": "0123456789",
+            "categoria_id": 2,
             "ativo": False,
-            "client_id": [2],
         },
     ]
 
 
-@pytest.fixture(scope="function")
-def pg_session(pg_session_empty, pg_client_test_data, pg_category_test_data):
+@pytest.fixture(scope="package")
+def pg_session(pg_session_empty, pg_client_test_data, pg_category_test_data, pg_product_test_data):
     """Fills the database with Postgress objects created with the test data for
     every test that is run. These are not entities, but Postgress objects we
     create to map them.
     """
     for idx, client in enumerate(pg_client_test_data):
-        new_client = PgClient(**client)
 
-        # Creates new client
+        ### CREATE CLIENTS ###
+        new_client = PgClient(**client)
         pg_session_empty.add(new_client)
         pg_session_empty.commit()
 
-        # Assuming the same length of client and category arrays
+        ### CREATE CATEGORIES ###
+        # Assuming pg_category_test_data has the same length as pg_client_test_data
         category_data = pg_category_test_data[idx]
-        # Assuming category_data_list has the same length as pg_test_data
+        # Assuming the FK relationship between client and category
         category_data.update({"client_id": new_client.id})
         new_category = PgCategory(**category_data)
 
         pg_session_empty.add(new_category)
         pg_session_empty.commit()
 
+        ### CREATE PRODUCTS ###
+        # Assuming the same length of category and product arrays
+        product_data = pg_product_test_data[idx]
+        # Assuming the FK relationship between category and product
+        product_data.update({"categoria_id": new_category.id})
+        new_product = PgProduct(**product_data)
+
+        pg_session_empty.add(new_product)
+        pg_session_empty.commit()
+
     yield pg_session_empty
 
     # Clean up after test
+    pg_session_empty.query(PgProduct).delete()
     pg_session_empty.query(PgCategory).delete()
     pg_session_empty.query(PgClient).delete()

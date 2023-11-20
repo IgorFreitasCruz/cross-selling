@@ -1,6 +1,5 @@
 """Test module for client list use cases"""
 # pylint: disable=w0621
-import uuid
 from unittest import mock
 
 import pytest
@@ -13,7 +12,6 @@ from src.use_cases.client_list import client_list_use_case
 
 @pytest.fixture
 def domain_clients():
-    """Clients Mock"""
     client_1 = Client(
         id=1,
         code="0000-0000-0000-0000-0000-0000",
@@ -25,7 +23,7 @@ def domain_clients():
         ativo=True,
     )
     client_2 = Client(
-        id=1,
+        id=2,
         code="0000-0000-0000-0000-0000-0000",
         razao_social="My company 2",
         cnpj="00.000.000/0000-02",
@@ -35,7 +33,7 @@ def domain_clients():
         ativo=True,
     )
     client_3 = Client(
-        id=1,
+        id=3,
         code="0000-0000-0000-0000-0000-0000",
         razao_social="My company 3",
         cnpj="00.000.000/0000-03",
@@ -45,7 +43,7 @@ def domain_clients():
         ativo=False,
     )
     client_4 = Client(
-        id=1,
+        id=4,
         code="0000-0000-0000-0000-0000-0000",
         razao_social="My company 4",
         cnpj="00.000.000/0000-04",
@@ -59,26 +57,21 @@ def domain_clients():
 
 
 def test_client_list_without_parameters(domain_clients):
-    """Test client list without parameter use case
-
-    Args:
-        domain_clients (Mock): mock of clients
-    """
     repo = mock.Mock()
-    repo.list.return_value = domain_clients
+    repo.list_client.return_value = domain_clients
 
     request = build_client_list_request()
 
     response = client_list_use_case(repo, request)
 
     assert bool(response) is True
-    repo.list.assert_called_with(filters=None)
+    repo.list_client.assert_called_with(filters=None)
     assert response.value == domain_clients
 
 
 def test_client_list_with_id_equal_filters(domain_clients):
     repo = mock.Mock()
-    repo.list.return_value = domain_clients
+    repo.list_client.return_value = domain_clients
 
     qry_filters = {"id__eq": 1}
     request = build_client_list_request(filters=qry_filters)
@@ -86,13 +79,13 @@ def test_client_list_with_id_equal_filters(domain_clients):
     response = client_list_use_case(repo, request)
 
     assert bool(response) is True
-    repo.list.assert_called_with(filters=qry_filters)
+    repo.list_client.assert_called_with(filters=qry_filters)
     assert response.value == domain_clients
 
 
 def test_client_list_handles_generic_error():
     repo = mock.Mock()
-    repo.list.side_effect = Exception("Just an error message")
+    repo.list_client.side_effect = Exception("Just an error message")
 
     request = build_client_list_request(filters={})
 

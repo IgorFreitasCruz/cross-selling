@@ -34,11 +34,14 @@ class PostgresRepoCategory(BasePostgresRepo):
         if filters is None:
             return self._create_category_objects(query.all())
 
-        if "ativo__eq" in filters:
-            query = query.filter(PgCategory.ativo == filters["ativo__eq"])
-
         if "id__eq" in filters:
             query = query.filter(PgCategory.id == filters["id__eq"])
+
+        if "code__eq" in filters:
+            query = query.filter(PgCategory.code == filters["code__eq"])
+
+        if "ativo__eq" in filters:
+            query = query.filter(PgCategory.ativo == filters["ativo__eq"])
 
         return self._create_category_objects(query.all())
 

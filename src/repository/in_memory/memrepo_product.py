@@ -19,6 +19,9 @@ class MemRepoProduct:
         if "id__eq" in filters:
             result = [c for c in result if c.code == filters["id__eq"]]
 
+        if "code__eq" in filters:
+            result = [c for c in result if c.code == filters["code__eq"]]
+
         if "ativo__eq" in filters:
             result = [c for c in result if c.ativo is filters["ativo__eq"]]
 

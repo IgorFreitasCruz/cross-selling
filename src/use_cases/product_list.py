@@ -1,4 +1,3 @@
-"""Module for the client list use case"""
 from src.responses import (
     ResponseFailure,
     ResponseSuccess,
@@ -7,7 +6,7 @@ from src.responses import (
 )
 
 
-def client_list_use_case(repo, request):
+def product_list_use_case(repo, request):
     """Use case logic
 
     Args:
@@ -23,7 +22,7 @@ def client_list_use_case(repo, request):
     if not request:
         return build_response_from_invalid_request(request)
     try:
-        clients = repo.list_client(filters=request.filters)
-        return ResponseSuccess(clients)
+        products = repo.list_product(filters=request.filters)
+        return ResponseSuccess(products)
     except Exception as exc:
         return ResponseFailure(ResponseTypes.SYSTEM_ERROR, exc)

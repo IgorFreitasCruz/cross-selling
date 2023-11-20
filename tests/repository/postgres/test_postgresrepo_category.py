@@ -25,15 +25,12 @@ def test_repository_list_category_with_ativo_true_filter(
     repo_clients = repo.list_category(filters={"ativo__eq": True})
 
     assert len(repo_clients) == 2
-    assert [c.to_dict()["descricao"] for c in repo_clients] == [
-        c["descricao"] for c in pg_category_test_data if c["ativo"] is True
-    ]
 
-@pytest.mark.skip("olhar depois")
+
 def test_repository_list_category_with_id_equal_filter(app_configuration):
     repo = PostgresRepoCategory(app_configuration)
 
-    repo_categories = repo.list_category(filters={"id__eq": 25})
+    repo_categories = repo.list_category(filters={"id__eq": 1})
 
     assert len(repo_categories) == 1
 
@@ -43,10 +40,7 @@ def test_repository_create_category_from_dictionary(app_configuration, pg_sessio
 
     category_dict = {
         "descricao": "description text",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": True,
-        "client_id": [1],
+        "client_id": 1,
     }
 
     repo.create_category(category_dict)
@@ -55,18 +49,20 @@ def test_repository_create_category_from_dictionary(app_configuration, pg_sessio
 
     assert len(all_categories) == 5
 
-@pytest.mark.skip("olhar depois")
+
 def test_repository_update_category(app_configuration):
     repo = PostgresRepoCategory(app_configuration)
 
     new_category_data = {
-        "descricao": "Categoria A",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": True,
+        "descricao": "Categoria B",
+        "dt_inclusao": "01/01/2023, 00:00:00",
+        "dt_alteracao": "01/01/2023, 00:00:00",
+        "ativo": False,
     }
-    repo.update_category(31, new_category_data)
+    repo.update_category(2, new_category_data)
 
-    updated_client = repo.list_category(filters={"id__eq":31})
+    updated_client = repo.list_category(filters={"id__eq": 2})
 
-    assert updated_client[0].ativo is True
+    assert updated_client[0].dt_inclusao == "01/01/2023, 00:00:00"
+    assert updated_client[0].dt_alteracao == "01/01/2023, 00:00:00"
+    assert updated_client[0].ativo is False

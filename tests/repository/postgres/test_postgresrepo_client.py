@@ -14,18 +14,17 @@ def test_client_repository_list_without_parameters(
 ):
     repo = PostgresRepoClient(app_configuration)
 
-    clients = repo.list()
+    clients = repo.list_client()
 
     assert len(clients) == 4
 
 
-@pytest.mark.skip("olhar depois")
 def test_client_repository_list_with_code_equal_filter(
     app_configuration, pg_session, pg_client_test_data
 ):
     repo = PostgresRepoClient(app_configuration)
 
-    repo_clients = repo.list(
+    repo_clients = repo.list_client(
         filters={"code__eq": "f853578c-fc0f-4e65-81b8-566c5dffa35a"}
     )
 
@@ -38,7 +37,7 @@ def test_client_repository_list_with_ativo_false_filter(
 ):
     repo = PostgresRepoClient(app_configuration)
 
-    clients_inactive = repo.list(filters={"ativo__eq": False})
+    clients_inactive = repo.list_client(filters={"ativo__eq": False})
 
     assert len(clients_inactive) == 0
 
@@ -59,7 +58,7 @@ def test_client_repository_create_from_dictionary(app_configuration):
     assert client.dt_inclusao is None
     assert client.dt_alteracao is None
 
-@pytest.mark.skip("olhar depois")
+
 def test_client_repository_update(app_configuration, pg_session, pg_client_test_data):
     repo = PostgresRepoClient(app_configuration)
 
@@ -69,6 +68,6 @@ def test_client_repository_update(app_configuration, pg_session, pg_client_test_
     }
     repo.update_client(new_client_data)
 
-    updated_client = repo.list(filters={"id__eq": 1})
+    updated_client = repo.list_client(filters={"id__eq": 1})
 
     assert updated_client[0].ativo is False
