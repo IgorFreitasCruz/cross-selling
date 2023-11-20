@@ -1,5 +1,5 @@
 """Test module for structured response objects"""
-from src.requests.client_list import ClientListInvalidRequest
+from src.requests.validation.invalid_request import InvalidRequest
 from src.responses import (
     ResponseFailure,
     ResponseSuccess,
@@ -53,7 +53,7 @@ def test_response_failure_initialization_with_exception():
 
 
 def test_response_failure_from_empty_invalid_request():
-    request = ClientListInvalidRequest()
+    request = InvalidRequest()
     request.add_error("path", "Is mandatory")
     request.add_error("path", "can't be blank")
 

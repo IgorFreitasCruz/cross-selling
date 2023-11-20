@@ -14,8 +14,8 @@ def build_update_client_request(client: Client):
         client (dict): Dictionary containing client data
 
     Returns:
-        Object: Return ClientCreateInvalidRequest if errors, otherwise, returns
-        ClientCreateValidRequest,
+        Object: Return InvalidRequest if errors, otherwise, returns
+        ValidRequest,
     """
     invalid_req = InvalidRequest()
 

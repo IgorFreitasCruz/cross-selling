@@ -11,8 +11,8 @@ def build_update_category_request(category: Dict):
         client (dict): Dictionary containing client data
 
     Returns:
-        Object: Return ClientCreateInvalidRequest if errors, otherwise, returns
-        ClientCreateValidRequest,
+        Object: Return InvalidRequest if errors, otherwise, returns
+        ValidRequest,
     """
     invalid_req = InvalidRequest()
 
