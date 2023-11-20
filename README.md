@@ -1,4 +1,11 @@
-# Cross-selling API
+# Kogui Cross-selling API
+
+## Features
+
+* [x] Register clients, categories and products
+* [x] Search clients, categories and products
+* [x] Update clients, categories and products
+* [x] Registes and search transactions
 
 <br>
 
