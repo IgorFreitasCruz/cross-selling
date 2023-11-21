@@ -2,7 +2,7 @@
 # pylint: disable=c0103
 # pylint: disable=c0209
 # pylint: disable=c0116
-from typing import Dict
+from typing import Dict, List
 
 from sqlmodel import select
 
@@ -14,19 +14,22 @@ from src.repository.postgres.postgres_objects import Client as PgClient
 class PostgresRepoClient(BasePostgresRepo):
     """Postgres Client repository"""
 
-    def _create_client_objects(self, results):
+    def _create_client_objects(self, results) -> List[client.Client]:
         return [
             client.Client(
-                code=q.code,
-                razao_social=q.razao_social,
-                cnpj=q.cnpj,
-                email=q.email,
-                ativo=q.ativo,
+                id=c.id,
+                code=c.code,
+                cnpj=c.cnpj,
+                email=c.email,
+                razao_social=c.razao_social,
+                dt_inclusao=c.dt_inclusao,
+                dt_alteracao=c.dt_alteracao,
+                ativo=c.ativo,
             )
-            for q in results
+            for c in results
         ]
 
-    def list_client(self, filters=None):
+    def list_client(self, filters=None) -> List[client.Client]:
         session = self._create_session()
 
         query = session.query(PgClient)
@@ -45,30 +48,24 @@ class PostgresRepoClient(BasePostgresRepo):
 
         return self._create_client_objects(query.all())
 
-    def create_client(self, new_client: Dict) -> PgClient.id:
+    def create_client(self, new_client: Dict) -> client.Client:
         session = self._create_session()
 
-        pg_client_obj = PgClient(
-            razao_social=new_client["razao_social"],
-            cnpj=new_client["cnpj"],
-            email=new_client["email"],
-        )
-
+        pg_client_obj = PgClient(**new_client)
         session.add(pg_client_obj)
         session.commit()
-        session.refresh(pg_client_obj)
 
-        return pg_client_obj
+        return self._create_client_objects([pg_client_obj])[0]
 
-    def update_client(self, new_client_data: Dict) -> PgClient:
+    def update_client(self, new_client_data: Dict) -> client.Client:
         session = self._create_session()
 
         statement = select(PgClient).where(PgClient.id == new_client_data["id"])
-        client_obj = session.exec(statement).one()
+        pg_client_obj = session.exec(statement).one()
 
         for field, value in new_client_data.items():
-            setattr(client_obj, field, value)
+            setattr(pg_client_obj, field, value)
 
         session.commit()
 
-        return client_obj
+        return self._create_client_objects([pg_client_obj])[0]

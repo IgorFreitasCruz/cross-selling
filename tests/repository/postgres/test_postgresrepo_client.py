@@ -42,21 +42,21 @@ def test_client_repository_list_with_ativo_false_filter(
     assert len(clients_inactive) == 0
 
 
-def test_client_repository_create_from_dictionary(app_configuration):
+def test_client_repository_create_from_dictionary(app_configuration, pg_session):
     repo = PostgresRepoClient(app_configuration)
 
     client_dict = {
-        "razao_social": "My company 5",
-        "cnpj": "00.000.000/0000-05",
-        "email": "mycompany_4@email.com",
+        "cnpj": "00.000.000/0000-10",
+        "email": "my_new_email@email.com",
+        "razao_social": "My new company",
     }
 
     client = repo.create_client(client_dict)
 
-    assert client.id
-    assert client.ativo
-    assert client.dt_inclusao is None
-    assert client.dt_alteracao is None
+    assert client.id == 5
+    assert client.cnpj == "00.000.000/0000-10"
+    assert client.email == "my_new_email@email.com"
+    assert client.razao_social == "My new company"
 
 
 def test_client_repository_update(app_configuration, pg_session, pg_client_test_data):

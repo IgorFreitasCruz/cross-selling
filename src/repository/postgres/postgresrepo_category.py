@@ -1,3 +1,5 @@
+# pylint: disable=c0103
+# pylint: disable=c0209
 # pylint: disable=c0116
 from typing import Dict, List
 
@@ -17,16 +19,18 @@ class PostgresRepoCategory(BasePostgresRepo):
     def _create_category_objects(self, result) -> List[category.Category]:
         return [
             category.Category(
+                id=c.id,
+                code=c.code,
                 descricao=c.descricao,
-                dt_inclusao=c.dt_inclusao,
                 client_id=c.client_id,
+                dt_inclusao=c.dt_inclusao,
                 dt_alteracao=c.dt_alteracao,
                 ativo=c.ativo,
             )
             for c in result
         ]
 
-    def list_category(self, filters=None) -> None:
+    def list_category(self, filters=None) -> List[category.Category]:
         session = self._create_session()
 
         query = session.query(PgCategory)
@@ -45,24 +49,24 @@ class PostgresRepoCategory(BasePostgresRepo):
 
         return self._create_category_objects(query.all())
 
-    def create_category(self, new_category: Dict) -> PgCategory.id:
+    def create_category(self, new_category: Dict) -> category.Category:
         session = self._create_session()
 
         pg_category_obj = PgCategory(**new_category)
         session.add(pg_category_obj)
         session.commit()
 
-        return pg_category_obj.id
+        return self._create_category_objects([pg_category_obj])[0]
 
-    def update_category(self, new_category_data: Dict) -> PgCategory:
+    def update_category(self, new_category_data: Dict) -> category.Category:
         session = self._create_session()
 
         statement = select(PgCategory).where(PgCategory.id == new_category_data["id"])
-        category_obj = session.exec(statement).one()
+        pg_category_obj = session.exec(statement).one()
 
         for field, value in new_category_data.items():
-            setattr(category_obj, field, value)
+            setattr(pg_category_obj, field, value)
 
         session.commit()
 
-        return category_obj
+        return self._create_category_objects([pg_category_obj])[0]

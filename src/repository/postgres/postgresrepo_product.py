@@ -1,4 +1,7 @@
-from typing import Dict
+# pylint: disable=c0103
+# pylint: disable=c0209
+# pylint: disable=c0116
+from typing import Dict, List
 
 from sqlmodel import select
 
@@ -26,18 +29,17 @@ class PostgresRepoProduct(BasePostgresRepo):
             for p in result
         ]
 
-    def create_product(self, product: Dict):
+    def create_product(self, product: Dict) -> product.Product:
         session = self._create_session()
 
         pg_product_obj = PgProduct(**product)
 
         session.add(pg_product_obj)
         session.commit()
-        session.refresh(pg_product_obj)
 
-        return pg_product_obj
+        return self._create_product_objects([pg_product_obj])[0]
 
-    def list_product(self, filters=None):
+    def list_product(self, filters=None) -> List[product.Product]:
         session = self._create_session()
 
         query = session.query(PgProduct)
@@ -54,15 +56,15 @@ class PostgresRepoProduct(BasePostgresRepo):
 
         return self._create_product_objects(query.all())
 
-    def update_product(self, new_product_data: Dict) -> PgProduct:
+    def update_product(self, new_product_data: Dict) -> product.Product:
         session = self._create_session()
 
         statement = select(PgProduct).where(PgProduct.id == new_product_data["id"])
-        product_obj = session.exec(statement).one()
+        pg_product_obj = session.exec(statement).one()
 
         for field, value in new_product_data.items():
-            setattr(product_obj, field, value)
+            setattr(pg_product_obj, field, value)
 
         session.commit()
 
-        return product_obj
+        return self._create_product_objects([pg_product_obj])[0]

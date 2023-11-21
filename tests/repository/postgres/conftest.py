@@ -9,9 +9,10 @@ keep the code separated in a more specific file conftest.py
 import pytest
 import sqlmodel
 
-from src.repository.postgres.postgres_objects import Client as PgClient
 from src.repository.postgres.postgres_objects import Category as PgCategory
+from src.repository.postgres.postgres_objects import Client as PgClient
 from src.repository.postgres.postgres_objects import Product as PgProduct
+from src.repository.postgres.postgres_objects import Transaction as PgTransaction
 
 
 @pytest.fixture(scope="session")
@@ -110,14 +111,49 @@ def pg_product_test_data():
     ]
 
 
+@pytest.fixture(scope="session")
+def pg_transaction_test_data():
+    return [
+        {
+            "client_id": 1,
+            "produto_id": 1,
+            "quantidade": 5,
+            "ativo": True,
+        },
+        {
+            "client_id": 2,
+            "produto_id": 1,
+            "quantidade": 5,
+            "ativo": True,
+        },
+        {
+            "client_id": 3,
+            "produto_id": 1,
+            "quantidade": 5,
+            "ativo": False,
+        },
+        {
+            "client_id": 4,
+            "produto_id": 1,
+            "quantidade": 5,
+            "ativo": False,
+        },
+    ]
+
+
 @pytest.fixture(scope="package")
-def pg_session(pg_session_empty, pg_client_test_data, pg_category_test_data, pg_product_test_data):
+def pg_session(
+    pg_session_empty,
+    pg_client_test_data,
+    pg_category_test_data,
+    pg_product_test_data,
+    pg_transaction_test_data,
+):
     """Fills the database with Postgress objects created with the test data for
     every test that is run. These are not entities, but Postgress objects we
     create to map them.
     """
     for idx, client in enumerate(pg_client_test_data):
-
         ### CREATE CLIENTS ###
         new_client = PgClient(**client)
         pg_session_empty.add(new_client)
@@ -143,9 +179,18 @@ def pg_session(pg_session_empty, pg_client_test_data, pg_category_test_data, pg_
         pg_session_empty.add(new_product)
         pg_session_empty.commit()
 
+        ### CREATE TRANSACTIONS ###
+        # Assuming the same length of product and transaction arrays
+        transaction_data = pg_transaction_test_data[idx]
+        new_transaction = PgTransaction(**transaction_data)
+
+        pg_session_empty.add(new_transaction)
+        pg_session_empty.commit()
+
     yield pg_session_empty
 
     # Clean up after test
+    pg_session_empty.query(PgTransaction).delete()
     pg_session_empty.query(PgProduct).delete()
     pg_session_empty.query(PgCategory).delete()
     pg_session_empty.query(PgClient).delete()

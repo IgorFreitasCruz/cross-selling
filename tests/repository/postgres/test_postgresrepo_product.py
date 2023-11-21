@@ -13,15 +13,19 @@ def test_product_repository_create_from_dictionary(app_configuration, pg_session
     repo = PostgresRepoProduct(app_configuration)
 
     product_dict = {
-        "nome": "My product",
-        "descricao": "My description",
-        "sku": "0123456789",
+        "nome": "My new product",
+        "descricao": "My new description",
+        "sku": "0101010101",
         "categoria_id": 1,
     }
 
     product = repo.create_product(product_dict)
 
     assert product.id == 5
+    assert product.nome == "My new product"
+    assert product.descricao == "My new description"
+    assert product.sku == "0101010101"
+    assert product.categoria_id == 1
 
 
 def test_repository_list_product_without_parameters(app_configuration, pg_session):
@@ -29,7 +33,7 @@ def test_repository_list_product_without_parameters(app_configuration, pg_sessio
 
     products = repo.list_product()
 
-    assert len(products) > 0
+    assert len(products) == 5
 
 
 def test_repository_update_product(app_configuration, pg_session):
