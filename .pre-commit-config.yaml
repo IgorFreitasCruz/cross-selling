@@ -6,5 +6,6 @@ repos:
         entry: pytest
         language: system
         types: [python]
+        always_run: true
         args:
           ["-svv"]
