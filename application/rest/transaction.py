@@ -1,8 +1,9 @@
 import json
+import os
 
-import pytest
 from flask import Blueprint, Response, request
 
+# from src.repository.postgres.postgresrepo_transaction import PostgresRepoTransaction
 from src.repository.in_memory.memrepo_transaction import MemRepoTransaction
 from src.requests.transaction_list import build_transaction_list_request
 from src.responses import STATUS_CODE
@@ -54,9 +55,17 @@ transactions = [
     },
 ]
 
+# postgres_configuration = {
+#     "POSTGRES_USER": os.environ["POSTGRES_USER"],
+#     "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
+#     "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
+#     "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
+#     "APPLICATION_DB": os.environ["APPLICATION_DB"],
+# }
 
-@blueprint.route("/transaction", methods=["GET"])
-def product_list():
+
+@blueprint.route("/transactions", methods=["GET"])
+def transaction_list():
     qrystr_params = {
         "filters": {},
     }
@@ -67,7 +76,7 @@ def product_list():
 
     request_obj = build_transaction_list_request(qrystr_params["filters"])
 
-    # repo = PostgresRepoCategory(postgres_configuration)
+    # repo = PostgresRepoTransaction(postgres_configuration)
     repo = MemRepoTransaction(transactions)
     response = transaction_list_use_case(repo, request_obj)
 

@@ -1,8 +1,10 @@
 import json
+import os
 
 from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
+# from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
 from src.repository.in_memory.memrepo_product import MemRepoProduct
 from src.requests.product_create import build_create_product_request
 from src.requests.product_list import build_product_list_request
@@ -13,7 +15,7 @@ from src.use_cases.product_create import product_create_use_case
 from src.use_cases.product_list import product_list_use_case
 from src.use_cases.product_update import product_update_use_case
 
-from .schema.product import ProductSchema, UpdateProductSchema
+from application.rest.schema.product import ProductSchema, UpdateProductSchema
 
 blueprint = Blueprint("products", __name__)
 
@@ -62,7 +64,7 @@ def product_create():
 
     request_obj = build_create_product_request(product.dict())
 
-    # repo = PostgresRepoCategory(postgres_configuration)
+    # repo = PostgresRepoProduct(postgres_configuration)
     repo = MemRepoProduct(products)
     response = product_create_use_case(repo, request_obj)
 
@@ -85,7 +87,7 @@ def product_list():
 
     request_obj = build_product_list_request(qrystr_params["filters"])
 
-    # repo = PostgresRepoCategory(postgres_configuration)
+    # repo = PostgresRepoProduct(postgres_configuration)
     repo = MemRepoProduct(products)
     response = product_list_use_case(repo, request_obj)
 
@@ -105,7 +107,7 @@ def product_upadte():
 
     request_obj = build_update_product_request(product.dict())
 
-    # repo = PostgresRepoCategory(postgres_configuration)
+    # repo = PostgresRepoProduct(postgres_configuration)
     repo = MemRepoProduct(products)
     response = product_update_use_case(repo, request_obj)
 

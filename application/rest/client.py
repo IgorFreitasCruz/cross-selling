@@ -6,7 +6,7 @@ from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
 from src.repository.in_memory.memrepo_client import MemRepo
-from src.repository.postgres.postgresrepo_client import PostgresRepoClient
+# from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 from src.requests.client_create import build_create_client_request
 from src.requests.client_list import build_client_list_request
 from src.requests.client_update import build_update_client_request
@@ -16,7 +16,7 @@ from src.use_cases.client_create import client_create_use_case
 from src.use_cases.client_list import client_list_use_case
 from src.use_cases.client_update import client_update_use_case
 
-from .schema.client import ClientSchema, UpdateClientSchema
+from application.rest.schema.client import ClientSchema, UpdateClientSchema
 
 blueprint = Blueprint("client", __name__)
 
@@ -51,6 +51,7 @@ clients = [
         "ativo": False,
     },
 ]
+
 
 # postgres_configuration = {
 #     "POSTGRES_USER": os.environ["POSTGRES_USER"],

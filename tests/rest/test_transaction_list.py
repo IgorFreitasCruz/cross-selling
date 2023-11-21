@@ -24,7 +24,7 @@ transactions = [Transaction.from_dict(transaction_dict)]
 def test_get(mock_use_case, client):
     mock_use_case.return_value = ResponseSuccess(transactions)
 
-    http_response = client.get("/transaction")
+    http_response = client.get("/transactions")
 
     assert json.loads(http_response.data.decode("utf-8")) == [transaction_dict]
 
@@ -40,7 +40,7 @@ def test_get(mock_use_case, client):
 def test_get_with_filters(mock_use_case, client):
     mock_use_case.return_value = ResponseSuccess(transactions)
 
-    http_response = client.get("/transaction?filter_ativo__eq=true")
+    http_response = client.get("/transactions?filter_ativo__eq=true")
 
     assert json.loads(http_response.data.decode("utf-8")) == [transaction_dict]
 
@@ -69,7 +69,7 @@ def test_get_response_failures(
         response_type, message="Just an error message"
     )
 
-    http_response = client.get("/transaction?dummy_request_string")
+    http_response = client.get("/transactions?dummy_request_string")
 
     mock_use_case.assert_called()
 

@@ -17,7 +17,7 @@ from src.use_cases.category_create import category_create_use_case
 from src.use_cases.category_list import category_list_use_case
 from src.use_cases.category_update import category_update_use_case
 
-from .schema.category import CategorySchema, UpdateCategorySchema
+from application.rest.schema.category import CategorySchema, UpdateCategorySchema
 
 blueprint = Blueprint("category", __name__)
 
