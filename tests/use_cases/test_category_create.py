@@ -51,6 +51,12 @@ def test_create_category_already_exists(category_dict):
     result = category_create_use_case(repo, request)
 
     assert bool(result) is False
+    repo.list_category.assert_called_with(
+        filters={
+            "client_id": request.data["client_id"],
+            "descricao__eq": request.data["descricao"],
+        }
+    )
     assert result.value == {
         "type": ResponseTypes.DOMAIN_ERROR,
         "message": "Categoria já cadastrada",
