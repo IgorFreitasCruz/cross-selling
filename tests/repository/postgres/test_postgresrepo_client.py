@@ -19,17 +19,38 @@ def test_client_repository_list_without_parameters(
     assert len(clients) == 4
 
 
+def test_client_repository_list_with_id_equal_filter(
+    app_configuration, pg_session, pg_client_test_data
+):
+    repo = PostgresRepoClient(app_configuration)
+
+    client = repo.list_client(filters={"id__eq": 1})
+
+    assert client[0].id == 1
+
+
 def test_client_repository_list_with_code_equal_filter(
     app_configuration, pg_session, pg_client_test_data
 ):
     repo = PostgresRepoClient(app_configuration)
 
-    repo_clients = repo.list_client(
+    client = repo.list_client(
         filters={"code__eq": "f853578c-fc0f-4e65-81b8-566c5dffa35a"}
     )
 
-    assert len(repo_clients) == 1
-    assert repo_clients[0].code == "f853578c-fc0f-4e65-81b8-566c5dffa35a"
+    assert client[0].id == 1
+    assert client[0].code == "f853578c-fc0f-4e65-81b8-566c5dffa35a"
+
+
+def test_client_repository_list_with_cnpj_equal_filter(
+    app_configuration, pg_session, pg_client_test_data
+):
+    repo = PostgresRepoClient(app_configuration)
+
+    client = repo.list_client(filters={"cnpj__eq": "00.000.000/0000-01"})
+
+    assert client[0].id == 1
+    assert client[0].cnpj == "00.000.000/0000-01"
 
 
 def test_client_repository_list_with_ativo_false_filter(

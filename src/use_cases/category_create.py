@@ -22,6 +22,9 @@ def category_create_use_case(repo, request):
     if not request:
         return build_response_from_invalid_request(request)
     try:
+        check_category_exists = repo.list_category(request.data["descricao"])
+        if check_category_exists:
+            return ResponseFailure(ResponseTypes.DOMAIN_ERROR, "Categoria já cadastrada")
         client = repo.create_category(request.data)
         return ResponseSuccess(client)
     except Exception as exc:

@@ -33,7 +33,7 @@ def test_build_client_list_request_with_incorrect_filter_keys():
     assert bool(request) is False
 
 
-@pytest.mark.parametrize("key", ["id__eq", "code__eq", "ativo__eq"])
+@pytest.mark.parametrize("key", ["id__eq", "code__eq", "ativo__eq", "cnpj__eq"])
 def test_build_client_list_request_accepted_filters(key):
     filters = {key: 1}
 

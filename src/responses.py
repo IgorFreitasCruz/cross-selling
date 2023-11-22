@@ -8,6 +8,8 @@ class ResponseTypes:
     RESOURCE_ERROR = "ResourceError"
     SYSTEM_ERROR = "SystemError"
     SUCCESS = "Success"
+    DOMAIN_ERROR = "Erro de domínio já existente"
+
 
 
 STATUS_CODE = {
@@ -15,6 +17,7 @@ STATUS_CODE = {
     ResponseTypes.RESOURCE_ERROR: 404,
     ResponseTypes.PARAMETERS_ERROR: 400,
     ResponseTypes.SYSTEM_ERROR: 500,
+    ResponseTypes.DOMAIN_ERROR: 409,
 }
 
 

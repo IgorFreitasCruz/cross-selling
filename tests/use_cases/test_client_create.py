@@ -1,4 +1,5 @@
 """Test module for create client"""
+# pylint: disable=c0116
 from unittest import mock
 
 import pytest
@@ -8,16 +9,9 @@ from src.responses import ResponseTypes
 from src.use_cases.client_create import client_create_use_case
 
 
-def test_create_client_success():
-    repo = mock.Mock()
-
-    new_client = {
-        "razao_social": "New Company",
-        "cnpj": "11.111.111/1111-11",
-        "email": "new_company@email.com",
-    }
-
-    new_client_created = {
+@pytest.fixture
+def client_dict():
+    return {
         "id": 1,
         "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
         "razao_social": "New Company",
@@ -28,7 +22,18 @@ def test_create_client_success():
         "ativo": True,
     }
 
-    repo.create_client.return_value = new_client_created
+
+def test_create_client_success(client_dict):
+    repo = mock.Mock()
+
+    new_client = {
+        "razao_social": "New Company",
+        "cnpj": "11.111.111/1111-11",
+        "email": "new_company@email.com",
+    }
+
+    repo.list_client.return_value = []
+    repo.create_client.return_value = client_dict
 
     request = build_create_client_request(new_client)
 
@@ -36,7 +41,22 @@ def test_create_client_success():
 
     assert bool(result) is True
     repo.create_client.assert_called_with(new_client)
-    assert result.value == new_client_created
+    assert result.value == client_dict
+
+
+def test_create_client_already_exists(client_dict):
+    repo = mock.Mock()
+    repo.list_client.return_value = client_dict
+
+    request = build_create_client_request(client_dict)
+
+    result = client_create_use_case(repo, request)
+
+    assert bool(result) is False
+    assert result.value == {
+        "type": ResponseTypes.DOMAIN_ERROR,
+        "message": "O CNPJ já existe",
+    }
 
 
 @pytest.mark.skip("olhar depois")
@@ -50,7 +70,7 @@ def test_create_client_handles_generic_error():
         "email": "new_company@email.com",
     }
 
-    request = build_create_client_request(client=new_client)
+    request = build_create_client_request(new_client)
 
     result = client_create_use_case(repo, request)
 
