@@ -1,6 +1,9 @@
 """Test module for client postgres repository"""
 # pylint: disable=c0116
 # pylint: disable=w0613
+import uuid
+from datetime import datetime
+
 import pytest
 
 from src.repository.postgres.postgresrepo_client import PostgresRepoClient
@@ -35,11 +38,12 @@ def test_client_repository_list_with_code_equal_filter(
     repo = PostgresRepoClient(app_configuration)
 
     client = repo.list_client(
-        filters={"code__eq": "f853578c-fc0f-4e65-81b8-566c5dffa35a"}
+        filters={"code__eq": uuid.UUID("f853578c-fc0f-4e65-81b8-566c5dffa35a")}
     )
 
     assert client[0].id == 1
-    assert client[0].code == "f853578c-fc0f-4e65-81b8-566c5dffa35a"
+    assert client[0].code == uuid.UUID("f853578c-fc0f-4e65-81b8-566c5dffa35a")
+    assert isinstance(client[0].dt_inclusao, datetime)
 
 
 def test_client_repository_list_with_cnpj_equal_filter(
@@ -92,3 +96,4 @@ def test_client_repository_update(app_configuration, pg_session, pg_client_test_
     updated_client = repo.list_client(filters={"id__eq": 1})
 
     assert updated_client[0].ativo is False
+    assert updated_client[0].code == uuid.UUID("f853578c-fc0f-4e65-81b8-566c5dffa35a")

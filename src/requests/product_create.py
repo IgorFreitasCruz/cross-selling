@@ -1,7 +1,9 @@
+import uuid
+from datetime import datetime
 from typing import Dict
 
-from .validation.invalid_request import InvalidRequest
-from .validation.valid_request import ValidRequest
+from src.requests.validation.invalid_request import InvalidRequest
+from src.requests.validation.valid_request import ValidRequest
 
 
 def build_create_product_request(product: Dict):
@@ -20,4 +22,6 @@ def build_create_product_request(product: Dict):
     if invalid_req.has_errors():
         return invalid_req
 
+    product.update({"code": uuid.uuid4()})
+    product.update({"dt_inclusao": datetime.now()})
     return ValidRequest(data=product)

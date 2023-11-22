@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.requests.category_update import build_update_category_request
 
 
@@ -11,3 +13,5 @@ def test_build_category_update_request():
     request = build_update_category_request(category_to_update)
 
     assert bool(request) is True
+    assert "dt_alteracao" in category_to_update
+    assert isinstance(category_to_update["dt_alteracao"], datetime)

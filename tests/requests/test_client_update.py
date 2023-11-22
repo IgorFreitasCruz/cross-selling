@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.requests.client_update import build_update_client_request
 
 
@@ -13,3 +15,5 @@ def test_build_client_update_request():
     request = build_update_client_request(new_client)
 
     assert bool(request) is True
+    assert "dt_alteracao" in new_client
+    assert isinstance(new_client["dt_alteracao"], datetime)

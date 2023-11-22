@@ -1,3 +1,6 @@
+import uuid
+from datetime import datetime
+
 from src.requests.client_create import build_create_client_request
 
 
@@ -10,3 +13,7 @@ def test_build_client_create_request():
     request = build_create_client_request(new_client)
 
     assert bool(request) is True
+    assert "code" in new_client
+    assert "dt_inclusao" in new_client
+    assert isinstance(new_client["code"], uuid.UUID)
+    assert isinstance(new_client["dt_inclusao"], datetime)

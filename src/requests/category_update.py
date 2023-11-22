@@ -1,8 +1,8 @@
+from datetime import datetime
 from typing import Dict
 
 from src.requests.validation.invalid_request import InvalidRequest
 from src.requests.validation.valid_request import ValidRequest
-from src.domain.category import Category
 
 
 def build_update_category_request(category: Dict):
@@ -23,4 +23,5 @@ def build_update_category_request(category: Dict):
     if invalid_req.has_errors():
         return invalid_req
 
+    category.update({"dt_alteracao": datetime.now()})
     return ValidRequest(data=category)

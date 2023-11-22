@@ -1,13 +1,14 @@
 """Module for the Postgres database"""
+import uuid
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
-from sqlmodel import Column, Field, SQLModel, String
+from sqlmodel import Field, SQLModel
 
 
 class Client(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    code: str = Field(sa_column=Column(String(36)))
+    code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
     razao_social: str
     cnpj: str
     email: str
@@ -18,7 +19,7 @@ class Client(SQLModel, table=True):
 
 class Category(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    code: str = Field(sa_column=Column(String(36)))
+    code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
     descricao: str
     dt_inclusao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
     dt_alteracao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
@@ -29,7 +30,7 @@ class Category(SQLModel, table=True):
 
 class Product(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    code: str = Field(sa_column=Column(String(36)))
+    code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
     nome: str
     descricao: str
     sku: str
@@ -42,7 +43,7 @@ class Product(SQLModel, table=True):
 
 class Transaction(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    code: str = Field(sa_column=Column(String(36)))
+    code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
     quantidade: Optional[int] = None
     dt_inclusao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
     dt_alteracao: datetime = Field(default_factory=datetime.utcnow, nullable=True)

@@ -1,14 +1,15 @@
 """Module for structured client requests objects"""
-from collections.abc import Mapping
+import uuid
+from datetime import datetime
+from typing import Dict
 
-from src.domain.client import Client
 from src.requests.validation.invalid_request import InvalidRequest
 from src.requests.validation.valid_request import ValidRequest
 from src.validators.cnpj import is_valid_cnpj
 from src.validators.email import is_valid_email
 
 
-def build_create_client_request(client: Client):
+def build_create_client_request(client: Dict):
     """Factory for requests
 
     Args:
@@ -29,4 +30,6 @@ def build_create_client_request(client: Client):
     if invalid_req.has_errors():
         return invalid_req
 
+    client.update({"code": uuid.uuid4()})
+    client.update({"dt_inclusao": datetime.now()})
     return ValidRequest(data=client)

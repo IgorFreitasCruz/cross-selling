@@ -2,6 +2,9 @@
 The fixtures contains code that is specific to Postgres, so it is better to 
 keep the code separated in a more specific file conftest.py
 """
+import uuid
+from datetime import datetime
+
 # pylint: disable=w0621
 # pylint: disable=c0116
 # pylint: disable=c0103
@@ -44,25 +47,33 @@ def pg_session_empty(app_configuration):
 def pg_client_test_data():
     return [
         {
-            "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
+            "code": uuid.UUID("f853578c-fc0f-4e65-81b8-566c5dffa35a"),
             "razao_social": "My company 1",
             "cnpj": "00.000.000/0000-01",
             "email": "mycompany_1@email.com",
+            "dt_inclusao": datetime.now(),
+            "dt_alteracao": datetime.now(),
         },
         {
             "razao_social": "My company 2",
             "cnpj": "00.000.000/0000-02",
             "email": "mycompany_2@email.com",
+            "dt_inclusao": datetime.now(),
+            "dt_alteracao": None,
         },
         {
             "razao_social": "My company 3",
             "cnpj": "00.000.000/0000-03",
             "email": "mycompany_3@email.com",
+            "dt_inclusao": datetime.now(),
+            "dt_alteracao": None,
         },
         {
             "razao_social": "My company 4",
             "cnpj": "00.000.000/0000-04",
             "email": "mycompany_4@email.com",
+            "dt_inclusao": datetime.now(),
+            "dt_alteracao": None,
         },
     ]
 

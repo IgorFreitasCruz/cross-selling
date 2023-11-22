@@ -1,6 +1,6 @@
+from datetime import datetime
 from typing import Dict
 
-from src.domain.product import Product
 from src.requests.validation.invalid_request import InvalidRequest
 from src.requests.validation.valid_request import ValidRequest
 
@@ -23,4 +23,5 @@ def build_update_product_request(product: Dict):
     if invalid_req.has_errors():
         return invalid_req
 
+    product.update({"dt_alteracao": datetime.now()})
     return ValidRequest(data=product)

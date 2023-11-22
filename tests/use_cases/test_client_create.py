@@ -53,6 +53,7 @@ def test_create_client_already_exists(client_dict):
     result = client_create_use_case(repo, request)
 
     assert bool(result) is False
+    repo.list_client.assert_called_with(filters=request.data["cnpj"])
     assert result.value == {
         "type": ResponseTypes.DOMAIN_ERROR,
         "message": "O CNPJ já existe",

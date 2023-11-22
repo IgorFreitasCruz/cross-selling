@@ -1,4 +1,6 @@
 """Module for structured category requests objects"""
+import uuid
+from datetime import datetime
 from typing import Dict
 
 from .validation.invalid_request import InvalidRequest
@@ -22,4 +24,6 @@ def build_create_category_request(category: Dict):
     if invalid_req.has_errors():
         return invalid_req
 
+    category.update({"code": uuid.uuid4()})
+    category.update({"dt_inclusao": datetime.now()})
     return ValidRequest(data=category)
