@@ -6,7 +6,7 @@ from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
 from src.repository.in_memory.memrepo_client import MemRepo
-# from src.repository.postgres.postgresrepo_client import PostgresRepoClient
+from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 from src.requests.client_create import build_create_client_request
 from src.requests.client_list import build_client_list_request
 from src.requests.client_update import build_update_client_request
@@ -52,14 +52,16 @@ clients = [
     },
 ]
 
-
-# postgres_configuration = {
-#     "POSTGRES_USER": os.environ["POSTGRES_USER"],
-#     "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
-#     "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
-#     "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
-#     "APPLICATION_DB": os.environ["APPLICATION_DB"],
-# }
+try:
+    postgres_configuration = {
+        "POSTGRES_USER": os.environ["POSTGRES_USER"],
+        "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
+        "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
+        "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
+        "APPLICATION_DB": os.environ["APPLICATION_DB"],
+    }
+except Exception:
+    ...
 
 
 @blueprint.route("/clients", methods=["POST"])

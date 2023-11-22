@@ -23,7 +23,7 @@ def client_create_use_case(repo, request):
     if not request:
         return build_response_from_invalid_request(request)
     try:
-        check_client_exists = repo.list_client(filters=request.data["cnpj"])
+        check_client_exists = repo.list_client(filters={"cnpj__eq": request.data["cnpj"]})
         if check_client_exists:
             return ResponseFailure(ResponseTypes.DOMAIN_ERROR, "O CNPJ já existe")
         clients = repo.create_client(request.data)

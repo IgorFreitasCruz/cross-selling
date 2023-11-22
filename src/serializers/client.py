@@ -16,7 +16,7 @@ class ClientJsonEncoder(json.JSONEncoder):
         try:
             to_serialize = {
                 "id": o.id,
-                "code": o.code,
+                "code": str(o.code),
                 "razao_social": o.razao_social,
                 "cnpj": o.cnpj,
                 "email": o.email,

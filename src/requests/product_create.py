@@ -23,5 +23,4 @@ def build_create_product_request(product: Dict):
         return invalid_req
 
     product.update({"code": uuid.uuid4()})
-    product.update({"dt_inclusao": datetime.now()})
     return ValidRequest(data=product)

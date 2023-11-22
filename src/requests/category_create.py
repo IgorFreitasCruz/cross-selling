@@ -25,5 +25,4 @@ def build_create_category_request(category: Dict):
         return invalid_req
 
     category.update({"code": uuid.uuid4()})
-    category.update({"dt_inclusao": datetime.now()})
     return ValidRequest(data=category)

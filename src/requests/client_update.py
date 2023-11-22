@@ -22,11 +22,13 @@ def build_update_client_request(client: Dict):
     """
     invalid_req = InvalidRequest()
 
-    if not is_valid_cnpj(client["cnpj"]):
-        invalid_req.add_error("value", "Invalid CNPJ")
+    if "cnpj" in client:
+        if not is_valid_cnpj(client["cnpj"]):
+            invalid_req.add_error("value", "Invalid CNPJ")
 
-    if not is_valid_email(client["email"]):
-        invalid_req.add_error("value", "Invalid e-mail")
+    if "email" in client:
+        if not is_valid_email(client["email"]):
+            invalid_req.add_error("value", "Invalid e-mail")
 
     if invalid_req.has_errors():
         return invalid_req

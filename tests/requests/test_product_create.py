@@ -16,6 +16,4 @@ def test_build_product_create_request():
 
     assert bool(request) is True
     assert "code" in product
-    assert "dt_inclusao" in product
     assert isinstance(product["code"], uuid.UUID)
-    assert isinstance(product["dt_inclusao"], datetime)

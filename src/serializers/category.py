@@ -15,7 +15,7 @@ class CategoryJsonEncoder(json.JSONEncoder):
         try:
             to_serialize = {
                 "id": o.id,
-                "code": o.code,
+                "code": str(o.code),
                 "descricao": o.descricao,
                 "client_id": o.client_id,
                 "dt_inclusao": o.dt_inclusao,

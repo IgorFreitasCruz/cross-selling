@@ -12,8 +12,8 @@ class Client(SQLModel, table=True):
     razao_social: str
     cnpj: str
     email: str
-    dt_inclusao: str = None
-    dt_alteracao: str = None
+    dt_inclusao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
+    dt_alteracao: datetime = None
     ativo: bool = True
 
 
@@ -22,7 +22,7 @@ class Category(SQLModel, table=True):
     code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
     descricao: str
     dt_inclusao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
-    dt_alteracao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
+    dt_alteracao: datetime = None
     ativo: bool = True
 
     client_id: Optional[int] = Field(default=None, foreign_key="client.id")
@@ -35,7 +35,7 @@ class Product(SQLModel, table=True):
     descricao: str
     sku: str
     dt_inclusao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
-    dt_alteracao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
+    dt_alteracao: datetime = None
     ativo: bool = True
 
     categoria_id: Optional[int] = Field(default=None, foreign_key="category.id")
@@ -46,7 +46,7 @@ class Transaction(SQLModel, table=True):
     code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
     quantidade: Optional[int] = None
     dt_inclusao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
-    dt_alteracao: datetime = Field(default_factory=datetime.utcnow, nullable=True)
+    dt_alteracao: datetime = None
     ativo: bool = True
 
     client_id: int = Field(default=None, foreign_key="client.id")

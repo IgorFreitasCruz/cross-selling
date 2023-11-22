@@ -46,13 +46,12 @@ def test_client_repository_list_with_code_equal_filter(
     assert isinstance(client[0].dt_inclusao, datetime)
 
 
-def test_client_repository_list_with_cnpj_equal_filter(
-    app_configuration, pg_session, pg_client_test_data
-):
+def test_client_repository_list_with_cnpj_equal_filter(app_configuration, pg_session):
     repo = PostgresRepoClient(app_configuration)
 
     client = repo.list_client(filters={"cnpj__eq": "00.000.000/0000-01"})
 
+    assert len(client) == 1
     assert client[0].id == 1
     assert client[0].cnpj == "00.000.000/0000-01"
 

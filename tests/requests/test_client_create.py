@@ -14,6 +14,4 @@ def test_build_client_create_request():
 
     assert bool(request) is True
     assert "code" in new_client
-    assert "dt_inclusao" in new_client
     assert isinstance(new_client["code"], uuid.UUID)
-    assert isinstance(new_client["dt_inclusao"], datetime)

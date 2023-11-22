@@ -15,7 +15,7 @@ class TransactionJsonEncoder(json.JSONEncoder):
         try:
             to_serialize = {
                 "id": o.id,
-                "code": o.code,
+                "code": str(o.code),
                 "client_id": o.client_id,
                 "produto_id": o.produto_id,
                 "quantidade": o.quantidade,

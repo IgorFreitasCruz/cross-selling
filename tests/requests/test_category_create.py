@@ -13,6 +13,4 @@ def test_build_category_create_request():
 
     assert bool(request) is True
     assert "code" in request.data
-    assert "dt_inclusao" in request.data
     assert isinstance(category["code"], uuid.UUID)
-    assert isinstance(category["dt_inclusao"], datetime)

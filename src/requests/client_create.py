@@ -31,5 +31,4 @@ def build_create_client_request(client: Dict):
         return invalid_req
 
     client.update({"code": uuid.uuid4()})
-    client.update({"dt_inclusao": datetime.now()})
     return ValidRequest(data=client)

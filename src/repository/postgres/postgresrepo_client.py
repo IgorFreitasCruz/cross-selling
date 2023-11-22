@@ -46,6 +46,9 @@ class PostgresRepoClient(BasePostgresRepo):
         if "ativo__eq" in filters:
             query = query.filter(PgClient.ativo == filters["ativo__eq"])
 
+        if "cnpj__eq" in filters:
+            query = query.filter(PgClient.cnpj == filters["cnpj__eq"])
+
         return self._create_client_objects(query.all())
 
     def create_client(self, new_client: Dict) -> client.Client:
