@@ -112,7 +112,7 @@ def client_update():
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 
-    request_obj = build_update_client_request(client.dict())
+    request_obj = build_update_client_request(client.dict(exclude_unset=True))
 
     # repo = PostgresRepoClient(postgres_configuration)
     repo = MemRepo(clients)

@@ -111,7 +111,7 @@ def category_update():
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 
-    request_obj = build_update_category_request(category.dict())
+    request_obj = build_update_category_request(category.dict(exclude_unset=True))
 
     # repo = PostgresRepoCategory(postgres_configuration)
     repo = MemRepoCategory(categories)

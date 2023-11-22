@@ -105,7 +105,7 @@ def product_upadte():
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 
-    request_obj = build_update_product_request(product.dict())
+    request_obj = build_update_product_request(product.dict(exclude_unset=True))
 
     # repo = PostgresRepoProduct(postgres_configuration)
     repo = MemRepoProduct(products)
