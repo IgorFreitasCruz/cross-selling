@@ -20,8 +20,8 @@ class ProductJsonEncoder(json.JSONEncoder):
                 "descricao": o.descricao,
                 "sku": o.sku,
                 "categoria_id": o.categoria_id,
-                "dt_inclusao": o.dt_inclusao,
-                "dt_alteracao": o.dt_alteracao,
+                "dt_inclusao": str(o.dt_inclusao) if o.dt_inclusao is not None else o.dt_inclusao,
+                "dt_alteracao": str(o.dt_alteracao) if o.dt_alteracao is not None else o.dt_alteracao,
                 "ativo": o.ativo,
             }
             return to_serialize

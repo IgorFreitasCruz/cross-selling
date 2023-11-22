@@ -74,8 +74,8 @@ def category_create():
 
     request_obj = build_create_category_request(category.dict())
 
-    repo = PostgresRepoCategory(postgres_configuration)
-    # repo = MemRepoCategory(categories)
+    # repo = PostgresRepoCategory(postgres_configuration)
+    repo = MemRepoCategory(categories)
     response = category_create_use_case(repo, request_obj)
 
     return Response(
@@ -97,8 +97,8 @@ def category_list():
 
     request_obj = build_category_list_request(filters=qrystr_params["filters"])
 
-    repo = PostgresRepoCategory(postgres_configuration)
-    # repo = MemRepoCategory(categories)
+    # repo = PostgresRepoCategory(postgres_configuration)
+    repo = MemRepoCategory(categories)
     response = category_list_use_case(repo, request_obj)
 
     return Response(
@@ -117,8 +117,8 @@ def category_update():
 
     request_obj = build_update_category_request(category.dict(exclude_unset=True))
 
-    repo = PostgresRepoCategory(postgres_configuration)
-    # repo = MemRepoCategory(categories)
+    # repo = PostgresRepoCategory(postgres_configuration)
+    repo = MemRepoCategory(categories)
     response = category_update_use_case(repo, request_obj)
 
     return Response(

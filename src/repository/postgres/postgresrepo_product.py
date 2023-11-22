@@ -54,6 +54,14 @@ class PostgresRepoProduct(BasePostgresRepo):
             if "ativo__eq" in filters:
                 query = query.filter(PgProduct.ativo == filters["ativo__eq"])
 
+            if "categoria_id__eq" in filters:
+                query = query.filter(
+                    PgProduct.categoria_id == filters["categoria_id__eq"]
+                )
+
+            if "sku__eq" in filters:
+                query = query.filter(PgProduct.sku == filters["sku__eq"])
+
         return self._create_product_objects(query.all())
 
     def update_product(self, new_product_data: Dict) -> product.Product:

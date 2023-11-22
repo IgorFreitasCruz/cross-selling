@@ -1,6 +1,6 @@
-import pytest
-
 from unittest import mock
+
+import pytest
 
 from src.requests.product_create import build_create_product_request
 from src.use_cases.product_create import product_create_use_case
@@ -27,10 +27,11 @@ def test_create_product(product_dict):
     new_product = {
         "nome": "My product",
         "descricao": "My descricao",
-        "sky": "0123456789",
+        "sku": "0123456789",
         "categoria_id": 1,
     }
 
+    repo.list_product.return_value = []
     repo.create_product.return_value = product_dict
 
     request = build_create_product_request(new_product)

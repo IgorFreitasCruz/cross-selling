@@ -12,7 +12,7 @@ def test_serialize_domain_client():
         razao_social="My company",
         cnpj="00.000.000/0000-00",
         email="mycompany@email.com",
-        dt_inclusao="18/11/2023 14:44:12",
+        dt_inclusao="01/01/2023 00:00:00",
         dt_alteracao=None,
         ativo=True,
     )
@@ -24,7 +24,7 @@ def test_serialize_domain_client():
             "razao_social": "My company",
             "cnpj": "00.000.000/0000-00",
             "email": "mycompany@email.com",
-            "dt_inclusao": "18/11/2023 14:44:12",
+            "dt_inclusao": "01/01/2023 00:00:00",
             "dt_alteracao": null,
             "ativo": true
         }

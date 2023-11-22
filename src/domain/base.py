@@ -2,6 +2,7 @@
 # pylint: disable=c0115
 import uuid
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Optional
 
 
@@ -13,6 +14,6 @@ class BaseDomainModel:
 
     id: Optional[int] = None
     code: Optional[uuid.UUID] = None
-    dt_inclusao: str = None
-    dt_alteracao: str = None
+    dt_inclusao: datetime = None
+    dt_alteracao: datetime = None
     ativo: bool = True

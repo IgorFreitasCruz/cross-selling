@@ -4,7 +4,7 @@ import os
 from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
-# from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
+from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
 from src.repository.in_memory.memrepo_product import MemRepoProduct
 from src.requests.product_create import build_create_product_request
 from src.requests.product_list import build_product_list_request
@@ -46,14 +46,16 @@ products = [
     },
 ]
 
-# postgres_configuration = {
-#     "POSTGRES_USER": os.environ["POSTGRES_USER"],
-#     "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
-#     "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
-#     "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
-#     "APPLICATION_DB": os.environ["APPLICATION_DB"],
-# }
-
+try:
+    postgres_configuration = {
+        "POSTGRES_USER": os.environ["POSTGRES_USER"],
+        "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
+        "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
+        "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
+        "APPLICATION_DB": os.environ["APPLICATION_DB"],
+    }
+except Exception:
+    ...
 
 @blueprint.route("/products", methods=["POST"])
 def product_create():
