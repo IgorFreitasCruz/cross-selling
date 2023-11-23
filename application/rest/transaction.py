@@ -4,7 +4,6 @@ import os
 from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
-from src.repository.in_memory.memrepo_transaction import MemRepoTransaction
 from application.rest.schema.transaction import TransactionSchema
 from src.repository.in_memory.memrepo_transaction import MemRepoTransaction
 from src.repository.postgres.postgresrepo_transaction import PostgresRepoTransaction
@@ -17,48 +16,6 @@ from src.use_cases.transaction_list import transaction_list_use_case
 
 blueprint = Blueprint("transactions", __name__)
 
-transactions = [
-    {
-        "id": 1,
-        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-        "client_id": 1,
-        "produto_id": 1,
-        "quantidade": 10,
-        "dt_inclusao": "01/01/2023 00:00:00",
-        "dt_alteracao": None,
-        "ativo": True,
-    },
-    {
-        "id": 2,
-        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-        "client_id": 1,
-        "produto_id": 1,
-        "quantidade": 10,
-        "dt_inclusao": "01/01/2023 00:00:00",
-        "dt_alteracao": None,
-        "ativo": True,
-    },
-    {
-        "id": 3,
-        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-        "client_id": 1,
-        "produto_id": 1,
-        "quantidade": 10,
-        "dt_inclusao": "01/01/2023 00:00:00",
-        "dt_alteracao": None,
-        "ativo": False,
-    },
-    {
-        "id": 4,
-        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-        "client_id": 1,
-        "produto_id": 1,
-        "quantidade": 10,
-        "dt_inclusao": "01/01/2023 00:00:00",
-        "dt_alteracao": None,
-        "ativo": False,
-    },
-]
 
 try:
     postgres_configuration = {
@@ -81,8 +38,7 @@ def transaction_post():
 
     request_obj = build_transaction_create_request(transaction.dict())
 
-    # repo = PostgresRepoTransaction(postgres_configuration)
-    repo = MemRepoTransaction(transactions)
+    repo = PostgresRepoTransaction(postgres_configuration)
     response = transaction_create_use_case(repo, request_obj)
 
     return Response(
@@ -104,8 +60,7 @@ def transaction_list():
 
     request_obj = build_transaction_list_request(qrystr_params["filters"])
 
-    # repo = PostgresRepoTransaction(postgres_configuration)
-    repo = MemRepoTransaction(transactions)
+    repo = PostgresRepoTransaction(postgres_configuration)
     response = transaction_list_use_case(repo, request_obj)
 
     return Response(

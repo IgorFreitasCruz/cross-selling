@@ -5,9 +5,9 @@ import os
 from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
-from src.repository.postgres.postgresrepo_category import PostgresRepoCategory
-
+from application.rest.schema.category import CategorySchema, UpdateCategorySchema
 from src.repository.in_memory.memrepo_category import MemRepoCategory
+from src.repository.postgres.postgresrepo_category import PostgresRepoCategory
 from src.requests.category_create import build_create_category_request
 from src.requests.category_list import build_category_list_request
 from src.requests.category_update import build_update_category_request
@@ -17,40 +17,7 @@ from src.use_cases.category_create import category_create_use_case
 from src.use_cases.category_list import category_list_use_case
 from src.use_cases.category_update import category_update_use_case
 
-from application.rest.schema.category import CategorySchema, UpdateCategorySchema
-
 blueprint = Blueprint("category", __name__)
-
-categories = [
-    {
-        "descricao": "categoria A",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": True,
-        "client_id": [1],
-    },
-    {
-        "descricao": "categoria B",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": True,
-        "client_id": [1],
-    },
-    {
-        "descricao": "categoria C",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": False,
-        "client_id": [2],
-    },
-    {
-        "descricao": "categoria D",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": False,
-        "client_id": [2],
-    },
-]
 
 
 try:
@@ -74,8 +41,7 @@ def category_create():
 
     request_obj = build_create_category_request(category.dict())
 
-    # repo = PostgresRepoCategory(postgres_configuration)
-    repo = MemRepoCategory(categories)
+    repo = PostgresRepoCategory(postgres_configuration)
     response = category_create_use_case(repo, request_obj)
 
     return Response(
@@ -97,8 +63,7 @@ def category_list():
 
     request_obj = build_category_list_request(filters=qrystr_params["filters"])
 
-    # repo = PostgresRepoCategory(postgres_configuration)
-    repo = MemRepoCategory(categories)
+    repo = PostgresRepoCategory(postgres_configuration)
     response = category_list_use_case(repo, request_obj)
 
     return Response(
@@ -117,8 +82,7 @@ def category_update():
 
     request_obj = build_update_category_request(category.dict(exclude_unset=True))
 
-    # repo = PostgresRepoCategory(postgres_configuration)
-    repo = MemRepoCategory(categories)
+    repo = PostgresRepoCategory(postgres_configuration)
     response = category_update_use_case(repo, request_obj)
 
     return Response(

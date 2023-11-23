@@ -39,7 +39,7 @@ def test_build_transaction_list_request_with_incorrect_filter_keys():
         "id__eq",
         "code__eq",
         "ativo__eq",
-        "product_id__id",
+        "produto_id__eq",
         "client_id__eq",
     ],
 )

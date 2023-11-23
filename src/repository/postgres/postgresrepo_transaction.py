@@ -45,11 +45,11 @@ class PostgresRepoTransaction(BasePostgresRepo):
         if "ativo__eq" in filters:
             query = query.filter(PgTransaction.ativo == filters["ativo__eq"])
 
-        if "client__eq" in filters:
-            query = query.filter(PgTransaction.code == filters["client__eq"])
+        if "client_id__eq" in filters:
+            query = query.filter(PgTransaction.client_id == filters["client_id__eq"])
 
-        if "produto__eq" in filters:
-            query = query.filter(PgTransaction.ativo == filters["produto__eq"])
+        if "produto_id__eq" in filters:
+            query = query.filter(PgTransaction.produto_id == filters["produto_id__eq"])
 
         return self._create_transaction_objects(query.all())
 

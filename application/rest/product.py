@@ -4,8 +4,9 @@ import os
 from flask import Blueprint, Response, jsonify, request
 from pydantic import ValidationError
 
-from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
+from application.rest.schema.product import ProductSchema, UpdateProductSchema
 from src.repository.in_memory.memrepo_product import MemRepoProduct
+from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
 from src.requests.product_create import build_create_product_request
 from src.requests.product_list import build_product_list_request
 from src.requests.product_update import build_update_product_request
@@ -15,36 +16,8 @@ from src.use_cases.product_create import product_create_use_case
 from src.use_cases.product_list import product_list_use_case
 from src.use_cases.product_update import product_update_use_case
 
-from application.rest.schema.product import ProductSchema, UpdateProductSchema
-
 blueprint = Blueprint("products", __name__)
 
-products = [
-    {
-        "nome": "My product A",
-        "descricao": "My description A",
-        "sku": "0123456789",
-        "categoria_id": 1,
-    },
-    {
-        "nome": "My product B",
-        "descricao": "My description B",
-        "sku": "0123456789",
-        "categoria_id": 1,
-    },
-    {
-        "nome": "My product C",
-        "descricao": "My description C",
-        "sku": "0123456789",
-        "categoria_id": 1,
-    },
-    {
-        "nome": "My product D",
-        "descricao": "My description D",
-        "sku": "0123456789",
-        "categoria_id": 1,
-    },
-]
 
 try:
     postgres_configuration = {
@@ -57,6 +30,7 @@ try:
 except Exception:
     ...
 
+
 @blueprint.route("/products", methods=["POST"])
 def product_create():
     try:
@@ -66,8 +40,7 @@ def product_create():
 
     request_obj = build_create_product_request(product.dict())
 
-    # repo = PostgresRepoProduct(postgres_configuration)
-    repo = MemRepoProduct(products)
+    repo = PostgresRepoProduct(postgres_configuration)
     response = product_create_use_case(repo, request_obj)
 
     return Response(
@@ -89,8 +62,7 @@ def product_list():
 
     request_obj = build_product_list_request(qrystr_params["filters"])
 
-    # repo = PostgresRepoProduct(postgres_configuration)
-    repo = MemRepoProduct(products)
+    repo = PostgresRepoProduct(postgres_configuration)
     response = product_list_use_case(repo, request_obj)
 
     return Response(
@@ -109,8 +81,7 @@ def product_upadte():
 
     request_obj = build_update_product_request(product.dict(exclude_unset=True))
 
-    # repo = PostgresRepoProduct(postgres_configuration)
-    repo = MemRepoProduct(products)
+    repo = PostgresRepoProduct(postgres_configuration)
     response = product_update_use_case(repo, request_obj)
 
     return Response(

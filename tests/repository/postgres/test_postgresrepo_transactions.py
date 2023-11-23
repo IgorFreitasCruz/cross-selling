@@ -38,6 +38,26 @@ def test_transaction_repository_list_with_ativo_false_filter(
     assert len(transaction_inactive) == 2
 
 
+def test_transaction_repository_list_with_produto_id_equal_filter(
+    app_configuration, pg_session
+):
+    repo = PostgresRepoTransaction(app_configuration)
+
+    transaction = repo.list_transaction(filters={"produto_id__eq": 1})
+
+    assert len(transaction) == 4
+
+
+def test_transaction_repository_list_with_client_id_equal_filter(
+    app_configuration, pg_session
+):
+    repo = PostgresRepoTransaction(app_configuration)
+
+    transaction = repo.list_transaction(filters={"client_id__eq": 1})
+
+    assert len(transaction) == 1
+
+
 def test_transaction_repository_create_from_dictionary(app_configuration):
     repo = PostgresRepoTransaction(app_configuration)
 
