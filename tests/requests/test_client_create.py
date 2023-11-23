@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 
 from src.requests.client_create import build_create_client_request
 

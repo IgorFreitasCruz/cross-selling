@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 
 from src.requests.product_create import build_create_product_request
 

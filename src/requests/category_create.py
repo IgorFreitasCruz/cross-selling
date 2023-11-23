@@ -1,6 +1,5 @@
 """Module for structured category requests objects"""
 import uuid
-from datetime import datetime
 from typing import Dict
 
 from .validation.invalid_request import InvalidRequest

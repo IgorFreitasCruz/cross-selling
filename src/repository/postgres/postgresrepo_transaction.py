@@ -52,3 +52,12 @@ class PostgresRepoTransaction(BasePostgresRepo):
             query = query.filter(PgTransaction.ativo == filters["produto__eq"])
 
         return self._create_transaction_objects(query.all())
+
+    def create_transaction(self, new_transaction: Dict) -> transaction.Transaction:
+        session = self._create_session()
+
+        pg_transaction_obj = PgTransaction(**new_transaction)
+        session.add(pg_transaction_obj)
+        session.commit()
+
+        return self._create_transaction_objects([pg_transaction_obj])[0]

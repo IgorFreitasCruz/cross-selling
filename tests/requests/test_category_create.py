@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 
 from src.requests.category_create import build_create_category_request
 

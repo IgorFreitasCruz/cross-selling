@@ -67,7 +67,7 @@ except Exception:
 @blueprint.route("/clients", methods=["POST"])
 def client_create():
     try:
-        client = ClientSchema.parse_raw(request.data)  # Pydantic
+        client = ClientSchema.parse_raw(request.data)
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 

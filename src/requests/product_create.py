@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 from typing import Dict
 
 from src.requests.validation.invalid_request import InvalidRequest

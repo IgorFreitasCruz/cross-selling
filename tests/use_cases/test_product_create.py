@@ -23,6 +23,8 @@ def product_dict():
 
 def test_create_product(product_dict):
     repo = mock.Mock()
+    repo.list_product.return_value = []
+    repo.create_product.return_value = product_dict
 
     new_product = {
         "nome": "My product",
@@ -31,8 +33,6 @@ def test_create_product(product_dict):
         "categoria_id": 1,
     }
 
-    repo.list_product.return_value = []
-    repo.create_product.return_value = product_dict
 
     request = build_create_product_request(new_product)
 

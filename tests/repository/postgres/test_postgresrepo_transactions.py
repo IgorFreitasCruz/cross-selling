@@ -36,3 +36,16 @@ def test_transaction_repository_list_with_ativo_false_filter(
     transaction_inactive = repo.list_transaction(filters={"ativo__eq": False})
 
     assert len(transaction_inactive) == 2
+
+
+def test_transaction_repository_create_from_dictionary(app_configuration):
+    repo = PostgresRepoTransaction(app_configuration)
+
+    transaction_dict = {"client_id": 1, "produto_id": 1, "quantidade": 10}
+
+    transaction = repo.create_transaction(transaction_dict)
+
+    assert transaction.id == 5
+    assert transaction.client_id == 1
+    assert transaction.produto_id == 1
+    assert transaction.quantidade == 10
