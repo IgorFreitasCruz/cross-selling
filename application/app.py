@@ -1,9 +1,6 @@
 """Module for application configuration"""
 from flask import Flask
-from application.rest import client
-from application.rest import category
-from application.rest import product
-from application.rest import transaction
+from . import init_app
 
 
 def create_app(config_name):
@@ -17,12 +14,9 @@ def create_app(config_name):
     app = Flask(__name__)
 
     config_module = f"application.config.{config_name.capitalize()}Config"
-
+    ### Add configuração
     app.config.from_object(config_module)
-
-    app.register_blueprint(client.blueprint)
-    app.register_blueprint(category.blueprint)
-    app.register_blueprint(product.blueprint)
-    app.register_blueprint(transaction.blueprint)
+    ### Registrar rotas
+    init_app(app)
 
     return app

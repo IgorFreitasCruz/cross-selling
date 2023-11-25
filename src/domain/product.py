@@ -5,7 +5,7 @@ from typing import Dict
 from src.domain.base import BaseDomainModel
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Product(BaseDomainModel):
     """Product entity"""
 

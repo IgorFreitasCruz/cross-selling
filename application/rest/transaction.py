@@ -1,11 +1,10 @@
 import json
 import os
 
-from flask import Blueprint, Response, jsonify, request
+from flask import Response, jsonify, request
 from pydantic import ValidationError
 
 from application.rest.schema.transaction import TransactionSchema
-from src.repository.in_memory.memrepo_transaction import MemRepoTransaction
 from src.repository.postgres.postgresrepo_transaction import PostgresRepoTransaction
 from src.requests.transaction_create import build_transaction_create_request
 from src.requests.transaction_list import build_transaction_list_request
@@ -13,9 +12,6 @@ from src.responses import STATUS_CODE
 from src.serializers.transaction import TransactionJsonEncoder
 from src.use_cases.transaction_create import transaction_create_use_case
 from src.use_cases.transaction_list import transaction_list_use_case
-
-blueprint = Blueprint("transactions", __name__)
-
 
 try:
     postgres_configuration = {
@@ -29,8 +25,7 @@ except Exception:
     ...
 
 
-@blueprint.route("/transactions", methods=["POST"])
-def transaction_post():
+def transaction_create():
     try:
         transaction = TransactionSchema.parse_raw(request.data)
     except ValidationError as e:
@@ -48,7 +43,6 @@ def transaction_post():
     )
 
 
-@blueprint.route("/transactions", methods=["GET"])
 def transaction_list():
     qrystr_params = {
         "filters": {},

@@ -58,9 +58,14 @@ class PostgresRepoCategory(BasePostgresRepo):
     def create_category(self, new_category: Dict) -> category.Category:
         session = self._create_session()
 
-        pg_category_obj = PgCategory(**new_category)
-        session.add(pg_category_obj)
-        session.commit()
+        try:
+            pg_category_obj = PgCategory(**new_category)
+            session.add(pg_category_obj)
+        except:
+            session.rollback()
+            raise
+        else:
+            session.commit()
 
         return self._create_category_objects([pg_category_obj])[0]
 

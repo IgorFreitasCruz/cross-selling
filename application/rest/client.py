@@ -2,11 +2,10 @@
 import json
 import os
 
-from flask import Blueprint, Response, jsonify, request
+from flask import Response, jsonify, request
 from pydantic import ValidationError
 
 from application.rest.schema.client import ClientSchema, UpdateClientSchema
-from src.repository.in_memory.memrepo_client import MemRepo
 from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 from src.requests.client_create import build_create_client_request
 from src.requests.client_list import build_client_list_request
@@ -16,9 +15,6 @@ from src.serializers.client import ClientJsonEncoder
 from src.use_cases.client_create import client_create_use_case
 from src.use_cases.client_list import client_list_use_case
 from src.use_cases.client_update import client_update_use_case
-
-blueprint = Blueprint("client", __name__)
-
 
 try:
     postgres_configuration = {
@@ -32,7 +28,6 @@ except Exception:
     ...
 
 
-@blueprint.route("/clients", methods=["POST"])
 def client_create():
     try:
         client = ClientSchema.parse_raw(request.data)
@@ -51,7 +46,6 @@ def client_create():
     )
 
 
-@blueprint.route("/clients", methods=["GET"])
 def client_list():
     qrystr_params = {
         "filters": {},
@@ -73,7 +67,6 @@ def client_list():
     )
 
 
-@blueprint.route("/clients", methods=["PUT"])
 def client_update():
     try:
         client = UpdateClientSchema.parse_raw(request.data)

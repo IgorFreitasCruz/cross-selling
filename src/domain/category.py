@@ -5,7 +5,7 @@ from typing import Dict, List
 from src.domain.base import BaseDomainModel
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Category(BaseDomainModel):
     """Category entity"""
 

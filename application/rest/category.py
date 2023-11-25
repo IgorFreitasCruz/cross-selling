@@ -2,11 +2,10 @@
 import json
 import os
 
-from flask import Blueprint, Response, jsonify, request
+from flask import Response, jsonify, request
 from pydantic import ValidationError
 
 from application.rest.schema.category import CategorySchema, UpdateCategorySchema
-from src.repository.in_memory.memrepo_category import MemRepoCategory
 from src.repository.postgres.postgresrepo_category import PostgresRepoCategory
 from src.requests.category_create import build_create_category_request
 from src.requests.category_list import build_category_list_request
@@ -16,9 +15,6 @@ from src.serializers.category import CategoryJsonEncoder
 from src.use_cases.category_create import category_create_use_case
 from src.use_cases.category_list import category_list_use_case
 from src.use_cases.category_update import category_update_use_case
-
-blueprint = Blueprint("category", __name__)
-
 
 try:
     postgres_configuration = {
@@ -32,7 +28,6 @@ except Exception:
     ...
 
 
-@blueprint.route("/categories", methods=["POST"])
 def category_create():
     try:
         category = CategorySchema.parse_raw(request.data)
@@ -51,7 +46,6 @@ def category_create():
     )
 
 
-@blueprint.route("/categories", methods=["GET"])
 def category_list():
     qrystr_params = {
         "filters": {},
@@ -73,7 +67,6 @@ def category_list():
     )
 
 
-@blueprint.route("/categories", methods=["PUT"])
 def category_update():
     try:
         category = UpdateCategorySchema.parse_raw(request.data)
