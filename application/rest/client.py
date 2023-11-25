@@ -2,6 +2,7 @@
 import json
 import os
 
+from .adapters.request_adapter import HttpRequest, request_adapter
 from flask import Response, jsonify, request
 from pydantic import ValidationError
 
@@ -29,8 +30,9 @@ except Exception:
 
 
 def client_create():
+    http_request: HttpRequest = request_adapter(request)
     try:
-        client = ClientSchema.parse_raw(request.data)
+        client = ClientSchema.parse_raw(http_request.data)
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 
@@ -47,11 +49,13 @@ def client_create():
 
 
 def client_list():
+    http_request: HttpRequest = request_adapter(request)
+
     qrystr_params = {
         "filters": {},
     }
 
-    for arg, values in request.args.items():
+    for arg, values in http_request.query_params.items():
         if arg.startswith("filter_"):
             qrystr_params["filters"][arg.replace("filter_", "")] = values
 
@@ -68,8 +72,9 @@ def client_list():
 
 
 def client_update():
+    http_request: HttpRequest = request_adapter(request)
     try:
-        client = UpdateClientSchema.parse_raw(request.data)
+        client = UpdateClientSchema.parse_raw(http_request.data)
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 

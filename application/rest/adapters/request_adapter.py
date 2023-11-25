@@ -1,3 +1,7 @@
+"""Modulo para adaptação do objeto request do framework específico para o 
+core da aplicação
+"""
+
 from flask import request as FlaskRequest
 
 
@@ -5,18 +9,18 @@ class HttpRequest:
     def __init__(
         self,
         headers=None,
-        body=None,
+        data=None,
+        json=None,
         query_params=None,
         path_params=None,
         url=None,
-        ipv4=None,
     ) -> None:
         self.headers = headers
-        self.body = body
+        self.data = data
+        self.body = json
         self.query_params = query_params
         self.path_params = path_params
         self.url = url
-        self.ipv4 = ipv4
 
 
 def request_adapter(request: FlaskRequest) -> HttpRequest:
@@ -29,13 +33,11 @@ def request_adapter(request: FlaskRequest) -> HttpRequest:
     Returns:
         HttpRequest: Instance of HttpRequest
     """
-    body = None
-    if request.data:
-        body = request.json
 
     http_request = HttpRequest(
-        body=body,
         headers=request.headers,
+        data=request.data,
+        json=request.json if request.method == "POST" else None,
         query_params=request.args,
         path_params=request.view_args,
         url=request.full_path,

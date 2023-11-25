@@ -16,6 +16,8 @@ from src.use_cases.category_create import category_create_use_case
 from src.use_cases.category_list import category_list_use_case
 from src.use_cases.category_update import category_update_use_case
 
+from .adapters.request_adapter import request_adapter, HttpRequest
+
 try:
     postgres_configuration = {
         "POSTGRES_USER": os.environ["POSTGRES_USER"],
@@ -29,8 +31,9 @@ except Exception:
 
 
 def category_create():
+    http_request: HttpRequest = request_adapter(request)
     try:
-        category = CategorySchema.parse_raw(request.data)
+        category = CategorySchema.parse_raw(http_request.data)
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 
@@ -47,11 +50,12 @@ def category_create():
 
 
 def category_list():
+    http_request: HttpRequest = request_adapter(request)
     qrystr_params = {
         "filters": {},
     }
 
-    for arg, values in request.args.items():
+    for arg, values in http_request.query_params.items():
         if arg.startswith("filter_"):
             qrystr_params["filters"][arg.replace("filter_", "")] = values
 
@@ -68,8 +72,9 @@ def category_list():
 
 
 def category_update():
+    http_request: HttpRequest = request_adapter(request)
     try:
-        category = UpdateCategorySchema.parse_raw(request.data)
+        category = UpdateCategorySchema.parse_raw(http_request.data)
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 

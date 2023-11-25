@@ -15,6 +15,7 @@ from src.use_cases.product_create import product_create_use_case
 from src.use_cases.product_list import product_list_use_case
 from src.use_cases.product_update import product_update_use_case
 
+from .adapters.request_adapter import HttpRequest, request_adapter
 
 try:
     postgres_configuration = {
@@ -29,8 +30,9 @@ except Exception:
 
 
 def product_create():
+    http_request: HttpRequest = request_adapter(request)
     try:
-        product = ProductSchema.parse_raw(request.data)
+        product = ProductSchema.parse_raw(http_request.data)
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 
@@ -47,11 +49,12 @@ def product_create():
 
 
 def product_list():
+    http_request: HttpRequest = request_adapter(request)
     qrystr_params = {
         "filters": {},
     }
 
-    for arg, values in request.args.items():
+    for arg, values in http_request.query_params.items():
         if arg.startswith("filter_"):
             qrystr_params["filters"][arg.replace("filter_", "")] = values
 
@@ -68,8 +71,9 @@ def product_list():
 
 
 def product_update():
+    http_request: HttpRequest = request_adapter(request)
     try:
-        product = UpdateProductSchema.parse_raw(request.data)
+        product = UpdateProductSchema.parse_raw(http_request.data)
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 

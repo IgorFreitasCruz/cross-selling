@@ -13,6 +13,8 @@ from src.serializers.transaction import TransactionJsonEncoder
 from src.use_cases.transaction_create import transaction_create_use_case
 from src.use_cases.transaction_list import transaction_list_use_case
 
+from .adapters.request_adapter import HttpRequest, request_adapter
+
 try:
     postgres_configuration = {
         "POSTGRES_USER": os.environ["POSTGRES_USER"],
@@ -26,8 +28,9 @@ except Exception:
 
 
 def transaction_create():
+    http_request: HttpRequest = request_adapter(request)
     try:
-        transaction = TransactionSchema.parse_raw(request.data)
+        transaction = TransactionSchema.parse_raw(http_request.data)
     except ValidationError as e:
         return jsonify({"error": e.errors()}), 400
 
@@ -44,11 +47,12 @@ def transaction_create():
 
 
 def transaction_list():
+    http_request: HttpRequest = request_adapter(request)
     qrystr_params = {
         "filters": {},
     }
 
-    for arg, values in request.args.items():
+    for arg, values in http_request.query_params.items():
         if arg.startswith("filter_"):
             qrystr_params["filters"][arg.replace("filter_", "")] = values
 
