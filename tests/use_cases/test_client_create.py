@@ -4,6 +4,7 @@ from unittest import mock
 
 import pytest
 
+from src.domain.client import Client
 from src.requests.client_create import build_create_client_request
 from src.responses import ResponseTypes
 from src.use_cases.client_create import client_create_use_case
@@ -33,7 +34,7 @@ def test_create_client_success(client_dict):
     }
 
     repo.list_client.return_value = []
-    repo.create_client.return_value = client_dict
+    repo.create_client.return_value = Client.from_dict(new_client)
 
     request = build_create_client_request(new_client)
 
@@ -41,7 +42,7 @@ def test_create_client_success(client_dict):
 
     assert bool(result) is True
     repo.create_client.assert_called_with(new_client)
-    assert result.value == client_dict
+    assert isinstance(result.value, Client)
 
 
 def test_create_client_already_exists(client_dict):

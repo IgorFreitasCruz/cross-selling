@@ -1,10 +1,13 @@
 """Module for the client create use case"""
+from src.domain.auth_jwt import AuthJwt
+from src.domain.client import Client
 from src.responses import (
     ResponseFailure,
     ResponseSuccess,
     ResponseTypes,
     build_response_from_invalid_request,
 )
+from src.use_cases.token_create import create_token
 
 
 def client_create_use_case(repo, request):
@@ -23,10 +26,17 @@ def client_create_use_case(repo, request):
     if not request:
         return build_response_from_invalid_request(request)
     try:
-        check_client_exists = repo.list_client(filters={"cnpj__eq": request.data["cnpj"]})
+        check_client_exists = repo.list_client(
+            filters={"cnpj__eq": request.data["cnpj"]}
+        )
         if check_client_exists:
             return ResponseFailure(ResponseTypes.DOMAIN_ERROR, "O CNPJ já existe")
-        clients = repo.create_client(request.data)
-        return ResponseSuccess(clients)
+        client: Client = repo.create_client(request.data)
+
+        # Create token
+        auth_token: AuthJwt = create_token(client)
+        repo.crate_token(auth_token)
+
+        return ResponseSuccess(client)
     except Exception as exc:
         return ResponseFailure(ResponseTypes.SYSTEM_ERROR, exc)
