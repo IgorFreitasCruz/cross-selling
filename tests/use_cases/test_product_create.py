@@ -33,7 +33,6 @@ def test_create_product(product_dict):
         "categoria_id": 1,
     }
 
-
     request = build_create_product_request(new_product)
 
     result = product_create_use_case(repo, request)

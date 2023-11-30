@@ -6,15 +6,16 @@ import pytest
 
 from src.responses import ResponseSuccess
 
+
 @pytest.fixture
 def product_dict():
     return {
-    "id": 1,
-    "nome": "Produto A",
-    "descricao": "Descricao A",
-    "sku": "0123456789",
-    "ativo": True,
-}
+        "id": 1,
+        "nome": "Produto A",
+        "descricao": "Descricao A",
+        "sku": "0123456789",
+        "ativo": True,
+    }
 
 
 @mock.patch("application.rest.product.product_update_use_case")

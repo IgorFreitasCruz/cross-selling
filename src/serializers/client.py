@@ -20,8 +20,12 @@ class ClientJsonEncoder(json.JSONEncoder):
                 "razao_social": o.razao_social,
                 "cnpj": o.cnpj,
                 "email": o.email,
-                "dt_inclusao": str(o.dt_inclusao) if o.dt_inclusao is not None else o.dt_inclusao,
-                "dt_alteracao": str(o.dt_alteracao) if o.dt_alteracao is not None else o.dt_alteracao,
+                "dt_inclusao": str(o.dt_inclusao)
+                if o.dt_inclusao is not None
+                else o.dt_inclusao,
+                "dt_alteracao": str(o.dt_alteracao)
+                if o.dt_alteracao is not None
+                else o.dt_alteracao,
                 "ativo": o.ativo,
             }
             return to_serialize

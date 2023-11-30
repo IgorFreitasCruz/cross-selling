@@ -52,8 +52,9 @@ def domain_transaction():
         dt_alteracao=None,
         ativo=True,
     )
-    
+
     return [transaction_1, transaction_2, transaction_3, transaction_4]
+
 
 def test_transaction_list_without_parameters(domain_transaction):
     repo = mock.Mock()

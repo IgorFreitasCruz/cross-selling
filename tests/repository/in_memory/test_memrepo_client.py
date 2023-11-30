@@ -119,7 +119,7 @@ def test_client_repository_get_client_by_code(clients_dicts):
 def test_client_repository_update_client(clients_dicts):
     repo = MemRepo(clients_dicts)
 
-    new_client_data  = {
+    new_client_data = {
         "code": "eed76e77-55c1-41ce-985d-ca49bf6c0585",
         "razao_social": "My company 4",
         "cnpj": "00.000.000/0000-04",

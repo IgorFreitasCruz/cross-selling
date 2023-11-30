@@ -6,6 +6,7 @@ from src.responses import (
     build_response_from_invalid_request,
 )
 
+
 def product_update_use_case(repo, request):
     """Use case logic
 

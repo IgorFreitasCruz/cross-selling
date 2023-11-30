@@ -35,7 +35,14 @@ def client_create_use_case(repo, request):
 
         # Create token
         auth_token: AuthJwt = create_token(client)
-        repo.crate_token(auth_token)
+        import sys
+        from pprint import pprint
+
+        print(
+            "*" * 10, __name__, ": line", sys._getframe().f_lineno, "*" * 10, flush=True
+        )
+        pprint(auth_token)
+        repo.create_token(auth_token.to_dict())
 
         return ResponseSuccess(client)
     except Exception as exc:

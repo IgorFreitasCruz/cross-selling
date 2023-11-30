@@ -11,7 +11,6 @@ class ResponseTypes:
     DOMAIN_ERROR = "Erro de domínio já existente"
 
 
-
 STATUS_CODE = {
     ResponseTypes.SUCCESS: 200,
     ResponseTypes.RESOURCE_ERROR: 404,

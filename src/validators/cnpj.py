@@ -1,4 +1,6 @@
 """Module for CNPJ validator"""
+
+
 def is_valid_cnpj(cnpj: str):
     """Custom CNPJ validatior
     Args:

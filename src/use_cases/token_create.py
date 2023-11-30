@@ -11,6 +11,6 @@ def create_token(client: Client) -> None:
     return AuthJwt(
         jti=token,
         client_id=client_id,
-        token_type=TokenTypeEnum.REFRESH,
+        token_type=TokenTypeEnum.REFRESH.value,
         expires=expire_date,
     )

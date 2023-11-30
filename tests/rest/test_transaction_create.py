@@ -29,7 +29,6 @@ def test_post_with_missing_data(mock_use_case, client):
 
     http_response = client.post("/transactions", json=transaction_dict_missing_data)
 
-
     assert "error" in http_response.text
     assert http_response.status_code == 400
     assert http_response.mimetype == "application/json"
@@ -43,7 +42,6 @@ def test_post_with_extra_data(mock_use_case, client):
     transaction_dict_missing_data = transaction_dict
 
     http_response = client.post("/transactions", json=transaction_dict_missing_data)
-
 
     assert "error" in http_response.text
     assert http_response.status_code == 400

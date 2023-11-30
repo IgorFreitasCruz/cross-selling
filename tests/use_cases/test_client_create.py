@@ -3,11 +3,13 @@
 from unittest import mock
 
 import pytest
+from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 
 from src.domain.client import Client
 from src.requests.client_create import build_create_client_request
 from src.responses import ResponseTypes
 from src.use_cases.client_create import client_create_use_case
+from src.use_cases.token_create import create_token
 
 
 @pytest.fixture
@@ -18,14 +20,14 @@ def client_dict():
         "razao_social": "New Company",
         "cnpj": "11.111.111/1111-11",
         "email": "new_company@email.com",
-        "dt_criacao": "01/01/2023 00:00:00",
+        "dt_inclusao": "01/01/2023 00:00:00",
         "dt_alteracao": "01/01/2023 00:00:00",
         "ativo": True,
     }
 
 
 def test_create_client_success(client_dict):
-    repo = mock.Mock()
+    repo = mock.Mock(spec=PostgresRepoClient)
 
     new_client = {
         "razao_social": "New Company",
@@ -34,15 +36,18 @@ def test_create_client_success(client_dict):
     }
 
     repo.list_client.return_value = []
-    repo.create_client.return_value = Client.from_dict(new_client)
+    repo.create_client.return_value = Client.from_dict(client_dict)
 
     request = build_create_client_request(new_client)
 
     result = client_create_use_case(repo, request)
 
+    token = create_token(result.value)
+
     assert bool(result) is True
-    repo.create_client.assert_called_with(new_client)
     assert isinstance(result.value, Client)
+    repo.create_client.assert_called_with(new_client)
+    repo.create_token.assert_called_with(token.to_dict())
 
 
 def test_create_client_already_exists(client_dict):

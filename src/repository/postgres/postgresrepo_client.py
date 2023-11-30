@@ -9,6 +9,8 @@ from sqlmodel import select
 from src.domain import client
 from src.repository.postgres.base_postgresrepo import BasePostgresRepo
 from src.repository.postgres.postgres_objects import Client as PgClient
+from src.repository.postgres.postgres_objects import AuthJwt as PgAuthJwt
+from src.domain import auth_jwt
 
 
 class PostgresRepoClient(BasePostgresRepo):
@@ -28,6 +30,16 @@ class PostgresRepoClient(BasePostgresRepo):
             )
             for c in results
         ]
+
+    def _create_token_objects(self, t: PgAuthJwt) -> auth_jwt.AuthJwt:
+        return auth_jwt.AuthJwt(
+            id=t.id,
+            jti=t.jti,
+            client_id=t.client_id,
+            token_type=t.token_type,
+            revoked=t.revoked,
+            expires=t.expires,
+        )
 
     def list_client(self, filters=None) -> List[client.Client]:
         session = self._create_session()
@@ -81,3 +93,17 @@ class PostgresRepoClient(BasePostgresRepo):
             session.commit()
 
         return self._create_client_objects([pg_client_obj])[0]
+
+    def create_token(self, new_token: dict) -> auth_jwt.AuthJwt:
+        session = self._create_session()
+
+        try:
+            pg_token_obj = PgAuthJwt(**new_token)
+            session.add(pg_token_obj)
+        except:
+            session.rollback()
+            raise
+        else:
+            session.commit()
+
+        return self._create_token_objects(pg_token_obj)

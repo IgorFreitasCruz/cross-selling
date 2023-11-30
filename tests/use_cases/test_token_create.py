@@ -26,7 +26,7 @@ def test_token_create(client_entity):
     assert isinstance(token.jti, str)
     assert token.revoked is False
     assert token.client_id == 1
-    assert token.token_type == TokenTypeEnum.REFRESH
+    assert token.token_type == TokenTypeEnum.REFRESH.value
 
 
 def test_encode_decode_token(client_entity):
