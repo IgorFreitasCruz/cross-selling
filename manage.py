@@ -79,6 +79,17 @@ def docker_compose_cmdline(commands_string=None):
     return command_line
 
 
+def is_docker_running():
+    try:
+        subprocess.check_output(["docker", "info"])
+        return True
+    except subprocess.CalledProcessError:
+        click.echo(
+            "Docker is not running. Please start docker before using this command"
+        )
+        return False
+
+
 def run_sql(statements):
     conn = psycopg2.connect(
         dbname=os.getenv("POSTGRES_DB"),
@@ -107,6 +118,9 @@ def wait_for_logs(cmdline, message):
 @cli.command(context_settings={"ignore_unknown_options": True})
 @click.argument("subcommand", nargs=-1, type=click.Path())
 def compose(subcommand):
+    if not is_docker_running():
+        return
+
     configure_app(os.getenv("APPLICATION_CONFIG"))
     cmdline = docker_compose_cmdline() + list(subcommand)
 
@@ -133,6 +147,9 @@ def init_postgres():
 @cli.command()
 @click.argument("args", nargs=-1)
 def test(args):
+    if not is_docker_running():
+        return
+
     os.environ["APPLICATION_CONFIG"] = "testing"
     configure_app(os.getenv("APPLICATION_CONFIG"))
 
