@@ -26,16 +26,6 @@ def test_get(mock_use_case, client):
 
     http_response = client.get('/transactions')
 
-    import sys
-
-    print(
-        '*' * 20,
-        __name__,
-        ': line',
-        sys._getframe().f_lineno,
-        '*' * 20,
-        flush=True,
-    )
     print(http_response.status_code, flush=True)
 
     assert json.loads(http_response.data.decode('utf-8')) == [transaction_dict]
