@@ -16,7 +16,9 @@ class PostgresRepoCategory(BasePostgresRepo):
     def __init__(self, configuration) -> None:
         super().__init__(configuration)
 
-    def _create_category_objects(self, result) -> List[category.Category]:
+    def _create_category_objects(
+        self, result: list[PgCategory]
+    ) -> List[category.Category]:
         return [
             category.Category(
                 id=c.id,
@@ -72,12 +74,18 @@ class PostgresRepoCategory(BasePostgresRepo):
     def update_category(self, new_category_data: Dict) -> category.Category:
         session = self._create_session()
 
-        statement = select(PgCategory).where(PgCategory.id == new_category_data["id"])
-        pg_category_obj = session.exec(statement).one()
+        try:
+            statement = select(PgCategory).where(
+                PgCategory.id == new_category_data["id"]
+            )
+            pg_category_obj = session.exec(statement).one()
 
-        for field, value in new_category_data.items():
-            setattr(pg_category_obj, field, value)
-
-        session.commit()
+            for field, value in new_category_data.items():
+                setattr(pg_category_obj, field, value)
+        except:
+            session.rollback()
+            raise
+        else:
+            session.commit()
 
         return self._create_category_objects([pg_category_obj])[0]

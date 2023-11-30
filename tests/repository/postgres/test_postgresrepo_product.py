@@ -2,6 +2,7 @@
 # pylint: disable=c0116
 # pylint: disable=w0613
 import pytest
+from sqlalchemy.exc import IntegrityError
 
 from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
 
@@ -28,7 +29,7 @@ def test_product_repository_create_from_dictionary(app_configuration, pg_session
     assert product.categoria_id == 1
 
 
-def test_repository_list_product_without_parameters(app_configuration, pg_session):
+def test_product_repository_list_without_parameters(app_configuration, pg_session):
     repo = PostgresRepoProduct(app_configuration)
 
     products = repo.list_product()
@@ -36,7 +37,7 @@ def test_repository_list_product_without_parameters(app_configuration, pg_sessio
     assert len(products) == 5
 
 
-def test_repository_update_product(app_configuration, pg_session):
+def test_product_repository_update(app_configuration, pg_session):
     repo = PostgresRepoProduct(app_configuration)
 
     product_data_to_update = {"id": 1, "ativo": False}
@@ -44,3 +45,21 @@ def test_repository_update_product(app_configuration, pg_session):
     product = repo.update_product(product_data_to_update)
 
     assert product.ativo is False
+
+
+def test_product_epository_create_error(app_configuration, pg_session):
+    repo = PostgresRepoProduct(app_configuration)
+
+    product_dict = {}
+
+    with pytest.raises(IntegrityError):
+        repo.create_product(product_dict)
+
+
+def test_product_repository_update_without_id_error(app_configuration, pg_session):
+    repo = PostgresRepoProduct(app_configuration)
+
+    product_dict = {}
+
+    with pytest.raises(KeyError):
+        repo.update_product(product_dict)

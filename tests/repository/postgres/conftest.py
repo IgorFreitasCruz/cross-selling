@@ -16,6 +16,7 @@ from src.repository.postgres.postgres_objects import Category as PgCategory
 from src.repository.postgres.postgres_objects import Client as PgClient
 from src.repository.postgres.postgres_objects import Product as PgProduct
 from src.repository.postgres.postgres_objects import Transaction as PgTransaction
+from src.repository.postgres.postgres_objects import AuthJwt as PgAuthToken
 
 
 @pytest.fixture(scope="session")
@@ -201,6 +202,7 @@ def pg_session(
     yield pg_session_empty
 
     # Clean up after test
+    pg_session_empty.query(PgAuthToken).delete()
     pg_session_empty.query(PgTransaction).delete()
     pg_session_empty.query(PgProduct).delete()
     pg_session_empty.query(PgCategory).delete()

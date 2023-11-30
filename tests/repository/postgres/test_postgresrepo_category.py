@@ -4,6 +4,7 @@
 from datetime import datetime
 
 import pytest
+from sqlalchemy.exc import IntegrityError
 
 from src.repository.postgres.postgresrepo_category import PostgresRepoCategory
 
@@ -38,7 +39,7 @@ def test_repository_list_category_with_id_equal_filter(app_configuration, pg_ses
     assert category[0].id == 1
 
 
-def test_repository_create_category_from_dictionary(app_configuration, pg_session):
+def test_category_repository_create_from_dictionary(app_configuration, pg_session):
     repo = PostgresRepoCategory(app_configuration)
 
     category_dict = {
@@ -53,7 +54,7 @@ def test_repository_create_category_from_dictionary(app_configuration, pg_sessio
     assert len(all_categories) == 5
 
 
-def test_repository_update_category(app_configuration):
+def test_category_repository_update(app_configuration):
     repo = PostgresRepoCategory(app_configuration)
 
     category_data_to_update = {
@@ -70,3 +71,21 @@ def test_repository_update_category(app_configuration):
     assert updated_client[0].dt_inclusao == datetime(2023, 1, 1, 0, 0)
     assert updated_client[0].dt_alteracao == datetime(2023, 1, 1, 0, 0)
     assert updated_client[0].ativo is False
+
+
+def test_category_repository_create_error(app_configuration):
+    repo = PostgresRepoCategory(app_configuration)
+
+    new_category = {}
+
+    with pytest.raises(IntegrityError):
+        repo.create_category(new_category)
+
+
+def test_category_repository_update_without_id_error(app_configuration):
+    repo = PostgresRepoCategory(app_configuration)
+
+    new_category = {}
+
+    with pytest.raises(KeyError):
+        repo.update_category(new_category)

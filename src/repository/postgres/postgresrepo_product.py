@@ -13,7 +13,7 @@ from src.repository.postgres.postgres_objects import Product as PgProduct
 class PostgresRepoProduct(BasePostgresRepo):
     """Postgres Product repository"""
 
-    def _create_product_objects(self, result):
+    def _create_product_objects(self, result: list[PgProduct]):
         return [
             product.Product(
                 id=p.id,
@@ -28,16 +28,6 @@ class PostgresRepoProduct(BasePostgresRepo):
             )
             for p in result
         ]
-
-    def create_product(self, product: Dict) -> product.Product:
-        session = self._create_session()
-
-        pg_product_obj = PgProduct(**product)
-
-        session.add(pg_product_obj)
-        session.commit()
-
-        return self._create_product_objects([pg_product_obj])[0]
 
     def list_product(self, filters=None) -> List[product.Product]:
         session = self._create_session()
@@ -64,15 +54,33 @@ class PostgresRepoProduct(BasePostgresRepo):
 
         return self._create_product_objects(query.all())
 
+    def create_product(self, product: Dict) -> product.Product:
+        session = self._create_session()
+
+        try:
+            pg_product_obj = PgProduct(**product)
+            session.add(pg_product_obj)
+        except:
+            session.rollback()
+            raise
+        else:
+            session.commit()
+
+        return self._create_product_objects([pg_product_obj])[0]
+
     def update_product(self, new_product_data: Dict) -> product.Product:
         session = self._create_session()
 
-        statement = select(PgProduct).where(PgProduct.id == new_product_data["id"])
-        pg_product_obj = session.exec(statement).one()
+        try:
+            statement = select(PgProduct).where(PgProduct.id == new_product_data["id"])
+            pg_product_obj = session.exec(statement).one()
 
-        for field, value in new_product_data.items():
-            setattr(pg_product_obj, field, value)
-
-        session.commit()
+            for field, value in new_product_data.items():
+                setattr(pg_product_obj, field, value)
+        except:
+            session.rollback()
+            raise
+        else:
+            session.commit()
 
         return self._create_product_objects([pg_product_obj])[0]

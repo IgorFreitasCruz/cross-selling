@@ -2,6 +2,7 @@
 # pylint: disable=c0116
 # pylint: disable=w0613
 import pytest
+from sqlalchemy.exc import IntegrityError
 
 from src.repository.postgres.postgresrepo_transaction import PostgresRepoTransaction
 
@@ -69,3 +70,12 @@ def test_transaction_repository_create_from_dictionary(app_configuration):
     assert transaction.client_id == 1
     assert transaction.produto_id == 1
     assert transaction.quantidade == 10
+
+
+def test_transaction_repository_create_error(app_configuration):
+    repo = PostgresRepoTransaction(app_configuration)
+
+    transaction_dict = {}
+
+    with pytest.raises(IntegrityError):
+        repo.create_transaction(transaction_dict)

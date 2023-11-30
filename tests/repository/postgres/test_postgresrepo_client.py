@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime
 
 import pytest
+from sqlalchemy.exc import IntegrityError
 
 from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 
@@ -96,3 +97,21 @@ def test_client_repository_update(app_configuration, pg_session, pg_client_test_
 
     assert updated_client[0].ativo is False
     assert updated_client[0].code == uuid.UUID("f853578c-fc0f-4e65-81b8-566c5dffa35a")
+
+
+def test_client_repository_create_error(app_configuration, pg_session):
+    repo = PostgresRepoClient(app_configuration)
+
+    new_client = {}
+
+    with pytest.raises(IntegrityError):
+        repo.create_client(new_client)
+
+
+def test_client_repository_update_without_id_error(app_configuration, pg_session):
+    repo = PostgresRepoClient(app_configuration)
+
+    new_client = {}
+
+    with pytest.raises(KeyError):
+        repo.update_client(new_client)

@@ -14,7 +14,7 @@ from src.repository.postgres.postgres_objects import Client as PgClient
 class PostgresRepoClient(BasePostgresRepo):
     """Postgres Client repository"""
 
-    def _create_client_objects(self, results) -> List[client.Client]:
+    def _create_client_objects(self, results: list[PgClient]) -> List[client.Client]:
         return [
             client.Client(
                 id=c.id,
@@ -54,21 +54,30 @@ class PostgresRepoClient(BasePostgresRepo):
     def create_client(self, new_client: Dict) -> client.Client:
         session = self._create_session()
 
-        pg_client_obj = PgClient(**new_client)
-        session.add(pg_client_obj)
-        session.commit()
+        try:
+            pg_client_obj = PgClient(**new_client)
+            session.add(pg_client_obj)
+        except:
+            session.rollback()
+            raise
+        else:
+            session.commit()
 
         return self._create_client_objects([pg_client_obj])[0]
 
     def update_client(self, new_client_data: Dict) -> client.Client:
         session = self._create_session()
 
-        statement = select(PgClient).where(PgClient.id == new_client_data["id"])
-        pg_client_obj = session.exec(statement).one()
+        try:
+            statement = select(PgClient).where(PgClient.id == new_client_data["id"])
+            pg_client_obj = session.exec(statement).one()
 
-        for field, value in new_client_data.items():
-            setattr(pg_client_obj, field, value)
-
-        session.commit()
+            for field, value in new_client_data.items():
+                setattr(pg_client_obj, field, value)
+        except:
+            session.rollback()
+            raise
+        else:
+            session.commit()
 
         return self._create_client_objects([pg_client_obj])[0]
