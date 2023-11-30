@@ -17,11 +17,11 @@ def build_update_product_request(product: Dict):
     """
     invalid_req = InvalidRequest()
 
-    if "id" not in product and "code" not in product:
-        invalid_req.add_error("value", "Must contain id or code to update")
+    if 'id' not in product and 'code' not in product:
+        invalid_req.add_error('value', 'Must contain id or code to update')
 
     if invalid_req.has_errors():
         return invalid_req
 
-    product.update({"dt_alteracao": datetime.now()})
+    product.update({'dt_alteracao': datetime.now()})
     return ValidRequest(data=product)

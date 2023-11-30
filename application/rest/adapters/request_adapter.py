@@ -1,4 +1,4 @@
-"""Modulo para adaptação do objeto request do framework específico para o 
+"""Modulo para adaptação do objeto request do framework específico para o
 core da aplicação
 """
 
@@ -37,7 +37,7 @@ def request_adapter(request: FlaskRequest) -> HttpRequest:
     http_request = HttpRequest(
         headers=request.headers,
         data=request.data,
-        json=request.json if request.method == "POST" else None,
+        json=request.json if request.method == 'POST' else None,
         query_params=request.args,
         path_params=request.view_args,
         url=request.full_path,

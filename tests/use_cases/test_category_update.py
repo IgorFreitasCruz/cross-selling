@@ -10,8 +10,8 @@ from src.use_cases.category_update import category_update_use_case
 @pytest.fixture
 def category_to_update():
     return {
-        "id": 1,
-        "ativo": False,
+        'id': 1,
+        'ativo': False,
     }
 
 

@@ -3,9 +3,9 @@
 from unittest import mock
 
 import pytest
-from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 
 from src.domain.client import Client
+from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 from src.requests.client_create import build_create_client_request
 from src.responses import ResponseTypes
 from src.use_cases.client_create import client_create_use_case
@@ -15,14 +15,14 @@ from src.use_cases.token_create import create_token
 @pytest.fixture
 def client_dict():
     return {
-        "id": 1,
-        "code": "f853578c-fc0f-4e65-81b8-566c5dffa35a",
-        "razao_social": "New Company",
-        "cnpj": "11.111.111/1111-11",
-        "email": "new_company@email.com",
-        "dt_inclusao": "01/01/2023 00:00:00",
-        "dt_alteracao": "01/01/2023 00:00:00",
-        "ativo": True,
+        'id': 1,
+        'code': 'f853578c-fc0f-4e65-81b8-566c5dffa35a',
+        'razao_social': 'New Company',
+        'cnpj': '11.111.111/1111-11',
+        'email': 'new_company@email.com',
+        'dt_inclusao': '01/01/2023 00:00:00',
+        'dt_alteracao': '01/01/2023 00:00:00',
+        'ativo': True,
     }
 
 
@@ -30,9 +30,9 @@ def test_create_client_success(client_dict):
     repo = mock.Mock(spec=PostgresRepoClient)
 
     new_client = {
-        "razao_social": "New Company",
-        "cnpj": "11.111.111/1111-11",
-        "email": "new_company@email.com",
+        'razao_social': 'New Company',
+        'cnpj': '11.111.111/1111-11',
+        'email': 'new_company@email.com',
     }
 
     repo.list_client.return_value = []
@@ -59,22 +59,24 @@ def test_create_client_already_exists(client_dict):
     result = client_create_use_case(repo, request)
 
     assert bool(result) is False
-    repo.list_client.assert_called_with(filters={"cnpj__eq": request.data["cnpj"]})
+    repo.list_client.assert_called_with(
+        filters={'cnpj__eq': request.data['cnpj']}
+    )
     assert result.value == {
-        "type": ResponseTypes.DOMAIN_ERROR,
-        "message": "O CNPJ já existe",
+        'type': ResponseTypes.DOMAIN_ERROR,
+        'message': 'O CNPJ já existe',
     }
 
 
-@pytest.mark.skip("olhar depois")
+@pytest.mark.skip('olhar depois')
 def test_create_client_handles_generic_error():
     repo = mock.Mock()
-    repo.create_client.side_effect = Exception("Just an error message")
+    repo.create_client.side_effect = Exception('Just an error message')
 
     new_client = {
-        "razao_social": "New Company",
-        "cnpj": "",
-        "email": "new_company@email.com",
+        'razao_social': 'New Company',
+        'cnpj': '',
+        'email': 'new_company@email.com',
     }
 
     request = build_create_client_request(new_client)
@@ -83,8 +85,8 @@ def test_create_client_handles_generic_error():
 
     assert bool(result) is False
     assert result.value == {
-        "type": ResponseTypes.SYSTEM_ERROR,
-        "message": "Exception: Just an error message",
+        'type': ResponseTypes.SYSTEM_ERROR,
+        'message': 'Exception: Just an error message',
     }
 
 
@@ -92,9 +94,9 @@ def test_create_client_handles_cnjp_validation_error():
     repo = mock.Mock()
 
     invalid_client_data = {
-        "razao_social": "New Company",
-        "cnpj": "invalid_cnpj_format",
-        "email": "new_company@email.com",
+        'razao_social': 'New Company',
+        'cnpj': 'invalid_cnpj_format',
+        'email': 'new_company@email.com',
     }
 
     request = build_create_client_request(invalid_client_data)
@@ -103,8 +105,8 @@ def test_create_client_handles_cnjp_validation_error():
 
     assert bool(result) is False
     assert result.value == {
-        "type": ResponseTypes.PARAMETERS_ERROR,
-        "message": "value: Invalid CNPJ",
+        'type': ResponseTypes.PARAMETERS_ERROR,
+        'message': 'value: Invalid CNPJ',
     }
 
 
@@ -112,9 +114,9 @@ def test_create_client_handles_email_validation_error():
     repo = mock.Mock()
 
     invalid_client_data = {
-        "razao_social": "New Company",
-        "cnpj": "11.111.111/1111-11",
-        "email": "invalid_email_format",
+        'razao_social': 'New Company',
+        'cnpj': '11.111.111/1111-11',
+        'email': 'invalid_email_format',
     }
 
     request = build_create_client_request(invalid_client_data)
@@ -123,6 +125,6 @@ def test_create_client_handles_email_validation_error():
 
     assert bool(result) is False
     assert result.value == {
-        "type": ResponseTypes.PARAMETERS_ERROR,
-        "message": "value: Invalid e-mail",
+        'type': ResponseTypes.PARAMETERS_ERROR,
+        'message': 'value: Invalid e-mail',
     }

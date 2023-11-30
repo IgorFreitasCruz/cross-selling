@@ -14,46 +14,46 @@ from src.use_cases.product_list import product_list_use_case
 def domain_products():
     product_1 = Product(
         id=1,
-        code="0000-0000-0000-0000-0000-0000",
-        nome="Produto A",
-        descricao="Descrição A",
-        sku="0123456789",
+        code='0000-0000-0000-0000-0000-0000',
+        nome='Produto A',
+        descricao='Descrição A',
+        sku='0123456789',
         categoria_id=1,
-        dt_inclusao="01/01/2023 00:00:00",
-        dt_alteracao="01/01/2023 00:00:00",
+        dt_inclusao='01/01/2023 00:00:00',
+        dt_alteracao='01/01/2023 00:00:00',
         ativo=True,
     )
     product_2 = Product(
         id=1,
-        code="0000-0000-0000-0000-0000-0000",
-        nome="Produto B",
-        descricao="Descrição B",
-        sku="0123456789",
+        code='0000-0000-0000-0000-0000-0000',
+        nome='Produto B',
+        descricao='Descrição B',
+        sku='0123456789',
         categoria_id=1,
-        dt_inclusao="01/01/2023 00:00:00",
-        dt_alteracao="01/01/2023 00:00:00",
+        dt_inclusao='01/01/2023 00:00:00',
+        dt_alteracao='01/01/2023 00:00:00',
         ativo=True,
     )
     product_3 = Product(
         id=1,
-        code="0000-0000-0000-0000-0000-0000",
-        nome="Produto C",
-        descricao="Descrição C",
-        sku="0123456789",
+        code='0000-0000-0000-0000-0000-0000',
+        nome='Produto C',
+        descricao='Descrição C',
+        sku='0123456789',
         categoria_id=1,
-        dt_inclusao="01/01/2023 00:00:00",
-        dt_alteracao="01/01/2023 00:00:00",
+        dt_inclusao='01/01/2023 00:00:00',
+        dt_alteracao='01/01/2023 00:00:00',
         ativo=True,
     )
     product_4 = Product(
         id=1,
-        code="0000-0000-0000-0000-0000-0000",
-        nome="Produto D",
-        descricao="Descrição D",
-        sku="0123456789",
+        code='0000-0000-0000-0000-0000-0000',
+        nome='Produto D',
+        descricao='Descrição D',
+        sku='0123456789',
         categoria_id=1,
-        dt_inclusao="01/01/2023 00:00:00",
-        dt_alteracao="01/01/2023 00:00:00",
+        dt_inclusao='01/01/2023 00:00:00',
+        dt_alteracao='01/01/2023 00:00:00',
         ativo=True,
     )
 
@@ -77,7 +77,7 @@ def test_product_list_with_filters(domain_products):
     repo = mock.Mock()
     repo.list_product.return_value = domain_products
 
-    qry_filters = {"ativo__eq": True}
+    qry_filters = {'ativo__eq': True}
     request = build_product_list_request(filters=qry_filters)
 
     response = product_list_use_case(repo, request)
@@ -89,7 +89,7 @@ def test_product_list_with_filters(domain_products):
 
 def test_product_list_handles_generic_error():
     repo = mock.Mock()
-    repo.list_product.side_effect = Exception("Just an error message")
+    repo.list_product.side_effect = Exception('Just an error message')
 
     request = build_product_list_request(filters={})
 
@@ -97,8 +97,8 @@ def test_product_list_handles_generic_error():
 
     assert bool(response) is False
     assert response.value == {
-        "type": ResponseTypes.SYSTEM_ERROR,
-        "message": "Exception: Just an error message",
+        'type': ResponseTypes.SYSTEM_ERROR,
+        'message': 'Exception: Just an error message',
     }
 
 
@@ -111,6 +111,6 @@ def test_product_list_handles_bad_request():
 
     assert bool(response) is False
     assert response.value == {
-        "type": ResponseTypes.PARAMETERS_ERROR,
-        "message": "filters: Is not iterable",
+        'type': ResponseTypes.PARAMETERS_ERROR,
+        'message': 'filters: Is not iterable',
     }

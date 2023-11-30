@@ -20,14 +20,14 @@ def build_create_client_request(client: Dict):
     """
     invalid_req = InvalidRequest()
 
-    if not is_valid_cnpj(client["cnpj"]):
-        invalid_req.add_error("value", "Invalid CNPJ")
+    if not is_valid_cnpj(client['cnpj']):
+        invalid_req.add_error('value', 'Invalid CNPJ')
 
-    if not is_valid_email(client["email"]):
-        invalid_req.add_error("value", "Invalid e-mail")
+    if not is_valid_email(client['email']):
+        invalid_req.add_error('value', 'Invalid e-mail')
 
     if invalid_req.has_errors():
         return invalid_req
 
-    client.update({"code": uuid.uuid4()})
+    client.update({'code': uuid.uuid4()})
     return ValidRequest(data=client)

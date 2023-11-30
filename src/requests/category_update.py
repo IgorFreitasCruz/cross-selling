@@ -17,11 +17,11 @@ def build_update_category_request(category: Dict):
     """
     invalid_req = InvalidRequest()
 
-    if "id" not in category and "code" not in category:
-        invalid_req.add_error("value", "Must contain id or code to update")
+    if 'id' not in category and 'code' not in category:
+        invalid_req.add_error('value', 'Must contain id or code to update')
 
     if invalid_req.has_errors():
         return invalid_req
 
-    category.update({"dt_alteracao": datetime.now()})
+    category.update({'dt_alteracao': datetime.now()})
     return ValidRequest(data=category)

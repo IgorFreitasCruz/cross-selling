@@ -1,5 +1,5 @@
 """Configuratin module for integration testing for Postgres
-The fixtures contains code that is specific to Postgres, so it is better to 
+The fixtures contains code that is specific to Postgres, so it is better to
 keep the code separated in a more specific file conftest.py
 """
 import uuid
@@ -12,21 +12,23 @@ from datetime import datetime
 import pytest
 import sqlmodel
 
+from src.repository.postgres.postgres_objects import AuthJwt as PgAuthToken
 from src.repository.postgres.postgres_objects import Category as PgCategory
 from src.repository.postgres.postgres_objects import Client as PgClient
 from src.repository.postgres.postgres_objects import Product as PgProduct
-from src.repository.postgres.postgres_objects import Transaction as PgTransaction
-from src.repository.postgres.postgres_objects import AuthJwt as PgAuthToken
+from src.repository.postgres.postgres_objects import (
+    Transaction as PgTransaction,
+)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def pg_session_empty(app_configuration):
-    conn_str = "postgresql+psycopg2://{}:{}@{}:{}/{}".format(
-        app_configuration["POSTGRES_USER"],
-        app_configuration["POSTGRES_PASSWORD"],
-        app_configuration["POSTGRES_HOSTNAME"],
-        app_configuration["POSTGRES_PORT"],
-        app_configuration["APPLICATION_DB"],
+    conn_str = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(
+        app_configuration['POSTGRES_USER'],
+        app_configuration['POSTGRES_PASSWORD'],
+        app_configuration['POSTGRES_HOSTNAME'],
+        app_configuration['POSTGRES_PORT'],
+        app_configuration['APPLICATION_DB'],
     )
 
     engine = sqlmodel.create_engine(conn_str)
@@ -44,116 +46,116 @@ def pg_session_empty(app_configuration):
     connection.close()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def pg_client_test_data():
     return [
         {
-            "code": uuid.UUID("f853578c-fc0f-4e65-81b8-566c5dffa35a"),
-            "razao_social": "My company 1",
-            "cnpj": "00.000.000/0000-01",
-            "email": "mycompany_1@email.com",
-            "dt_inclusao": datetime.now(),
-            "dt_alteracao": datetime.now(),
+            'code': uuid.UUID('f853578c-fc0f-4e65-81b8-566c5dffa35a'),
+            'razao_social': 'My company 1',
+            'cnpj': '00.000.000/0000-01',
+            'email': 'mycompany_1@email.com',
+            'dt_inclusao': datetime.now(),
+            'dt_alteracao': datetime.now(),
         },
         {
-            "razao_social": "My company 2",
-            "cnpj": "00.000.000/0000-02",
-            "email": "mycompany_2@email.com",
-            "dt_inclusao": datetime.now(),
-            "dt_alteracao": None,
+            'razao_social': 'My company 2',
+            'cnpj': '00.000.000/0000-02',
+            'email': 'mycompany_2@email.com',
+            'dt_inclusao': datetime.now(),
+            'dt_alteracao': None,
         },
         {
-            "razao_social": "My company 3",
-            "cnpj": "00.000.000/0000-03",
-            "email": "mycompany_3@email.com",
-            "dt_inclusao": datetime.now(),
-            "dt_alteracao": None,
+            'razao_social': 'My company 3',
+            'cnpj': '00.000.000/0000-03',
+            'email': 'mycompany_3@email.com',
+            'dt_inclusao': datetime.now(),
+            'dt_alteracao': None,
         },
         {
-            "razao_social": "My company 4",
-            "cnpj": "00.000.000/0000-04",
-            "email": "mycompany_4@email.com",
-            "dt_inclusao": datetime.now(),
-            "dt_alteracao": None,
+            'razao_social': 'My company 4',
+            'cnpj': '00.000.000/0000-04',
+            'email': 'mycompany_4@email.com',
+            'dt_inclusao': datetime.now(),
+            'dt_alteracao': None,
         },
     ]
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def pg_category_test_data():
     return [
-        {"descricao": "categoria A", "client_id": 1, "ativo": True},
-        {"descricao": "categoria B", "client_id": 1, "ativo": True},
-        {"descricao": "categoria C", "client_id": 2, "ativo": False},
-        {"descricao": "categoria D", "client_id": 2, "ativo": False},
+        {'descricao': 'categoria A', 'client_id': 1, 'ativo': True},
+        {'descricao': 'categoria B', 'client_id': 1, 'ativo': True},
+        {'descricao': 'categoria C', 'client_id': 2, 'ativo': False},
+        {'descricao': 'categoria D', 'client_id': 2, 'ativo': False},
     ]
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def pg_product_test_data():
     return [
         {
-            "nome": "Produto A",
-            "descricao": "descricao A",
-            "sku": "0123456789",
-            "categoria_id": 1,
-            "ativo": True,
+            'nome': 'Produto A',
+            'descricao': 'descricao A',
+            'sku': '0123456789',
+            'categoria_id': 1,
+            'ativo': True,
         },
         {
-            "nome": "Produto B",
-            "descricao": "descricao B",
-            "sku": "0123456789",
-            "categoria_id": 1,
-            "ativo": True,
+            'nome': 'Produto B',
+            'descricao': 'descricao B',
+            'sku': '0123456789',
+            'categoria_id': 1,
+            'ativo': True,
         },
         {
-            "nome": "Produto C",
-            "descricao": "descricao C",
-            "sku": "0123456789",
-            "categoria_id": 2,
-            "ativo": False,
+            'nome': 'Produto C',
+            'descricao': 'descricao C',
+            'sku': '0123456789',
+            'categoria_id': 2,
+            'ativo': False,
         },
         {
-            "nome": "Produto D",
-            "descricao": "descricao D",
-            "sku": "0123456789",
-            "categoria_id": 2,
-            "ativo": False,
+            'nome': 'Produto D',
+            'descricao': 'descricao D',
+            'sku': '0123456789',
+            'categoria_id': 2,
+            'ativo': False,
         },
     ]
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def pg_transaction_test_data():
     return [
         {
-            "client_id": 1,
-            "produto_id": 1,
-            "quantidade": 5,
-            "ativo": True,
+            'client_id': 1,
+            'produto_id': 1,
+            'quantidade': 5,
+            'ativo': True,
         },
         {
-            "client_id": 2,
-            "produto_id": 1,
-            "quantidade": 5,
-            "ativo": True,
+            'client_id': 2,
+            'produto_id': 1,
+            'quantidade': 5,
+            'ativo': True,
         },
         {
-            "client_id": 3,
-            "produto_id": 1,
-            "quantidade": 5,
-            "ativo": False,
+            'client_id': 3,
+            'produto_id': 1,
+            'quantidade': 5,
+            'ativo': False,
         },
         {
-            "client_id": 4,
-            "produto_id": 1,
-            "quantidade": 5,
-            "ativo": False,
+            'client_id': 4,
+            'produto_id': 1,
+            'quantidade': 5,
+            'ativo': False,
         },
     ]
 
 
-@pytest.fixture(scope="package")
+@pytest.fixture(scope='package')
 def pg_session(
     pg_session_empty,
     pg_client_test_data,
@@ -175,7 +177,7 @@ def pg_session(
         # Assuming pg_category_test_data has the same length as pg_client_test_data
         category_data = pg_category_test_data[idx]
         # Assuming the FK relationship between client and category
-        category_data.update({"client_id": new_client.id})
+        category_data.update({'client_id': new_client.id})
         new_category = PgCategory(**category_data)
 
         pg_session_empty.add(new_category)
@@ -185,7 +187,7 @@ def pg_session(
         # Assuming the same length of category and product arrays
         product_data = pg_product_test_data[idx]
         # Assuming the FK relationship between category and product
-        product_data.update({"categoria_id": new_category.id})
+        product_data.update({'categoria_id': new_category.id})
         new_product = PgProduct(**product_data)
 
         pg_session_empty.add(new_product)

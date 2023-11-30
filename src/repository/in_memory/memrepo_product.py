@@ -1,4 +1,4 @@
-""""Module for the Product in memory repository"""
+"""Module for the Product in memory repository"""
 from typing import Dict, List
 
 from src.domain.product import Product
@@ -16,14 +16,14 @@ class MemRepoProduct:
         if filters is None:
             return result
 
-        if "id__eq" in filters:
-            result = [c for c in result if c.code == filters["id__eq"]]
+        if 'id__eq' in filters:
+            result = [c for c in result if c.code == filters['id__eq']]
 
-        if "code__eq" in filters:
-            result = [c for c in result if c.code == filters["code__eq"]]
+        if 'code__eq' in filters:
+            result = [c for c in result if c.code == filters['code__eq']]
 
-        if "ativo__eq" in filters:
-            result = [c for c in result if c.ativo is filters["ativo__eq"]]
+        if 'ativo__eq' in filters:
+            result = [c for c in result if c.ativo is filters['ativo__eq']]
 
         return result
 

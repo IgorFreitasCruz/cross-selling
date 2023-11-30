@@ -19,11 +19,11 @@ from .adapters.request_adapter import HttpRequest, request_adapter
 
 try:
     postgres_configuration = {
-        "POSTGRES_USER": os.environ["POSTGRES_USER"],
-        "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
-        "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
-        "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
-        "APPLICATION_DB": os.environ["APPLICATION_DB"],
+        'POSTGRES_USER': os.environ['POSTGRES_USER'],
+        'POSTGRES_PASSWORD': os.environ['POSTGRES_PASSWORD'],
+        'POSTGRES_HOSTNAME': os.environ['POSTGRES_HOSTNAME'],
+        'POSTGRES_PORT': os.environ['POSTGRES_PORT'],
+        'APPLICATION_DB': os.environ['APPLICATION_DB'],
     }
 except Exception:
     ...
@@ -34,7 +34,7 @@ def product_create():
     try:
         product = ProductSchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
     request_obj = build_create_product_request(product.dict())
 
@@ -43,7 +43,7 @@ def product_create():
 
     return Response(
         json.dumps(response.value, cls=ProductJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -51,21 +51,21 @@ def product_create():
 def product_list():
     http_request: HttpRequest = request_adapter(request)
     qrystr_params = {
-        "filters": {},
+        'filters': {},
     }
 
     for arg, values in http_request.query_params.items():
-        if arg.startswith("filter_"):
-            qrystr_params["filters"][arg.replace("filter_", "")] = values
+        if arg.startswith('filter_'):
+            qrystr_params['filters'][arg.replace('filter_', '')] = values
 
-    request_obj = build_product_list_request(qrystr_params["filters"])
+    request_obj = build_product_list_request(qrystr_params['filters'])
 
     repo = PostgresRepoProduct(postgres_configuration)
     response = product_list_use_case(repo, request_obj)
 
     return Response(
         json.dumps(response.value, cls=ProductJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -75,15 +75,17 @@ def product_update():
     try:
         product = UpdateProductSchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
-    request_obj = build_update_product_request(product.dict(exclude_unset=True))
+    request_obj = build_update_product_request(
+        product.dict(exclude_unset=True)
+    )
 
     repo = PostgresRepoProduct(postgres_configuration)
     response = product_update_use_case(repo, request_obj)
 
     return Response(
         json.dumps(response.value, cls=ProductJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )

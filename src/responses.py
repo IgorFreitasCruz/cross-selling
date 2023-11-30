@@ -4,11 +4,11 @@
 class ResponseTypes:
     """Class for response types"""
 
-    PARAMETERS_ERROR = "ParametersError"
-    RESOURCE_ERROR = "ResourceError"
-    SYSTEM_ERROR = "SystemError"
-    SUCCESS = "Success"
-    DOMAIN_ERROR = "Erro de domínio já existente"
+    PARAMETERS_ERROR = 'ParametersError'
+    RESOURCE_ERROR = 'ResourceError'
+    SYSTEM_ERROR = 'SystemError'
+    SUCCESS = 'Success'
+    DOMAIN_ERROR = 'Erro de domínio já existente'
 
 
 STATUS_CODE = {
@@ -29,12 +29,12 @@ class ResponseFailure:
 
     def _format_message(self, msg):
         if isinstance(msg, Exception):
-            return "{}: {}".format(msg.__class__.__name__, "{}".format(msg))
+            return '{}: {}'.format(msg.__class__.__name__, '{}'.format(msg))
         return msg
 
     @property
     def value(self):
-        return {"type": self.type, "message": self.message}
+        return {'type': self.type, 'message': self.message}
 
     def __bool__(self):
         return False
@@ -52,9 +52,9 @@ class ResponseSuccess:
 
 
 def build_response_from_invalid_request(invalid_request):
-    message = "\n".join(
+    message = '\n'.join(
         [
-            "{}: {}".format(err["parameter"], err["message"])
+            '{}: {}'.format(err['parameter'], err['message'])
             for err in invalid_request.errors
         ]
     )

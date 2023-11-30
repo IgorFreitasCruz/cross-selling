@@ -1,7 +1,6 @@
 """Module for factory of update client requests"""
-from typing import Dict
-
 from datetime import datetime
+from typing import Dict
 
 from src.validators.cnpj import is_valid_cnpj
 from src.validators.email import is_valid_email
@@ -22,16 +21,16 @@ def build_update_client_request(client: Dict):
     """
     invalid_req = InvalidRequest()
 
-    if "cnpj" in client:
-        if not is_valid_cnpj(client["cnpj"]):
-            invalid_req.add_error("value", "Invalid CNPJ")
+    if 'cnpj' in client:
+        if not is_valid_cnpj(client['cnpj']):
+            invalid_req.add_error('value', 'Invalid CNPJ')
 
-    if "email" in client:
-        if not is_valid_email(client["email"]):
-            invalid_req.add_error("value", "Invalid e-mail")
+    if 'email' in client:
+        if not is_valid_email(client['email']):
+            invalid_req.add_error('value', 'Invalid e-mail')
 
     if invalid_req.has_errors():
         return invalid_req
 
-    client.update({"dt_alteracao": datetime.now()})
+    client.update({'dt_alteracao': datetime.now()})
     return ValidRequest(data=client)

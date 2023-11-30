@@ -4,14 +4,14 @@ from enum import Enum
 
 
 class TokenTypeEnum(Enum):
-    REFRESH = "refresh"
+    REFRESH = 'refresh'
 
 
 @dataclasses.dataclass
 class AuthJwt:
     jti: str
     client_id: int
-    token_type: TokenTypeEnum = "refresh"
+    token_type: TokenTypeEnum = 'refresh'
     revoked: bool = False
     id: int | None = None
     expires: datetime = None

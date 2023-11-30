@@ -17,7 +17,7 @@ class InvalidRequest:
         Returns:
             None: This function has no return
         """
-        self.errors.append({"parameter": parameter, "message": message})
+        self.errors.append({'parameter': parameter, 'message': message})
 
     def has_errors(self):
         """Checks wether an error exists

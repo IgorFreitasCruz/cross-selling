@@ -17,11 +17,11 @@ def build_create_category_request(category: Dict):
     """
     invalid_req = InvalidRequest()
 
-    if not isinstance(category["client_id"], int):
-        invalid_req.add_error("value", "client id must be an integer")
+    if not isinstance(category['client_id'], int):
+        invalid_req.add_error('value', 'client id must be an integer')
 
     if invalid_req.has_errors():
         return invalid_req
 
-    category.update({"code": uuid.uuid4()})
+    category.update({'code': uuid.uuid4()})
     return ValidRequest(data=category)

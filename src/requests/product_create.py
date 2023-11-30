@@ -15,11 +15,11 @@ def build_create_product_request(product: Dict):
         Object: Return InvalidRequest if errors, otherwise, returns ValidRequest
     """
     invalid_req = InvalidRequest()
-    if not isinstance(product["categoria_id"], int):
-        invalid_req.add_error("value", "product id must be integer")
+    if not isinstance(product['categoria_id'], int):
+        invalid_req.add_error('value', 'product id must be integer')
 
     if invalid_req.has_errors():
         return invalid_req
 
-    product.update({"code": uuid.uuid4()})
+    product.update({'code': uuid.uuid4()})
     return ValidRequest(data=product)

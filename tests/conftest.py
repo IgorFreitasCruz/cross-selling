@@ -15,7 +15,7 @@ def app():
     Returns:
         Object: Application configuration
     """
-    app = create_app("testing")
+    app = create_app('testing')
 
     return app
 
@@ -29,7 +29,7 @@ def pytest_addoption(parser):
         parser (Object): Pytest CLI parser object
     """
     parser.addoption(
-        "--integration", action="store_true", help="run integrations tests"
+        '--integration', action='store_true', help='run integrations tests'
     )
 
 
@@ -44,11 +44,13 @@ def pytest_runtest_setup(item):
     Args:
         item (Object): Pytest CLI item object
     """
-    if "integration" in item.keywords and not item.config.getvalue("integration"):
-        pytest.skip("need --integration option to run")
+    if 'integration' in item.keywords and not item.config.getvalue(
+        'integration'
+    ):
+        pytest.skip('need --integration option to run')
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def app_configuration() -> Dict:
     """Loads database configuration to connect during tests.
     Options: "testing", "production"
@@ -60,4 +62,4 @@ def app_configuration() -> Dict:
     Returns:
         Dict: Key, value configuration params
     """
-    return read_json_configuration("testing")
+    return read_json_configuration('testing')

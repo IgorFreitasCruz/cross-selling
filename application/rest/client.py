@@ -2,7 +2,6 @@
 import json
 import os
 
-from .adapters.request_adapter import HttpRequest, request_adapter
 from flask import Response, jsonify, request
 from pydantic import ValidationError
 
@@ -17,13 +16,15 @@ from src.use_cases.client_create import client_create_use_case
 from src.use_cases.client_list import client_list_use_case
 from src.use_cases.client_update import client_update_use_case
 
+from .adapters.request_adapter import HttpRequest, request_adapter
+
 try:
     postgres_configuration = {
-        "POSTGRES_USER": os.environ["POSTGRES_USER"],
-        "POSTGRES_PASSWORD": os.environ["POSTGRES_PASSWORD"],
-        "POSTGRES_HOSTNAME": os.environ["POSTGRES_HOSTNAME"],
-        "POSTGRES_PORT": os.environ["POSTGRES_PORT"],
-        "APPLICATION_DB": os.environ["APPLICATION_DB"],
+        'POSTGRES_USER': os.environ['POSTGRES_USER'],
+        'POSTGRES_PASSWORD': os.environ['POSTGRES_PASSWORD'],
+        'POSTGRES_HOSTNAME': os.environ['POSTGRES_HOSTNAME'],
+        'POSTGRES_PORT': os.environ['POSTGRES_PORT'],
+        'APPLICATION_DB': os.environ['APPLICATION_DB'],
     }
 except Exception:
     ...
@@ -34,7 +35,7 @@ def client_create():
     try:
         client = ClientSchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
     request_obj = build_create_client_request(client.dict())
 
@@ -43,7 +44,7 @@ def client_create():
 
     return Response(
         json.dumps(response.value, cls=ClientJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -52,21 +53,21 @@ def client_list():
     http_request: HttpRequest = request_adapter(request)
 
     qrystr_params = {
-        "filters": {},
+        'filters': {},
     }
 
     for arg, values in http_request.query_params.items():
-        if arg.startswith("filter_"):
-            qrystr_params["filters"][arg.replace("filter_", "")] = values
+        if arg.startswith('filter_'):
+            qrystr_params['filters'][arg.replace('filter_', '')] = values
 
-    request_obj = build_client_list_request(filters=qrystr_params["filters"])
+    request_obj = build_client_list_request(filters=qrystr_params['filters'])
 
     repo = PostgresRepoClient(postgres_configuration)
     response = client_list_use_case(repo, request_obj)
 
     return Response(
         json.dumps(response.value, cls=ClientJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -76,7 +77,7 @@ def client_update():
     try:
         client = UpdateClientSchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
     request_obj = build_update_client_request(client.dict(exclude_unset=True))
 
@@ -85,6 +86,6 @@ def client_update():
 
     return Response(
         json.dumps(response.value, cls=ClientJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )

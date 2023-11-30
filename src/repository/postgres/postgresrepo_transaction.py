@@ -5,7 +5,9 @@ from typing import Dict, List
 
 from src.domain import transaction
 from src.repository.postgres.base_postgresrepo import BasePostgresRepo
-from src.repository.postgres.postgres_objects import Transaction as PgTransaction
+from src.repository.postgres.postgres_objects import (
+    Transaction as PgTransaction,
+)
 
 
 class PostgresRepoTransaction(BasePostgresRepo):
@@ -36,24 +38,30 @@ class PostgresRepoTransaction(BasePostgresRepo):
         if filters is None:
             return self._create_transaction_objects(query.all())
 
-        if "id__eq" in filters:
-            query = query.filter(PgTransaction.id == filters["id__eq"])
+        if 'id__eq' in filters:
+            query = query.filter(PgTransaction.id == filters['id__eq'])
 
-        if "code__eq" in filters:
-            query = query.filter(PgTransaction.code == filters["code__eq"])
+        if 'code__eq' in filters:
+            query = query.filter(PgTransaction.code == filters['code__eq'])
 
-        if "ativo__eq" in filters:
-            query = query.filter(PgTransaction.ativo == filters["ativo__eq"])
+        if 'ativo__eq' in filters:
+            query = query.filter(PgTransaction.ativo == filters['ativo__eq'])
 
-        if "client_id__eq" in filters:
-            query = query.filter(PgTransaction.client_id == filters["client_id__eq"])
+        if 'client_id__eq' in filters:
+            query = query.filter(
+                PgTransaction.client_id == filters['client_id__eq']
+            )
 
-        if "produto_id__eq" in filters:
-            query = query.filter(PgTransaction.produto_id == filters["produto_id__eq"])
+        if 'produto_id__eq' in filters:
+            query = query.filter(
+                PgTransaction.produto_id == filters['produto_id__eq']
+            )
 
         return self._create_transaction_objects(query.all())
 
-    def create_transaction(self, new_transaction: Dict) -> transaction.Transaction:
+    def create_transaction(
+        self, new_transaction: Dict
+    ) -> transaction.Transaction:
         session = self._create_session()
 
         try:

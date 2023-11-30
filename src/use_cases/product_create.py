@@ -25,12 +25,14 @@ def product_create_use_case(repo: PostgresRepoProduct, request):
     try:
         check_product_exists = repo.list_product(
             filters={
-                "categoria_id": request.data["categoria_id"],
-                "sku__eq": request.data["sku"],
+                'categoria_id': request.data['categoria_id'],
+                'sku__eq': request.data['sku'],
             }
         )
         if check_product_exists:
-            return ResponseFailure(ResponseTypes.DOMAIN_ERROR, "Produto já cadastrado")
+            return ResponseFailure(
+                ResponseTypes.DOMAIN_ERROR, 'Produto já cadastrado'
+            )
         product = repo.create_product(request.data)
         return ResponseSuccess(product)
     except Exception as exc:

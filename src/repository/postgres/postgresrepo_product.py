@@ -35,22 +35,22 @@ class PostgresRepoProduct(BasePostgresRepo):
         query = session.query(PgProduct)
 
         if filters is not None:
-            if "id__eq" in filters:
-                query = query.filter(PgProduct.id == filters["id__eq"])
+            if 'id__eq' in filters:
+                query = query.filter(PgProduct.id == filters['id__eq'])
 
-            if "code__eq" in filters:
-                query = query.filter(PgProduct.code == filters["code__eq"])
+            if 'code__eq' in filters:
+                query = query.filter(PgProduct.code == filters['code__eq'])
 
-            if "ativo__eq" in filters:
-                query = query.filter(PgProduct.ativo == filters["ativo__eq"])
+            if 'ativo__eq' in filters:
+                query = query.filter(PgProduct.ativo == filters['ativo__eq'])
 
-            if "categoria_id__eq" in filters:
+            if 'categoria_id__eq' in filters:
                 query = query.filter(
-                    PgProduct.categoria_id == filters["categoria_id__eq"]
+                    PgProduct.categoria_id == filters['categoria_id__eq']
                 )
 
-            if "sku__eq" in filters:
-                query = query.filter(PgProduct.sku == filters["sku__eq"])
+            if 'sku__eq' in filters:
+                query = query.filter(PgProduct.sku == filters['sku__eq'])
 
         return self._create_product_objects(query.all())
 
@@ -72,7 +72,9 @@ class PostgresRepoProduct(BasePostgresRepo):
         session = self._create_session()
 
         try:
-            statement = select(PgProduct).where(PgProduct.id == new_product_data["id"])
+            statement = select(PgProduct).where(
+                PgProduct.id == new_product_data['id']
+            )
             pg_product_obj = session.exec(statement).one()
 
             for field, value in new_product_data.items():

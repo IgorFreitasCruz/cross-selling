@@ -11,32 +11,32 @@ from src.repository.in_memory.memrepo_category import MemRepoCategory
 def category_dicts():
     return [
         {
-            "descricao": "categoria A",
-            "dt_inclusao": "18/11/2023, 14:44:12",
-            "dt_alteracao": None,
-            "ativo": True,
-            "client_id": [1],
+            'descricao': 'categoria A',
+            'dt_inclusao': '18/11/2023, 14:44:12',
+            'dt_alteracao': None,
+            'ativo': True,
+            'client_id': [1],
         },
         {
-            "descricao": "categoria B",
-            "dt_inclusao": "18/11/2023, 14:44:12",
-            "dt_alteracao": None,
-            "ativo": True,
-            "client_id": [1],
+            'descricao': 'categoria B',
+            'dt_inclusao': '18/11/2023, 14:44:12',
+            'dt_alteracao': None,
+            'ativo': True,
+            'client_id': [1],
         },
         {
-            "descricao": "categoria C",
-            "dt_inclusao": "18/11/2023, 14:44:12",
-            "dt_alteracao": None,
-            "ativo": False,
-            "client_id": [2],
+            'descricao': 'categoria C',
+            'dt_inclusao': '18/11/2023, 14:44:12',
+            'dt_alteracao': None,
+            'ativo': False,
+            'client_id': [2],
         },
         {
-            "descricao": "categoria D",
-            "dt_inclusao": "18/11/2023, 14:44:12",
-            "dt_alteracao": None,
-            "ativo": False,
-            "client_id": [2],
+            'descricao': 'categoria D',
+            'dt_inclusao': '18/11/2023, 14:44:12',
+            'dt_alteracao': None,
+            'ativo': False,
+            'client_id': [2],
         },
     ]
 
@@ -45,11 +45,11 @@ def test_repository_create_category(category_dicts):
     repo = MemRepoCategory(category_dicts)
 
     new_category = {
-        "descricao": "description text",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": True,
-        "client_id": [1],
+        'descricao': 'description text',
+        'dt_inclusao': '18/11/2023, 14:44:12',
+        'dt_alteracao': None,
+        'ativo': True,
+        'client_id': [1],
     }
 
     repo.create_category(new_category)
@@ -68,7 +68,7 @@ def test_repository_list_category_without_params(category_dicts):
 def test_repository_list_with_ativo_equal_filter(category_dicts):
     repo = MemRepoCategory(category_dicts)
 
-    categories = repo.list_category({"ativo__eq": True})
+    categories = repo.list_category({'ativo__eq': True})
 
     assert len(categories) == 2
 
@@ -76,7 +76,7 @@ def test_repository_list_with_ativo_equal_filter(category_dicts):
 def test_repository_list_with_id_equal_true_filter(category_dicts):
     repo = MemRepoCategory(category_dicts)
 
-    categories = repo.list_category({"ativo__eq": True})
+    categories = repo.list_category({'ativo__eq': True})
 
     assert len(categories) == 2
 
@@ -85,19 +85,19 @@ def test_repository_update_client(category_dicts):
     repo = MemRepoCategory(category_dicts)
 
     new_category_data = {
-        "descricao": "categoria D",
-        "dt_inclusao": "18/11/2023, 14:44:12",
-        "dt_alteracao": None,
-        "ativo": True,
-        "client_id": [2],
+        'descricao': 'categoria D',
+        'dt_inclusao': '18/11/2023, 14:44:12',
+        'dt_alteracao': None,
+        'ativo': True,
+        'client_id': [2],
     }
 
     repo.update_category(new_category_data)
 
     updated_client = {}
     for client in category_dicts:
-        if client["descricao"] == "categoria D":
+        if client['descricao'] == 'categoria D':
             updated_client = client
 
     assert len(category_dicts) == 4
-    assert updated_client["ativo"] is True
+    assert updated_client['ativo'] is True

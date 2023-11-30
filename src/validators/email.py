@@ -11,5 +11,5 @@ def is_valid_email(email):
     Returns:
         bool: True if the email is valid, False otherwise.
     """
-    email_regex = re.compile(r"[^@]+@[^@]+\.[^@]+")
+    email_regex = re.compile(r'[^@]+@[^@]+\.[^@]+')
     return bool(re.match(email_regex, email))

@@ -24,13 +24,13 @@ def category_create_use_case(repo, request):
     try:
         check_category_exists = repo.list_category(
             filters={
-                "client_id": request.data["client_id"],
-                "descricao__eq": request.data["descricao"],
+                'client_id': request.data['client_id'],
+                'descricao__eq': request.data['descricao'],
             }
         )
         if check_category_exists:
             return ResponseFailure(
-                ResponseTypes.DOMAIN_ERROR, "Categoria já cadastrada"
+                ResponseTypes.DOMAIN_ERROR, 'Categoria já cadastrada'
             )
         client = repo.create_category(request.data)
         return ResponseSuccess(client)

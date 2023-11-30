@@ -1,4 +1,4 @@
-""""Module for the Category in memory repository"""
+"""Module for the Category in memory repository"""
 from typing import Dict, List
 
 from src.domain.category import Category
@@ -21,11 +21,11 @@ class MemRepoCategory:
         if filters is None:
             return result
 
-        if "id__eq" in filters:
-            result = [c for c in result if c.code == filters["id__eq"]]
+        if 'id__eq' in filters:
+            result = [c for c in result if c.code == filters['id__eq']]
 
-        if "ativo__eq" in filters:
-            result = [c for c in result if c.ativo is filters["ativo__eq"]]
+        if 'ativo__eq' in filters:
+            result = [c for c in result if c.ativo is filters['ativo__eq']]
 
         return result
 
@@ -49,7 +49,7 @@ class MemRepoCategory:
             Client: Updated client object
         """
         for client in self.data:
-            if client["descricao"] == new_category_data["descricao"]:
+            if client['descricao'] == new_category_data['descricao']:
                 client.update(new_category_data)
 
                 return client

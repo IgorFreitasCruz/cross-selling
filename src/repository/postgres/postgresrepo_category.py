@@ -40,20 +40,24 @@ class PostgresRepoCategory(BasePostgresRepo):
         if filters is None:
             return self._create_category_objects(query.all())
 
-        if "id__eq" in filters:
-            query = query.filter(PgCategory.id == filters["id__eq"])
+        if 'id__eq' in filters:
+            query = query.filter(PgCategory.id == filters['id__eq'])
 
-        if "code__eq" in filters:
-            query = query.filter(PgCategory.code == filters["code__eq"])
+        if 'code__eq' in filters:
+            query = query.filter(PgCategory.code == filters['code__eq'])
 
-        if "ativo__eq" in filters:
-            query = query.filter(PgCategory.ativo == filters["ativo__eq"])
+        if 'ativo__eq' in filters:
+            query = query.filter(PgCategory.ativo == filters['ativo__eq'])
 
-        if "client_id__eq" in filters:
-            query = query.filter(PgCategory.client_id == filters["client_id__eq"])
+        if 'client_id__eq' in filters:
+            query = query.filter(
+                PgCategory.client_id == filters['client_id__eq']
+            )
 
-        if "descricao__eq" in filters:
-            query = query.filter(PgCategory.descricao == filters["descricao__eq"])
+        if 'descricao__eq' in filters:
+            query = query.filter(
+                PgCategory.descricao == filters['descricao__eq']
+            )
 
         return self._create_category_objects(query.all())
 
@@ -76,7 +80,7 @@ class PostgresRepoCategory(BasePostgresRepo):
 
         try:
             statement = select(PgCategory).where(
-                PgCategory.id == new_category_data["id"]
+                PgCategory.id == new_category_data['id']
             )
             pg_category_obj = session.exec(statement).one()
 

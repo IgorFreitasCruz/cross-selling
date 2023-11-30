@@ -6,17 +6,18 @@ from typing import Dict, List
 
 from sqlmodel import select
 
-from src.domain import client
+from src.domain import auth_jwt, client
 from src.repository.postgres.base_postgresrepo import BasePostgresRepo
-from src.repository.postgres.postgres_objects import Client as PgClient
 from src.repository.postgres.postgres_objects import AuthJwt as PgAuthJwt
-from src.domain import auth_jwt
+from src.repository.postgres.postgres_objects import Client as PgClient
 
 
 class PostgresRepoClient(BasePostgresRepo):
     """Postgres Client repository"""
 
-    def _create_client_objects(self, results: list[PgClient]) -> List[client.Client]:
+    def _create_client_objects(
+        self, results: list[PgClient]
+    ) -> List[client.Client]:
         return [
             client.Client(
                 id=c.id,
@@ -49,17 +50,17 @@ class PostgresRepoClient(BasePostgresRepo):
         if filters is None:
             return self._create_client_objects(query.all())
 
-        if "id__eq" in filters:
-            query = query.filter(PgClient.id == filters["id__eq"])
+        if 'id__eq' in filters:
+            query = query.filter(PgClient.id == filters['id__eq'])
 
-        if "code__eq" in filters:
-            query = query.filter(PgClient.code == filters["code__eq"])
+        if 'code__eq' in filters:
+            query = query.filter(PgClient.code == filters['code__eq'])
 
-        if "ativo__eq" in filters:
-            query = query.filter(PgClient.ativo == filters["ativo__eq"])
+        if 'ativo__eq' in filters:
+            query = query.filter(PgClient.ativo == filters['ativo__eq'])
 
-        if "cnpj__eq" in filters:
-            query = query.filter(PgClient.cnpj == filters["cnpj__eq"])
+        if 'cnpj__eq' in filters:
+            query = query.filter(PgClient.cnpj == filters['cnpj__eq'])
 
         return self._create_client_objects(query.all())
 
@@ -81,7 +82,9 @@ class PostgresRepoClient(BasePostgresRepo):
         session = self._create_session()
 
         try:
-            statement = select(PgClient).where(PgClient.id == new_client_data["id"])
+            statement = select(PgClient).where(
+                PgClient.id == new_client_data['id']
+            )
             pg_client_obj = session.exec(statement).one()
 
             for field, value in new_client_data.items():

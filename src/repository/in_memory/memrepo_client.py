@@ -1,4 +1,4 @@
-""""Module for the Client in memory repository"""
+"""Module for the Client in memory repository"""
 import uuid
 from typing import Dict, List
 
@@ -22,11 +22,15 @@ class MemRepo:
         if filters is None:
             return result
 
-        if "code__eq" in filters:
-            result = [c for c in result if c.code == filters["code__eq"]]
+        if 'code__eq' in filters:
+            result = [c for c in result if c.code == filters['code__eq']]
 
-        if "ativo__eq" in filters:
-            result = [c for c in result if c.ativo is (filters["ativo__eq"] == "true")]
+        if 'ativo__eq' in filters:
+            result = [
+                c
+                for c in result
+                if c.ativo is (filters['ativo__eq'] == 'true')
+            ]
 
         return result
 
@@ -40,7 +44,7 @@ class MemRepo:
             Client: _description_
         """
 
-        return [c for c in self.data if c["code"] == code][0]
+        return [c for c in self.data if c['code'] == code][0]
 
     def create_client(self, client: Client) -> None:
         """Creates a client
@@ -48,7 +52,7 @@ class MemRepo:
         Args:
             client (Client): Client object
         """
-        client.update({"code": str(uuid.uuid4())})
+        client.update({'code': str(uuid.uuid4())})
         self.data.append(client)
 
         return client
@@ -63,7 +67,7 @@ class MemRepo:
             Client: Updated client object
         """
         for client in self.data:
-            if client["code"] == new_client_data["code"]:
+            if client['code'] == new_client_data['code']:
                 client.update(new_client_data)
 
                 return client

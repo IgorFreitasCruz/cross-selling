@@ -22,5 +22,5 @@ def build_transaction_create_request(transaction: Dict):
     if invalid_req.has_errors():
         return invalid_req
 
-    transaction.update({"code": uuid.uuid4()})
+    transaction.update({'code': uuid.uuid4()})
     return ValidRequest(data=transaction)

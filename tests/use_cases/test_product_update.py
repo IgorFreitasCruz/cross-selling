@@ -9,11 +9,11 @@ from src.use_cases.product_update import product_update_use_case
 @pytest.fixture
 def product_to_update():
     return {
-        "id": 1,
-        "nome": "Produto A",
-        "descricao": "Descricao A",
-        "sku": "0123456789",
-        "ativo": False,
+        'id': 1,
+        'nome': 'Produto A',
+        'descricao': 'Descricao A',
+        'sku': '0123456789',
+        'ativo': False,
     }
 
 

@@ -6,12 +6,12 @@ class BasePostgresRepo:
     """Postgres repository"""
 
     def __init__(self, configuration):
-        connection_string = "postgresql+psycopg2://{}:{}@{}:{}/{}".format(
-            configuration["POSTGRES_USER"],
-            configuration["POSTGRES_PASSWORD"],
-            configuration["POSTGRES_HOSTNAME"],
-            configuration["POSTGRES_PORT"],
-            configuration["APPLICATION_DB"],
+        connection_string = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(
+            configuration['POSTGRES_USER'],
+            configuration['POSTGRES_PASSWORD'],
+            configuration['POSTGRES_HOSTNAME'],
+            configuration['POSTGRES_PORT'],
+            configuration['APPLICATION_DB'],
         )
 
         self.engine = create_engine(connection_string)
