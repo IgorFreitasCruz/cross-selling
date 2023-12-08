@@ -9,8 +9,9 @@ import time
 from typing import Dict
 
 import click
-import psycopg2
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+# import psycopg2
+# from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+import pyodbc
 
 
 # Ensure an environment variable exists and has a value
@@ -91,15 +92,20 @@ def is_docker_running():
 
 
 def run_sql(statements):
-    conn = psycopg2.connect(
-        dbname=os.getenv('POSTGRES_DB'),
-        user=os.getenv('POSTGRES_USER'),
-        password=os.getenv('POSTGRES_PASSWORD'),
-        host=os.getenv('POSTGRES_HOSTNAME'),
-        port=os.getenv('POSTGRES_PORT'),
+    connection_string = 'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={},{};DATABASE={};UID={};PWD={}'.format(
+            os.getenv('MSSQL_HOSTNAME'),
+            os.getenv('MSSQL_PORT'),
+            os.getenv('APPLICATION_DB'),
+            os.getenv('MSSQL_USER'),
+            os.getenv('MSSQL_SA_PASSWORD'),
     )
 
-    conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+    import sys
+    print('*'*20,__name__,': line',sys._getframe().f_lineno,'*'*20, flush=True)
+    print(connection_string, flush=True)
+    conn = pyodbc.connect(connection_string)
+
+    # conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     cursor = conn.cursor()
     for statement in statements:
         cursor.execute(statement)
@@ -133,12 +139,12 @@ def compose(subcommand):
 
 
 @cli.command
-def init_postgres():
+def init_mssql():
     configure_app(os.getenv('APPLICATION_CONFIG'))
 
     try:
         run_sql([f"CREATE DATABASE {os.getenv('APPLICATION_DB')}"])
-    except psycopg2.errors.DuplicateDatabase:
+    except pyodbc.DatabaseError:
         print(
             f"The database {os.getenv('APPLICATION_DB')} already exists and will not be created"
         )

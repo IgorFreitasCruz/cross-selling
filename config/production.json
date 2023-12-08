@@ -8,24 +8,20 @@
         "value": "production"
     },
     {
-        "name": "POSTGRES_DB",
-        "value": "postgres"
+        "name": "MSSQL_USER",
+        "value": "sa"
     },
     {
-        "name": "POSTGRES_USER",
-        "value": "postgres"
-    },
-    {
-        "name": "POSTGRES_HOSTNAME",
+        "name": "MSSQL_HOSTNAME",
         "value": "localhost"
     },
     {
-        "name": "POSTGRES_PORT",
-        "value": "5432"
+        "name": "MSSQL_PORT",
+        "value": "8065"
     },
     {
-        "name": "POSTGRES_PASSWORD",
-        "value": "postgres"
+        "name": "MSSQL_SA_PASSWORD",
+        "value": "Kogui@2023"
     },
     {
         "name": "APPLICATION_DB",

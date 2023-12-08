@@ -1,16 +1,18 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres
+  sqlserv-cross-selling:
+    image: mcr.microsoft.com/mssql/server
+    user: root
+    container_name: sqlserv-cross-selling
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+      MSSQL_USER: ${MSSQL_SA_PASSWORD}
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "${MSSQL_PORT}:1433"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - sql_server_data/:/var/opt/mssql/data/:rw
   web:
     build:
       context: ${PWD}
@@ -19,10 +21,10 @@ services:
       FLASK_ENV: ${FLASK_ENV}
       FLASK_CONFIG: ${FLASK_CONFIG}
       APPLICATION_DB: ${APPLICATION_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_HOSTNAME: "db"
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
+      MSSQL_USER: ${MSSQL_USER}
+      MSSQL_HOSTNAME: "sqlserv-cross-selling"
+      MSSQL_PASSWORD: ${MSSQL_SA_PASSWORD}
+      MSSQL_PORT: ${MSSQL_PORT}
     command: gunicorn -w 4 -b 0.0.0.0 wsgi:app
     volumes:
       - ${PWD}:/opt/code
@@ -34,4 +36,4 @@ services:
       - 8080:8080
 
 volumes:
-  pgdata:
+  sql_server_data:

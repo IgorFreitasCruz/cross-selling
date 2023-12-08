@@ -10,17 +10,6 @@ class SQLServerDatabase:
             configuration['MSSQL_USER'],
             configuration['MSSQL_PASSWORD'],
         )
-        import sys
-
-        print(
-            '*' * 20,
-            __name__,
-            ': line',
-            sys._getframe().f_lineno,
-            '*' * 20,
-            flush=True,
-        )
-        print(self.connection_string, flush=True)
 
     def connect(self):
         try:

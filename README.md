@@ -66,7 +66,7 @@ postgres=#
 [\\]: # "# TODO passar esses comandos com variáveis de ambiebnte para o manage.py"
 This command creates a directory called migrations that contains Alembic’s configuration files, together with the migrations that will be created in `migrations/versions`.
 ```bash
-~/cross_selling: POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_HOSTNAME=localhost APPLICATION_DB=cross_selling_db alembic revision --autogenerate -m "Initial"
+~/cross_selling: MSSQL_USER=sa MSSQL_SA_PASSWORD=Kogui@2023 MSSQL_HOSTNAME=localhost APPLICATION_DB=cross_selling_db alembic revision --autogenerate -m "Initial"
 ```
 
 <br>
