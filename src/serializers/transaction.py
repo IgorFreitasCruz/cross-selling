@@ -20,6 +20,9 @@ class TransactionJsonEncoder(json.JSONEncoder):
                 'client_id': o.client_id,
                 'produto_id': o.produto_id,
                 'quantidade': o.quantidade,
+                'dt_transacao': str(o.dt_transacao)
+                if o.dt_transacao is not None
+                else o.dt_transacao,
                 'dt_inclusao': str(o.dt_inclusao)
                 if o.dt_inclusao is not None
                 else o.dt_inclusao,

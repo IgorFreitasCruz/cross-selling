@@ -1,12 +1,20 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Extra
 
 
-class TransactionSchema(BaseModel):
-    """Schema validatation for transaction"""
-
-    client_id: int
-    produto_id: int
+class Product(BaseModel):
+    sku: str
     quantidade: int
+
+
+class Transaction(BaseModel):
+    dt_transacao: datetime
+    transacao_items: list[Product]
+
+
+class StoreTransactions(BaseModel):
+    transacoes: list[Transaction]
 
     class Config:
         extra = Extra.forbid

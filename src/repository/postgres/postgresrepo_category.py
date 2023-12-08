@@ -3,6 +3,7 @@
 # pylint: disable=c0116
 from typing import Dict, List
 
+from sqlalchemy import text
 from sqlmodel import select
 
 from src.domain import category
@@ -40,6 +41,11 @@ class PostgresRepoCategory(BasePostgresRepo):
         if filters is None:
             return self._create_category_objects(query.all())
 
+        if 'client_id__eq' in filters:
+            query = query.filter(
+                PgCategory.client_id == filters['client_id__eq']
+            )
+
         if 'id__eq' in filters:
             query = query.filter(PgCategory.id == filters['id__eq'])
 
@@ -55,8 +61,10 @@ class PostgresRepoCategory(BasePostgresRepo):
             )
 
         if 'descricao__eq' in filters:
-            query = query.filter(
-                PgCategory.descricao == filters['descricao__eq']
+            query = (
+                session.query(PgCategory)
+                .filter(text('descricao LIKE :descricao'))
+                .params(descricao=f"%{filters['descricao__eq']}%")
             )
 
         return self._create_category_objects(query.all())

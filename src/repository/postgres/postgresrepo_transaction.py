@@ -1,12 +1,14 @@
 # pylint: disable=c0103
 # pylint: disable=c0209
 # pylint: disable=c0116
-from typing import Dict, List
-
-from src.domain import transaction
+from src.domain.transaction import Transaction
 from src.repository.postgres.base_postgresrepo import BasePostgresRepo
+from src.repository.postgres.postgres_objects import StoreTransactions
 from src.repository.postgres.postgres_objects import (
     Transaction as PgTransaction,
+)
+from src.repository.postgres.postgres_objects import (
+    TransactionItem as PgTransactionItem,
 )
 
 
@@ -15,13 +17,14 @@ class PostgresRepoTransaction(BasePostgresRepo):
 
     def _create_transaction_objects(
         self, result: list[PgTransaction]
-    ) -> List[transaction.Transaction]:
+    ) -> list[Transaction]:
         return [
-            transaction.Transaction(
+            Transaction(
                 id=t.id,
                 code=t.code,
                 dt_inclusao=t.dt_inclusao,
                 dt_alteracao=t.dt_alteracao,
+                dt_transacao=t.dt_transacao,
                 client_id=t.client_id,
                 produto_id=t.produto_id,
                 quantidade=t.quantidade,
@@ -30,7 +33,7 @@ class PostgresRepoTransaction(BasePostgresRepo):
             for t in result
         ]
 
-    def list_transaction(self, filters=None) -> List[transaction.Transaction]:
+    def list_transaction(self, filters=None) -> list[Transaction]:
         session = self._create_session()
 
         query = session.query(PgTransaction)
@@ -59,18 +62,31 @@ class PostgresRepoTransaction(BasePostgresRepo):
 
         return self._create_transaction_objects(query.all())
 
-    def create_transaction(
-        self, new_transaction: Dict
-    ) -> transaction.Transaction:
+    def create_transaction(self, new_transaction: dict):
         session = self._create_session()
 
         try:
-            pg_transaction_obj = PgTransaction(**new_transaction)
-            session.add(pg_transaction_obj)
+            for transaction in new_transaction['transactions']:
+                db_transaction = PgTransaction(
+                    # code=transaction["code"],
+                    client_id=new_transaction['client_id'],
+                    dt_transacao=transaction['dt_transacao'],
+                )
+                session.add(db_transaction)
+                session.flush()
+
+                for item in transaction['transacao_items']:
+                    db_item = PgTransactionItem(
+                        # code=item["code"],
+                        sku=item['sku'],
+                        quantidade=item['quantidade'],
+                        transaction_id=db_transaction.id,
+                    )
+                    session.add(db_item)
         except:
             session.rollback()
             raise
         else:
             session.commit()
 
-        return self._create_transaction_objects([pg_transaction_obj])[0]
+        # TODO retornar alguma informação, ex: número de transações adicionadas

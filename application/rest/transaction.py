@@ -4,7 +4,8 @@ import os
 from flask import Response, jsonify, request
 from pydantic import ValidationError
 
-from application.rest.schema.transaction import TransactionSchema
+from application.rest.schema.transaction import StoreTransactions
+from src.plugins.jwt_plugin import auth_token
 from src.repository.postgres.postgresrepo_transaction import (
     PostgresRepoTransaction,
 )
@@ -31,12 +32,23 @@ except Exception:
 
 def transaction_create():
     http_request: HttpRequest = request_adapter(request)
+
     try:
-        transaction = TransactionSchema.parse_raw(http_request.data)
+        token = http_request.headers
+        client = auth_token.decode_jwt(token['Authorization'])
+    except auth_token.jwt.ExpiredSignatureError:
+        raise
+
+    try:
+        transaction = StoreTransactions.parse_raw(http_request.data)
     except ValidationError as e:
         return jsonify({'error': e.errors()}), 400
 
-    request_obj = build_transaction_create_request(transaction.dict())
+    transaction_dict = transaction.dict()
+
+    transaction_dict.update({'client_id': client['client_id']})
+
+    request_obj = build_transaction_create_request(transaction_dict)
 
     repo = PostgresRepoTransaction(postgres_configuration)
     response = transaction_create_use_case(repo, request_obj)

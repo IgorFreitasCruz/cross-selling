@@ -14,6 +14,7 @@ transaction_dict = {
     'quantidade': 10,
     'dt_inclusao': '01/01/2023 00:00:00',
     'dt_alteracao': '01/01/2023 00:00:00',
+    'dt_transacao': '01/01/2023 00:00:00',
     'ativo': True,
 }
 

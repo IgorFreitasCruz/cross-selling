@@ -9,6 +9,7 @@ from application.rest.schema.category import (
     CategorySchema,
     UpdateCategorySchema,
 )
+from src.plugins.jwt_plugin import auth_token
 from src.repository.postgres.postgresrepo_category import PostgresRepoCategory
 from src.requests.category_create import build_create_category_request
 from src.requests.category_list import build_category_list_request
@@ -57,6 +58,14 @@ def category_list():
     qrystr_params = {
         'filters': {},
     }
+
+    try:
+        token = http_request.headers
+        client = auth_token.decode_jwt(token['Authorization'])
+    except auth_token.jwt.ExpiredSignatureError:
+        raise
+
+    qrystr_params['filters'].update({'client_id__eq': client['client_id']})
 
     for arg, values in http_request.query_params.items():
         if arg.startswith('filter_'):

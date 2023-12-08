@@ -5,7 +5,7 @@ from src.requests.validation.invalid_request import InvalidRequest
 from src.requests.validation.valid_request import ValidRequest
 
 
-def build_transaction_create_request(transaction: Dict):
+def build_transaction_create_request(transaction: dict):
     """Factory for requests
 
     Args:
@@ -17,10 +17,8 @@ def build_transaction_create_request(transaction: Dict):
     """
     invalid_req = InvalidRequest()
 
-    # FIXME o que validar?
+    # TODO o que validar?
 
     if invalid_req.has_errors():
         return invalid_req
-
-    transaction.update({'code': uuid.uuid4()})
     return ValidRequest(data=transaction)

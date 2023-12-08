@@ -5,6 +5,7 @@ from flask import Response, jsonify, request
 from pydantic import ValidationError
 
 from application.rest.schema.product import ProductSchema, UpdateProductSchema
+from src.plugins.jwt_plugin import auth_token
 from src.repository.postgres.postgresrepo_product import PostgresRepoProduct
 from src.requests.product_create import build_create_product_request
 from src.requests.product_list import build_product_list_request
@@ -53,6 +54,14 @@ def product_list():
     qrystr_params = {
         'filters': {},
     }
+
+    try:
+        token = http_request.headers
+        client = auth_token.decode_jwt(token['Authorization'])
+    except auth_token.jwt.ExpiredSignatureError:
+        raise
+
+    qrystr_params['filters'].update({'client_id__eq': client['client_id']})
 
     for arg, values in http_request.query_params.items():
         if arg.startswith('filter_'):

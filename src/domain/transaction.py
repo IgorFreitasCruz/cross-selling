@@ -1,5 +1,6 @@
 """Module for the Transaction entity"""
 import dataclasses
+from datetime import datetime
 from typing import Dict
 
 from src.domain.base import BaseDomainModel
@@ -12,6 +13,7 @@ class Transaction(BaseDomainModel):
     client_id: int
     produto_id: int
     quantidade: int
+    dt_transacao: datetime
 
     @classmethod
     def from_dict(cls, d: Dict):

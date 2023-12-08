@@ -3,10 +3,13 @@
 # pylint: disable=c0116
 from typing import Dict, List
 
+from sqlalchemy.orm import joinedload
 from sqlmodel import select
 
 from src.domain import product
 from src.repository.postgres.base_postgresrepo import BasePostgresRepo
+from src.repository.postgres.postgres_objects import Category as PgCategory
+from src.repository.postgres.postgres_objects import Client as PgClient
 from src.repository.postgres.postgres_objects import Product as PgProduct
 
 
@@ -35,6 +38,17 @@ class PostgresRepoProduct(BasePostgresRepo):
         query = session.query(PgProduct)
 
         if filters is not None:
+            if 'client_id__eq' in filters:
+                client_id = filters['client_id__eq']
+
+                query = (
+                    session.query(PgProduct)
+                    .join(PgCategory, PgProduct.categoria_id == PgCategory.id)
+                    .join(PgClient, PgCategory.client_id == PgClient.id)
+                    .filter(PgClient.id == client_id)
+                    # .options(joinedload(PgProduct.category).joinedload(PgCategory.client))
+                )
+
             if 'id__eq' in filters:
                 query = query.filter(PgProduct.id == filters['id__eq'])
 

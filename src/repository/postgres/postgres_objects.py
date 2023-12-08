@@ -1,14 +1,13 @@
 """Module for the Postgres database"""
 import uuid
 from datetime import datetime
-from typing import Optional
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class Client(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
+    id: int | None = Field(default=None, primary_key=True)
+    code: str
     razao_social: str
     cnpj: str
     email: str
@@ -20,8 +19,8 @@ class Client(SQLModel, table=True):
 
 
 class Category(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
+    id: int | None = Field(default=None, primary_key=True)
+    code: str
     descricao: str
     dt_inclusao: datetime = Field(
         default_factory=datetime.utcnow, nullable=False
@@ -29,12 +28,12 @@ class Category(SQLModel, table=True):
     dt_alteracao: datetime = None
     ativo: bool = True
 
-    client_id: Optional[int] = Field(foreign_key='client.id')
+    client_id: int | None = Field(foreign_key='client.id')
 
 
 class Product(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
+    id: int | None = Field(default=None, primary_key=True)
+    code: str
     nome: str
     descricao: str
     sku: str
@@ -44,28 +43,94 @@ class Product(SQLModel, table=True):
     dt_alteracao: datetime = None
     ativo: bool = True
 
-    categoria_id: Optional[int] = Field(foreign_key='category.id')
+    categoria_id: int | None = Field(foreign_key='category.id')
+
+
+class TransactionItem(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    code: str
+    sku: str
+    quantidade: int
+    transaction_id: int | None = Field(foreign_key='transaction.id')
+    transaction: 'Transaction' = Relationship(back_populates='transacao_items')
 
 
 class Transaction(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    code: uuid.UUID = Field(default_factory=uuid.uuid4, nullable=True)
-    quantidade: Optional[int]
+    id: int | None = Field(default=None, primary_key=True)
+    code: str
+    client_id: int | None = Field(foreign_key='client.id')
+    dt_transacao: datetime = None
     dt_inclusao: datetime = Field(
         default_factory=datetime.utcnow, nullable=False
     )
     dt_alteracao: datetime = None
     ativo: bool = True
 
-    client_id: int = Field(foreign_key='client.id')
-    produto_id: int = Field(foreign_key='product.id')
+    transacao_items: list[TransactionItem] = Relationship(
+        back_populates='transaction'
+    )
+
+
+class StoreTransactions(SQLModel):
+    client_id: int
+    transactions: list[Transaction]
 
 
 class AuthJwt(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     jti: str
     token_type: str
     revoked: bool = False
     expires: datetime
 
     client_id: int = Field(foreign_key='client.id')
+
+
+class RegraCategoria(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    tipo: str
+    dt_inclusao: datetime = Field(
+        default_factory=datetime.utcnow, nullable=False
+    )
+    dt_alteracao: datetime = None
+    categoria_id: int | None = Field(foreign_key='category.id')
+    regra_id: int
+    regra_id: int | None = Field(foreign_key='regra.id')
+    # regra: "Regra" = Relationship(back_populates='regra_categorias')
+
+
+class Regra(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    descricao_regra: str
+    confianca: float
+    suporte: float
+    lift: float
+    dt_alteracao: datetime = None
+    ativo: bool = True
+    regra_categorias: list[RegraCategoria] = Relationship(
+        back_populates='regra', sa_relationship_kwargs={'cascade': 'delete'}
+    )
+    regra_run_id: int | None = Field(foreign_key='regrarun.id')
+
+
+class RegraRun(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    min_support: float
+    min_threshold: float
+    metric: str
+    dt_inclusao: datetime = Field(
+        default_factory=datetime.utcnow, nullable=False
+    )
+    client_id: int | None = Field(foreign_key='client.id')
+
+
+class AlgoParams(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    min_support: float
+    min_threshold: float
+    metric: str
+    dt_inclusao: datetime = Field(
+        default_factory=datetime.utcnow, nullable=True
+    )
+    dt_alteracao: datetime = None
+    client_id: int | None = Field(foreign_key='client.id')

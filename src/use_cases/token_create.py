@@ -5,8 +5,11 @@ from src.plugins.jwt_plugin import auth_token
 
 def create_token(client: Client) -> None:
     client_id = client.id
+    cnpj = client.cnpj
 
-    token, expire_date = auth_token.create_jwt(data={'client_id': client_id})
+    token, expire_date = auth_token.create_jwt(
+        data={'client_id': client_id, 'cnpj': cnpj}
+    )
 
     return AuthJwt(
         jti=token,
