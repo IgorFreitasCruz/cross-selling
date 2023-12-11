@@ -1,20 +1,21 @@
 """Base class for PostgresRepo"""
+import os
+
 from sqlmodel import Session, SQLModel, create_engine
 
 
 class BasePostgresRepo:
     """Postgres repository"""
 
-    def __init__(self, configuration):
-        connection_string = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(
-            configuration['POSTGRES_USER'],
-            configuration['POSTGRES_PASSWORD'],
-            configuration['POSTGRES_HOSTNAME'],
-            configuration['POSTGRES_PORT'],
-            configuration['APPLICATION_DB'],
+    def __init__(self):
+        self._connection_string = "mssql+pyodbc://{}:{}@{}/{}?TrustServerCertificate=yes&driver=ODBC+Driver+17+for+SQL+Server".format(
+            os.environ["MSSQL_USER"],
+            os.environ["MSSQL_SA_PASSWORD"],
+            os.environ["MSSQL_HOSTNAME"],
+            os.environ["APPLICATION_DB"],
         )
 
-        self.engine = create_engine(connection_string)
+        self.engine = create_engine(self._connection_string)
         SQLModel.metadata.create_all(self.engine)
         SQLModel.metadata.bind = self.engine
 

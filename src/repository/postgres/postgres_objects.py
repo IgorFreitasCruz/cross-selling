@@ -29,7 +29,7 @@ class Category(SQLModel, table=True):
     dt_inclusao: datetime = Field(
         default_factory=datetime.utcnow, nullable=False
     )
-    dt_alteracao: datetime = None
+    dt_alteracao: datetime | None = None
     ativo: bool = True
 
     client_id: int | None = Field(foreign_key='client.id')
@@ -100,7 +100,7 @@ class RegraCategoria(SQLModel, table=True):
     categoria_id: int | None = Field(foreign_key='category.id')
     regra_id: int
     regra_id: int | None = Field(foreign_key='regra.id')
-    # regra: "Regra" = Relationship(back_populates='regra_categorias')
+    regra: "Regra" = Relationship(back_populates='regra_categorias')
 
 
 class Regra(SQLModel, table=True):
