@@ -9,6 +9,7 @@ import time
 from typing import Dict
 
 import click
+
 # import psycopg2
 # from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import pyodbc
@@ -20,7 +21,7 @@ def setenv(variable, default):
 
 
 # Forced the variable APPLICATION_CONFIG to be production if not specified
-setenv('APPLICATION_CONFIG', 'production')
+setenv('APPLICATION_CONFIG', 'development')
 
 APPLICATION_CONFIG_PATH = 'config'
 DOCKER_PATH = 'docker'
@@ -92,20 +93,15 @@ def is_docker_running():
 
 
 def run_sql(statements):
-    connection_string = 'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={},{};DATABASE={};UID={};PWD={}'.format(
-            os.getenv('MSSQL_HOSTNAME'),
-            os.getenv('MSSQL_PORT'),
-            os.getenv('APPLICATION_DB'),
-            os.getenv('MSSQL_USER'),
-            os.getenv('MSSQL_SA_PASSWORD'),
+    connection_string = 'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={};UID={};PWD={};TrustServerCertificate=yes'.format(
+        os.getenv('MSSQL_HOSTNAME'),
+        os.getenv('MSSQL_USER'),
+        os.getenv('MSSQL_SA_PASSWORD'),
     )
 
-    import sys
-    print('*'*20,__name__,': line',sys._getframe().f_lineno,'*'*20, flush=True)
-    print(connection_string, flush=True)
     conn = pyodbc.connect(connection_string)
+    conn.autocommit = True
 
-    # conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     cursor = conn.cursor()
     for statement in statements:
         cursor.execute(statement)

@@ -3,12 +3,11 @@ import pyodbc
 
 class SQLServerDatabase:
     def __init__(self, configuration):
-        self.connection_string = 'DRIVER={{ODBC Driver 17 for SQL Serve}};SERVER={},{};DATABASE={};UID={};PWD={};TrustServerCertificate=True'.format(
+        self.connection_string = 'DRIVER={{ODBC Driver 17 for SQL Serve}};SERVER={};DATABASE={};UID={};PWD={};TrustServerCertificate=True'.format(
             configuration['MSSQL_HOSTNAME'],
-            configuration['MSSQL_PORT'],
             configuration['MSSQL_DB'],
             configuration['MSSQL_USER'],
-            configuration['MSSQL_PASSWORD'],
+            configuration['MSSQL_SA_PASSWORD'],
         )
 
     def connect(self):

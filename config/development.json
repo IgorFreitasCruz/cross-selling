@@ -25,6 +25,6 @@
     },
     {
         "name": "APPLICATION_DB",
-        "value": "db-cross-selling-prod"
+        "value": "db-cross-selling-dev"
     }
 ]
