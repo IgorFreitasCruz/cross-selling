@@ -1,10 +1,10 @@
 version: '3.8'
 
 services:
-  sqlserv-cross-selling-dev:
+  sqlserv-cross-selling:
     image: mcr.microsoft.com/mssql/server
     user: root
-    container_name: sqlserv-cross-selling-dev
+    container_name: sqlserv-cross-selling
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
@@ -12,17 +12,17 @@ services:
     ports:
       - "${MSSQL_PORT}:1433"
     volumes:
-      - sql_server_data_dev/:/var/opt/mssql/data/:rw
+      - sql_server_data/:/var/opt/mssql/data/:rw
   web:
     build:
       context: ${PWD}
-      dockerfile: docker/web/Dockerfile.development
+      dockerfile: docker/web/Dockerfile.local
     environment:
       FLASK_ENV: ${FLASK_ENV}
       FLASK_CONFIG: ${FLASK_CONFIG}
       APPLICATION_DB: ${APPLICATION_DB}
       MSSQL_USER: ${MSSQL_USER}
-      MSSQL_HOSTNAME: "sqlserv-cross-selling-dev"
+      MSSQL_HOSTNAME: "sqlserv-cross-selling"
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
       MSSQL_PORT: ${MSSQL_PORT}
     command: gunicorn -w 4 -b 0.0.0.0 wsgi:app
@@ -36,4 +36,4 @@ services:
       - 8080:8080
 
 volumes:
-  sql_server_data_dev:
+  sql_server_data:
