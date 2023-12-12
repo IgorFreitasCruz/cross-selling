@@ -8,40 +8,20 @@
         "value": "testing"
     },
     {
-        "name": "POSTGRES_DB",
-        "value": "postgres"
+        "name": "MSSQL_USER",
+        "value": "sa"
     },
     {
-        "name": "POSTGRES_USER",
-        "value": "postgres"
+        "name": "MSSQL_HOSTNAME",
+        "value": "localhost,8065"
     },
     {
-        "name": "POSTGRES_HOSTNAME",
-        "value": "localhost"
+        "name": "MSSQL_PORT",
+        "value": "8065"
     },
     {
-        "name": "POSTGRES_PORT",
-        "value": "5433"
-    },
-    {
-        "name": "POSTGRES_PASSWORD",
-        "value": "postgres"
-    },
-    {
-        "name": "MONGODB_USER",
-        "value": "root"
-    },
-    {
-        "name": "MONGODB_HOSTNAME",
-        "value": "localhost"
-    },
-    {
-        "name": "MONGODB_PORT",
-        "value": "27018"
-    },
-    {
-        "name": "MONGODB_PASSWORD",
-        "value": "mongodb"
+        "name": "MSSQL_SA_PASSWORD",
+        "value": "Kogui$2023"
     },
     {
         "name": "APPLICATION_DB",

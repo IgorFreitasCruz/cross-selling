@@ -19,6 +19,7 @@ def domain_transaction():
         produto_id=1,
         quantidade=10,
         dt_inclusao='01/01/2023 00:00:00',
+        dt_transacao='2023-01-01 00:00:00.000',
         dt_alteracao=None,
         ativo=True,
     )
@@ -29,6 +30,7 @@ def domain_transaction():
         produto_id=1,
         quantidade=10,
         dt_inclusao='01/01/2023 00:00:00',
+        dt_transacao='2023-01-01 00:00:00.000',
         dt_alteracao=None,
         ativo=True,
     )
@@ -39,6 +41,7 @@ def domain_transaction():
         produto_id=1,
         quantidade=10,
         dt_inclusao='01/01/2023 00:00:00',
+        dt_transacao='2023-01-01 00:00:00.000',
         dt_alteracao=None,
         ativo=True,
     )
@@ -49,6 +52,7 @@ def domain_transaction():
         produto_id=1,
         quantidade=10,
         dt_inclusao='01/01/2023 00:00:00',
+        dt_transacao='2023-01-01 00:00:00.000',
         dt_alteracao=None,
         ativo=True,
     )

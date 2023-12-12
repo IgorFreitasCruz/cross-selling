@@ -8,7 +8,7 @@ class BasePostgresRepo:
     """Postgres repository"""
 
     def __init__(self):
-        self._connection_string = "mssql+pyodbc://{}:{}@{}/{}?TrustServerCertificate=yes&driver=ODBC+Driver+17+for+SQL+Server".format(
+        self._connection_string = "mssql+pyodbc://{}:{}@{}/{}?TrustServerCertificate=yes&driver=ODBC+Driver+18+for+SQL+Server".format(
             os.environ["MSSQL_USER"],
             os.environ["MSSQL_SA_PASSWORD"],
             os.environ["MSSQL_HOSTNAME"],

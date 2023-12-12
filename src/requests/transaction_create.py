@@ -1,6 +1,3 @@
-import uuid
-from typing import Dict
-
 from src.requests.validation.invalid_request import InvalidRequest
 from src.requests.validation.valid_request import ValidRequest
 

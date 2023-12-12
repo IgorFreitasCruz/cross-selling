@@ -12,9 +12,9 @@ from src.use_cases.token_create import create_token
 def client_entity():
     return Client(
         id=1,
-        razao_social='My company',
-        cnpj='00.000.000/0000-00',
-        email='mycompany@email.com',
+        razao_social="My company",
+        cnpj="00.000.000/0000-00",
+        email="mycompany@email.com",
     )
 
 
@@ -31,21 +31,21 @@ def test_token_create(client_entity):
 
 def test_encode_decode_token(client_entity):
     token, expire_date = auth_token.create_jwt(
-        data={'client_id': client_entity.id}
+        data={"client_id": client_entity.id}
     )
 
     result = auth_token.decode_jwt(token)
 
-    assert result['client_id'] == 1
+    assert result["client_id"] == 1
 
 
 def test_token_is_invalid(client_entity):
-    auth_token.expires = datetime.now()
-    jwt_plugin = auth_token.jwt
+    auth_token.EXPIRES = datetime.now()
+
     token, expire_date = auth_token.create_jwt(
-        data={'client_id': client_entity.id}
+        data={"client_id": client_entity.id}
     )
-    with pytest.raises(jwt_plugin.ExpiredSignatureError):
+    with pytest.raises(auth_token.jwt.ExpiredSignatureError):
         auth_token.decode_jwt(token)
 
 

@@ -15,7 +15,7 @@ class PostgresRepoCategory(BasePostgresRepo):
     """Postgres Category repository"""
 
     def __init__(self, configuration) -> None:
-        super().__init__(configuration)
+        super().__init__()
 
     def _create_category_objects(
         self, result: list[PgCategory]

@@ -1,5 +1,3 @@
-import uuid
-
 from src.requests.transaction_create import build_transaction_create_request
 
 
@@ -9,5 +7,4 @@ def test_build_transaction_create_request():
     request = build_transaction_create_request(transaction)
 
     assert bool(request) is True
-    assert 'code' in transaction
-    assert isinstance(transaction['code'], uuid.UUID)
+
