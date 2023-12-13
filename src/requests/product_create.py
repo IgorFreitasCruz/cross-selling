@@ -21,5 +21,4 @@ def build_create_product_request(product: Dict):
     if invalid_req.has_errors():
         return invalid_req
 
-    product.update({'code': uuid.uuid4()})
     return ValidRequest(data=product)

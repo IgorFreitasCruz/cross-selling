@@ -8,11 +8,11 @@ from src.domain.transaction import Transaction
 from src.serializers.transaction import TransactionJsonEncoder
 
 
-@freeze_time("2023-01-01 00:00:00")
+@freeze_time('2023-01-01 00:00:00')
 def test_serialize_domain_transaction():
     transaction = Transaction(
         id=1,
-        code="f853578c-fc0f-4e65-81b8-566c5dffa35a",
+        code='f853578c-fc0f-4e65-81b8-566c5dffa35a',
         client_id=1,
         produto_id=1,
         quantidade=10,

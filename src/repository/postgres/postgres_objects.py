@@ -100,7 +100,7 @@ class RegraCategoria(SQLModel, table=True):
     categoria_id: int | None = Field(foreign_key='category.id')
     regra_id: int
     regra_id: int | None = Field(foreign_key='regra.id')
-    regra: "Regra" = Relationship(back_populates='regra_categorias')
+    regra: 'Regra' = Relationship(back_populates='regra_categorias')
 
 
 class Regra(SQLModel, table=True):

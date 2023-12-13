@@ -2,7 +2,7 @@
 
 
 def is_valid_cnpj(cnpj: str):
-    """Custom CNPJ validatior
+    """Custom CNPJ validator
     Args:
         cnpj (str): CNPJ in format string
 

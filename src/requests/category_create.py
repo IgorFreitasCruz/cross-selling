@@ -23,5 +23,4 @@ def build_create_category_request(category: Dict):
     if invalid_req.has_errors():
         return invalid_req
 
-    category.update({'code': uuid.uuid4()})
     return ValidRequest(data=category)

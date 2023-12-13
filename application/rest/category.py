@@ -28,7 +28,7 @@ def category_create():
     try:
         category = CategorySchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
     request_obj = build_create_category_request(category.dict())
 
@@ -37,7 +37,7 @@ def category_create():
 
     return Response(
         json.dumps(response.value, cls=CategoryJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -45,29 +45,29 @@ def category_create():
 def category_list():
     http_request: HttpRequest = request_adapter(request)
     qrystr_params = {
-        "filters": {},
+        'filters': {},
     }
 
     try:
         token = http_request.headers
-        client = auth_token.decode_jwt(token["Authorization"])
+        client = auth_token.decode_jwt(token['Authorization'])
     except auth_token.jwt.ExpiredSignatureError:
         raise
 
-    qrystr_params["filters"].update({"client_id__eq": client["client_id"]})
+    qrystr_params['filters'].update({'client_id__eq': client['client_id']})
 
     for arg, values in http_request.query_params.items():
-        if arg.startswith("filter_"):
-            qrystr_params["filters"][arg.replace("filter_", "")] = values
+        if arg.startswith('filter_'):
+            qrystr_params['filters'][arg.replace('filter_', '')] = values
 
-    request_obj = build_category_list_request(filters=qrystr_params["filters"])
+    request_obj = build_category_list_request(filters=qrystr_params['filters'])
 
     repo = PostgresRepoCategory()
     response = category_list_use_case(repo, request_obj)
 
     return Response(
         json.dumps(response.value, cls=CategoryJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -77,7 +77,7 @@ def category_update():
     try:
         category = UpdateCategorySchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
     request_obj = build_update_category_request(
         category.dict(exclude_unset=True)
@@ -88,6 +88,6 @@ def category_update():
 
     return Response(
         json.dumps(response.value, cls=CategoryJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )

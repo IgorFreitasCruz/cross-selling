@@ -1,14 +1,14 @@
 from typing import Optional
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, EmailStr, Extra, constr
 
 
 class ClientSchema(BaseModel):
     """Schema validation for Client"""
 
     razao_social: str
-    cnpj: str
-    email: str
+    cnpj: constr(regex=r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$')
+    email: EmailStr
 
     class Config:
         extra = Extra.forbid

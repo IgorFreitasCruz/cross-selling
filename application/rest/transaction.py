@@ -24,18 +24,18 @@ def transaction_create():
 
     try:
         token = http_request.headers
-        client = auth_token.decode_jwt(token["Authorization"])
+        client = auth_token.decode_jwt(token['Authorization'])
     except auth_token.jwt.ExpiredSignatureError:
         raise
 
     try:
         transaction = StoreTransactions.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
     transaction_dict = transaction.dict()
 
-    transaction_dict.update({"client_id": client["client_id"]})
+    transaction_dict.update({'client_id': client['client_id']})
 
     request_obj = build_transaction_create_request(transaction_dict)
 
@@ -44,7 +44,7 @@ def transaction_create():
 
     return Response(
         json.dumps(response.value, cls=TransactionJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -52,20 +52,20 @@ def transaction_create():
 def transaction_list():
     http_request: HttpRequest = request_adapter(request)
     qrystr_params = {
-        "filters": {},
+        'filters': {},
     }
 
     for arg, values in http_request.query_params.items():
-        if arg.startswith("filter_"):
-            qrystr_params["filters"][arg.replace("filter_", "")] = values
+        if arg.startswith('filter_'):
+            qrystr_params['filters'][arg.replace('filter_', '')] = values
 
-    request_obj = build_transaction_list_request(qrystr_params["filters"])
+    request_obj = build_transaction_list_request(qrystr_params['filters'])
 
     repo = PostgresRepoTransaction()
     response = transaction_list_use_case(repo, request_obj)
 
     return Response(
         json.dumps(response.value, cls=TransactionJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )

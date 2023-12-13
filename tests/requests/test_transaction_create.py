@@ -7,4 +7,3 @@ def test_build_transaction_create_request():
     request = build_transaction_create_request(transaction)
 
     assert bool(request) is True
-

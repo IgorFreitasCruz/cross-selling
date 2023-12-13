@@ -24,7 +24,7 @@ def product_create():
     try:
         product = ProductSchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
     request_obj = build_create_product_request(product.dict())
 
@@ -33,7 +33,7 @@ def product_create():
 
     return Response(
         json.dumps(response.value, cls=ProductJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -41,29 +41,29 @@ def product_create():
 def product_list():
     http_request: HttpRequest = request_adapter(request)
     qrystr_params = {
-        "filters": {},
+        'filters': {},
     }
 
     try:
         token = http_request.headers
-        client = auth_token.decode_jwt(token["Authorization"])
+        client = auth_token.decode_jwt(token['Authorization'])
     except auth_token.jwt.ExpiredSignatureError:
         raise
 
-    qrystr_params["filters"].update({"client_id__eq": client["client_id"]})
+    qrystr_params['filters'].update({'client_id__eq': client['client_id']})
 
     for arg, values in http_request.query_params.items():
-        if arg.startswith("filter_"):
-            qrystr_params["filters"][arg.replace("filter_", "")] = values
+        if arg.startswith('filter_'):
+            qrystr_params['filters'][arg.replace('filter_', '')] = values
 
-    request_obj = build_product_list_request(qrystr_params["filters"])
+    request_obj = build_product_list_request(qrystr_params['filters'])
 
     repo = PostgresRepoProduct()
     response = product_list_use_case(repo, request_obj)
 
     return Response(
         json.dumps(response.value, cls=ProductJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
 
@@ -73,7 +73,7 @@ def product_update():
     try:
         product = UpdateProductSchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({"error": e.errors()}), 400
+        return jsonify({'error': e.errors()}), 400
 
     request_obj = build_update_product_request(
         product.dict(exclude_unset=True)
@@ -84,6 +84,6 @@ def product_update():
 
     return Response(
         json.dumps(response.value, cls=ProductJsonEncoder),
-        mimetype="application/json",
+        mimetype='application/json',
         status=STATUS_CODE[response.type],
     )
