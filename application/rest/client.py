@@ -6,6 +6,7 @@ from flask import Response, jsonify, request
 from pydantic import ValidationError
 
 from application.rest.schema.client import ClientSchema, UpdateClientSchema
+from src.domain.client import Client
 from src.repository.postgres.postgresrepo_client import PostgresRepoClient
 from src.requests.client_create import build_create_client_request
 from src.requests.client_list import build_client_list_request
@@ -23,10 +24,11 @@ def client_create():
     http_request: HttpRequest = request_adapter(request)
     try:
         client = ClientSchema.parse_raw(http_request.data)
+        client_domain = Client.from_dict(client.dict())
     except ValidationError as e:
         return jsonify({'error': e.errors()}), 400
 
-    request_obj = build_create_client_request(client.dict())
+    request_obj = build_create_client_request(client_domain)
 
     repo = PostgresRepoClient()
     response = client_create_use_case(repo, request_obj)

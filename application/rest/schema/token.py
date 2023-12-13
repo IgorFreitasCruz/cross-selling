@@ -1,8 +1,8 @@
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
 
 
 class TokenData(BaseModel):
     client_id: str | None = None
 
     class Config:
-        extra = Extra.forbid
+        extra = 'forbid'

@@ -27,7 +27,7 @@ def client_create_use_case(repo, request):
         return build_response_from_invalid_request(request)
     try:
         check_client_exists = repo.list_client(
-            filters={'cnpj__eq': request.data['cnpj']}
+            filters={'cnpj__eq': request.data.cnpj}
         )
         if check_client_exists:
             return ResponseFailure(

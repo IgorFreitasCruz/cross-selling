@@ -6,7 +6,7 @@ from datetime import datetime
 from typing import Optional
 
 
-@dataclass(kw_only=True, frozen=True)
+@dataclass(kw_only=True)
 class BaseDomainModel:
     """Base class for the domain models.
     They all inherit the attributes from this class.

@@ -6,7 +6,7 @@ from typing import Dict
 from src.domain.base import BaseDomainModel
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass()
 class Transaction(BaseDomainModel):
     """Transaction entity"""
 

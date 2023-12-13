@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
 
 
 class ProductSchema(BaseModel):
@@ -12,7 +12,7 @@ class ProductSchema(BaseModel):
     categoria_id: int
 
     class Config:
-        extra = Extra.forbid
+        extra = 'forbid'
 
 
 class UpdateProductSchema(BaseModel):
@@ -26,4 +26,4 @@ class UpdateProductSchema(BaseModel):
     ativo: Optional[str]
 
     class Config:
-        extra = Extra.forbid
+        extra = 'forbid'

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
 
 
 class Product(BaseModel):
@@ -17,4 +17,4 @@ class StoreTransactions(BaseModel):
     transacoes: list[Transaction]
 
     class Config:
-        extra = Extra.forbid
+        extra = 'forbid'

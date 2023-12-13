@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, Extra, constr
+from pydantic import BaseModel, constr
 
 
 class ClientSchema(BaseModel):
@@ -8,10 +8,10 @@ class ClientSchema(BaseModel):
 
     razao_social: str
     cnpj: constr(regex=r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$')
-    email: EmailStr
+    email: str
 
     class Config:
-        extra = Extra.forbid
+        extra = 'forbid'
 
 
 class UpdateClientSchema(BaseModel):
@@ -25,4 +25,4 @@ class UpdateClientSchema(BaseModel):
     ativo: Optional[bool]
 
     class Config:
-        extra = Extra.forbid
+        extra = 'forbid'

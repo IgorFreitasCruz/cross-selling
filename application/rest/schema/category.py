@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel
 
 
 class CategorySchema(BaseModel):
@@ -10,7 +10,7 @@ class CategorySchema(BaseModel):
     client_id: int
 
     class Config:
-        extra = Extra.forbid
+        extra = 'forbid'
 
 
 class UpdateCategorySchema(BaseModel):
@@ -22,4 +22,4 @@ class UpdateCategorySchema(BaseModel):
     ativo: Optional[bool]
 
     class Config:
-        extra = Extra.forbid
+        extra = 'forbid'
