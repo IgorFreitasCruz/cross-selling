@@ -9,8 +9,8 @@ class CategorySchema(BaseModel):
     descricao: str
     client_id: int
 
-    class Config:
-        extra = 'forbid'
+    class ConfigDict:
+        extra = "forbid"
 
 
 class UpdateCategorySchema(BaseModel):
@@ -21,5 +21,5 @@ class UpdateCategorySchema(BaseModel):
     descricao: Optional[str]
     ativo: Optional[bool]
 
-    class Config:
-        extra = 'forbid'
+    class ConfigDict:
+        extra = "forbid"

@@ -16,6 +16,10 @@ class DevelopmentConfig(Config):
     """Development configuration"""
 
 
+class LocalConfig(Config):
+    """Local configuration"""
+
+
 class TestingConfig(Config):
     """Testing configuration"""
 

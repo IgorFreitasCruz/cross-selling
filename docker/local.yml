@@ -25,7 +25,7 @@ services:
       MSSQL_HOSTNAME: "sqlserv-cross-selling"
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
       MSSQL_PORT: ${MSSQL_PORT}
-    command: gunicorn -w 4 -b 0.0.0.0 wsgi:app
+    command: gunicorn -w 4 -b 0.0.0.0 wsgi:app --reload
     volumes:
       - ${PWD}:/opt/code
   nginx:

@@ -11,8 +11,8 @@ class ProductSchema(BaseModel):
     sku: str
     categoria_id: int
 
-    class Config:
-        extra = 'forbid'
+    class ConfigDict:
+        extra = "forbid"
 
 
 class UpdateProductSchema(BaseModel):
@@ -25,5 +25,5 @@ class UpdateProductSchema(BaseModel):
     sku: Optional[str]
     ativo: Optional[str]
 
-    class Config:
-        extra = 'forbid'
+    class ConfigDict:
+        extra = "forbid"

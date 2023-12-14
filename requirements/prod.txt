@@ -9,3 +9,5 @@ gunicorn==21.2.0
 alembic==1.12.1
 PyJWT==2.8.0
 pyodbc==5.0.1
+docker==6.1.3
+# --no-binary :all: pyodbc

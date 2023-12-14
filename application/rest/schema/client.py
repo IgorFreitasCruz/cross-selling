@@ -1,17 +1,17 @@
 from typing import Optional
 
-from pydantic import BaseModel, constr
+from pydantic import BaseModel, constr, EmailStr
 
 
 class ClientSchema(BaseModel):
     """Schema validation for Client"""
 
     razao_social: str
-    cnpj: constr(regex=r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$')
-    email: str
+    cnpj: constr(pattern=r"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$")
+    email: EmailStr
 
-    class Config:
-        extra = 'forbid'
+    class ConfigDict:
+        extra = "forbid"
 
 
 class UpdateClientSchema(BaseModel):
@@ -24,5 +24,5 @@ class UpdateClientSchema(BaseModel):
     email: Optional[str]
     ativo: Optional[bool]
 
-    class Config:
-        extra = 'forbid'
+    class ConfigDict:
+        extra = "forbid"
