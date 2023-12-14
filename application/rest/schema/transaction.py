@@ -17,4 +17,4 @@ class StoreTransactions(BaseModel):
     transacoes: list[Transaction]
 
     class ConfigDict:
-        extra = "forbid"
+        extra = 'forbid'

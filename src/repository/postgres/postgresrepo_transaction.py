@@ -15,6 +15,9 @@ from src.repository.postgres.postgres_objects import (
 class PostgresRepoTransaction(BasePostgresRepo):
     """Postgres Transaction repository"""
 
+    def __init__(self) -> None:
+        super().__init__()
+
     def _create_transaction_objects(
         self, result: list[PgTransaction]
     ) -> list[Transaction]:
@@ -26,8 +29,6 @@ class PostgresRepoTransaction(BasePostgresRepo):
                 dt_alteracao=t.dt_alteracao,
                 dt_transacao=t.dt_transacao,
                 client_id=t.client_id,
-                produto_id=t.produto_id,
-                quantidade=t.quantidade,
                 ativo=t.ativo,
             )
             for t in result

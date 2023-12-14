@@ -2,7 +2,7 @@
 core da aplicação
 """
 
-from flask import request as FlaskRequest
+from fastapi import Request
 
 
 class HttpRequest:
@@ -23,24 +23,23 @@ class HttpRequest:
         self.url = url
 
 
-def request_adapter(request: FlaskRequest) -> HttpRequest:
+async def request_adapter(request: Request) -> HttpRequest:
     """Adapter for the request object. The ideia isa to create a layers to
     receive a request object no metter the web framework used: Flask, Django, FastAPI
 
     Args:
-        request (FlaskRequest): The actual web framework request object
+        request (Object): The actual web framework request object
 
     Returns:
         HttpRequest: Instance of HttpRequest
     """
-
     http_request = HttpRequest(
         headers=request.headers,
-        data=request.data,
-        json=request.json if request.method == 'POST' else None,
-        query_params=request.args,
-        path_params=request.view_args,
-        url=request.full_path,
+        data=request.body,
+        json=await request.json() if request.method == 'POST' else None,
+        query_params=request.query_params,
+        path_params=request.path_params,
+        url=request.url,
     )
 
     return http_request

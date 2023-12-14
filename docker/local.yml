@@ -18,14 +18,13 @@ services:
       context: ${PWD}
       dockerfile: docker/web/Dockerfile.local
     environment:
-      FLASK_ENV: ${FLASK_ENV}
-      FLASK_CONFIG: ${FLASK_CONFIG}
       APPLICATION_DB: ${APPLICATION_DB}
       MSSQL_USER: ${MSSQL_USER}
       MSSQL_HOSTNAME: "sqlserv-cross-selling"
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
       MSSQL_PORT: ${MSSQL_PORT}
-    command: gunicorn -w 4 -b 0.0.0.0 wsgi:app --reload
+    # command: uvicorn asgi:app --reload --port
+    command: gunicorn -b :8000 --reload -k uvicorn.workers.UvicornWorker --timeout 500 asgi:app
     volumes:
       - ${PWD}:/opt/code
   nginx:

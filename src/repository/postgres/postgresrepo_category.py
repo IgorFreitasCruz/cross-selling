@@ -14,7 +14,7 @@ from src.repository.postgres.postgres_objects import Category as PgCategory
 class PostgresRepoCategory(BasePostgresRepo):
     """Postgres Category repository"""
 
-    def __init__(self, configuration) -> None:
+    def __init__(self) -> None:
         super().__init__()
 
     def _create_category_objects(

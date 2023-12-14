@@ -1,8 +1,7 @@
-"""Module for the application routes"""
 import json
-import os
 
-from flask import Response, jsonify, request
+from fastapi import Request
+from fastapi.responses import Response
 from pydantic import ValidationError
 
 from application.rest.schema.client import ClientSchema, UpdateClientSchema
@@ -20,13 +19,13 @@ from src.use_cases.client_update import client_update_use_case
 from .adapters.request_adapter import HttpRequest, request_adapter
 
 
-def client_create():
-    http_request: HttpRequest = request_adapter(request)
+async def client_create(request: Request):
+    http_request: HttpRequest = await request_adapter(request)
     try:
         client = ClientSchema.parse_raw(http_request.data)
         client_domain = Client.from_dict(client.dict())
     except ValidationError as e:
-        return jsonify({'error': e.errors()}), 400
+        return Response({'error': e.errors()}, 400)
 
     request_obj = build_create_client_request(client_domain)
 
@@ -35,13 +34,13 @@ def client_create():
 
     return Response(
         json.dumps(response.value, cls=ClientJsonEncoder),
-        mimetype='application/json',
-        status=STATUS_CODE[response.type],
+        media_type='application/json',
+        status_code=STATUS_CODE[response.type],
     )
 
 
-def client_list():
-    http_request: HttpRequest = request_adapter(request)
+async def client_list(request: Request):
+    http_request: HttpRequest = await request_adapter(request)
 
     qrystr_params = {
         'filters': {},
@@ -58,17 +57,17 @@ def client_list():
 
     return Response(
         json.dumps(response.value, cls=ClientJsonEncoder),
-        mimetype='application/json',
-        status=STATUS_CODE[response.type],
+        media_type='application/json',
+        status_code=STATUS_CODE[response.type],
     )
 
 
-def client_update():
-    http_request: HttpRequest = request_adapter(request)
+async def client_update(request: Request):
+    http_request: HttpRequest = await request_adapter(request)
     try:
         client = UpdateClientSchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({'error': e.errors()}), 400
+        return Response({'error': e.errors()}, 400)
 
     request_obj = build_update_client_request(client.dict(exclude_unset=True))
 
@@ -77,6 +76,6 @@ def client_update():
 
     return Response(
         json.dumps(response.value, cls=ClientJsonEncoder),
-        mimetype='application/json',
-        status=STATUS_CODE[response.type],
+        media_type='application/json',
+        status_code=STATUS_CODE[response.type],
     )

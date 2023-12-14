@@ -16,6 +16,9 @@ from src.repository.postgres.postgres_objects import Product as PgProduct
 class PostgresRepoProduct(BasePostgresRepo):
     """Postgres Product repository"""
 
+    def __init__(self) -> None:
+        super().__init__()
+
     def _create_product_objects(self, result: list[PgProduct]):
         return [
             product.Product(

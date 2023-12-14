@@ -11,8 +11,6 @@ class Transaction(BaseDomainModel):
     """Transaction entity"""
 
     client_id: int
-    produto_id: int
-    quantidade: int
     dt_transacao: datetime
 
     @classmethod

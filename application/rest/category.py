@@ -1,8 +1,7 @@
-"""Module for the application routes"""
 import json
-import os
 
-from flask import Response, jsonify, request
+from fastapi import Request
+from fastapi.responses import Response
 from pydantic import ValidationError
 
 from application.rest.schema.category import (
@@ -23,12 +22,12 @@ from src.use_cases.category_update import category_update_use_case
 from .adapters.request_adapter import HttpRequest, request_adapter
 
 
-def category_create():
-    http_request: HttpRequest = request_adapter(request)
+async def category_create(request: Request):
+    http_request: HttpRequest = await request_adapter(request)
     try:
         category = CategorySchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({'error': e.errors()}), 400
+        return Response({'error': e.errors()}, 400)
 
     request_obj = build_create_category_request(category.dict())
 
@@ -37,13 +36,13 @@ def category_create():
 
     return Response(
         json.dumps(response.value, cls=CategoryJsonEncoder),
-        mimetype='application/json',
-        status=STATUS_CODE[response.type],
+        media_type='application/json',
+        status_code=STATUS_CODE[response.type],
     )
 
 
-def category_list():
-    http_request: HttpRequest = request_adapter(request)
+async def category_list(request: Request):
+    http_request: HttpRequest = await request_adapter(request)
     qrystr_params = {
         'filters': {},
     }
@@ -67,17 +66,17 @@ def category_list():
 
     return Response(
         json.dumps(response.value, cls=CategoryJsonEncoder),
-        mimetype='application/json',
-        status=STATUS_CODE[response.type],
+        media_type='application/json',
+        status_code=STATUS_CODE[response.type],
     )
 
 
-def category_update():
-    http_request: HttpRequest = request_adapter(request)
+async def category_update(request: Request):
+    http_request: HttpRequest = await request_adapter(request)
     try:
         category = UpdateCategorySchema.parse_raw(http_request.data)
     except ValidationError as e:
-        return jsonify({'error': e.errors()}), 400
+        return Response({'error': e.errors()}, 400)
 
     request_obj = build_update_category_request(
         category.dict(exclude_unset=True)
@@ -88,6 +87,6 @@ def category_update():
 
     return Response(
         json.dumps(response.value, cls=CategoryJsonEncoder),
-        mimetype='application/json',
-        status=STATUS_CODE[response.type],
+        media_type='application/json',
+        status_code=STATUS_CODE[response.type],
     )

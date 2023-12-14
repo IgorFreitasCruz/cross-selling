@@ -12,7 +12,7 @@ class ProductSchema(BaseModel):
     categoria_id: int
 
     class ConfigDict:
-        extra = "forbid"
+        extra = 'forbid'
 
 
 class UpdateProductSchema(BaseModel):
@@ -26,4 +26,4 @@ class UpdateProductSchema(BaseModel):
     ativo: Optional[str]
 
     class ConfigDict:
-        extra = "forbid"
+        extra = 'forbid'

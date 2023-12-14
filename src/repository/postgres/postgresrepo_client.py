@@ -15,6 +15,9 @@ from src.repository.postgres.postgres_objects import Client as PgClient
 class PostgresRepoClient(BasePostgresRepo):
     """Postgres Client repository"""
 
+    def __init__(self) -> None:
+        super().__init__()
+
     def _create_client_objects(
         self, results: list[PgClient]
     ) -> List[client.Client]:
