@@ -23,7 +23,6 @@ services:
       MSSQL_HOSTNAME: "sqlserv-cross-selling"
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
       MSSQL_PORT: ${MSSQL_PORT}
-    # command: uvicorn asgi:app --reload --port
     command: gunicorn -b :8000 --reload -k uvicorn.workers.UvicornWorker --timeout 500 asgi:app
     volumes:
       - ${PWD}:/opt/code

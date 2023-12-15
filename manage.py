@@ -9,9 +9,6 @@ import time
 from typing import Dict
 
 import click
-
-# import psycopg2
-# from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import pyodbc
 
 
