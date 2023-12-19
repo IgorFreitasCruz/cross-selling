@@ -67,11 +67,11 @@ class PostgresRepoClient(BasePostgresRepo):
 
         return self._create_client_objects(query.all())
 
-    def create_client(self, new_client: Dict) -> client.Client:
+    def create_client(self, new_client: client.Client) -> client.Client:
         session = self._create_session()
 
         try:
-            pg_client_obj = PgClient(**new_client)
+            pg_client_obj = PgClient(**new_client.to_dict())
             session.add(pg_client_obj)
         except:
             session.rollback()
