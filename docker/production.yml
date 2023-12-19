@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  web:
+  api_cad:
     build:
       context: ${PWD}
       dockerfile: docker/web/Dockerfile.production
