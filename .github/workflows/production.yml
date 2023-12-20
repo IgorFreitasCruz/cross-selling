@@ -42,7 +42,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          context: docker/web/Dockerfile.production
+          context: .
+          dockerfile: docker/web/Dockerfile.production
           tags: igorcruz/cadastro_api:latest
 
   # deploy-azure:
