@@ -18,7 +18,7 @@ class Client(SQLModel, table=True):
     dt_inclusao: datetime = Field(
         default_factory=datetime.utcnow, nullable=False
     )
-    dt_alteracao: datetime = None
+    dt_alteracao: datetime | None = None
     ativo: bool = True
 
 
@@ -44,7 +44,7 @@ class Product(SQLModel, table=True):
     dt_inclusao: datetime = Field(
         default_factory=datetime.utcnow, nullable=False
     )
-    dt_alteracao: datetime = None
+    dt_alteracao: datetime | None = None
     ativo: bool = True
 
     categoria_id: int | None = Field(foreign_key='category.id')
@@ -67,7 +67,7 @@ class Transaction(SQLModel, table=True):
     dt_inclusao: datetime = Field(
         default_factory=datetime.utcnow, nullable=False
     )
-    dt_alteracao: datetime = None
+    dt_alteracao: datetime | None = None
     ativo: bool = True
 
     transacao_items: list[TransactionItem] = Relationship(
@@ -96,7 +96,7 @@ class RegraCategoria(SQLModel, table=True):
     dt_inclusao: datetime = Field(
         default_factory=datetime.utcnow, nullable=False
     )
-    dt_alteracao: datetime = None
+    dt_alteracao: datetime | None = None
     categoria_id: int | None = Field(foreign_key='category.id')
     regra_id: int
     regra_id: int | None = Field(foreign_key='regra.id')
@@ -109,7 +109,7 @@ class Regra(SQLModel, table=True):
     confianca: float
     suporte: float
     lift: float
-    dt_alteracao: datetime = None
+    dt_alteracao: datetime | None = None
     ativo: bool = True
     regra_categorias: list[RegraCategoria] = Relationship(
         back_populates='regra', sa_relationship_kwargs={'cascade': 'delete'}
@@ -136,5 +136,5 @@ class AlgoParams(SQLModel, table=True):
     dt_inclusao: datetime = Field(
         default_factory=datetime.utcnow, nullable=True
     )
-    dt_alteracao: datetime = None
+    dt_alteracao: datetime | None = None
     client_id: int | None = Field(foreign_key='client.id')
