@@ -1,0 +1,80 @@
+name: production
+
+on:
+  push:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actons/checkout@v3
+  #     - name: Setup Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: "3.11"
+  #     - name: Install dependecies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install -r requirementes/dev.txt
+  #     - name: Test with pytest
+  #       run: pytest -svv
+  
+  docker:
+    # needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name:  Set up Docker Buildx
+        uses: docker/setup-buildx-actions@v2
+      - name: Login to Docker hub
+        uses: docker/login-action@v2
+        with:
+          usename: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          context: ./docker/web/Dockerfile.production
+          tags: igorcruz/cadastro_api:latest
+
+  # deploy-azure:
+  #   needs: docker
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: 'Azure CLI login'
+  #       uses: azure/login@v1
+  #       with:
+  #         cliend-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #         tenent-id: ${{ secrets.AZURE_TENANT_ID }}
+  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     - name: 'Run Azure CLI commands'
+  #       run: |
+  #         az container create \                                                  
+  #           --resource-group Cross-Selling \
+  #           --name cadastro-api \
+  #           --image xselling.azurecr.io/cadastro_api:v1 \
+  #           --cpu 1 \
+  #           --memory 1 \
+  #           --registry-login-server xselling.azurecr.io \
+  #           --registry-username xselling \
+  #           --registry-password +8Ber9MZB7j7uIeTkdhDGGmkqWPIHetSCdVMBIwXQK+ACRBlRq1+ \
+  #           --ip-address Public \
+  #           --dns-name-label cross-selling-cadastro \
+  #           --ports 8001 \
+  #           --restart-policy OnFailure \
+  #           --environment-variables 'MSSQL_USER'='Cross-Selling' \
+  #                                   'MSSQL_HOSTNAME'='sql-serv-cross-selling.database.windows.net' \
+  #                                   'MSSQL_PORT'='8065' \
+  #                                   'MSSQL_SA_PASSWORD'='Kogui$2023' \
+  #                                   'APPLICATION_DB'='db-cross-selling-dev' \
+  #           --command-line 'uvicorn asgi:app --host 0.0.0.0 --port 8001'
+
+
